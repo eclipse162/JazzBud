@@ -4,7 +4,7 @@
 
 This app allows users to **partition jazz songs from Spotify** based off musical segments (ie. Intro, Head, Solo).
 
-In the future, this app will Allow users to share their own partitioning of jazz tracks and see other users' list of artist solos, with their respective lengths and ratings.
+In the future, this app will allow users to share their own partitioning of jazz tracks and see other users' list of artist solos, with their respective lengths and ratings.
 
 ---
 
