@@ -7,6 +7,9 @@ This app allows users to **partition jazz songs from Spotify** based off musical
 In the future, this app will allow users to share their own partitioning of jazz tracks and see other users' list of artist solos, with their respective lengths and ratings.
 
 ---
+Framework Used
+------
+The application will use **Node.js** primarily. Other frameworks/stacks can be used after discussion with the team if it will benefit the application in the long run.
 
 Rough Roadmap
 ------
