@@ -9,7 +9,7 @@ In the future, this app will allow users to share their own partitioning of jazz
 ---
 Framework Used
 ------
-The application will use **Node.js** primarily. Other frameworks/stacks can be used after discussion with the team if it will benefit the application in the long run.
+The application will use **React.js** and **Node.js** primarily. Other frameworks/stacks can be used after discussion with the team if it will benefit the application in the long run or if everyone else in the team feels comfortable with that stack.
 
 Rough Roadmap
 ------
