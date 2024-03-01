@@ -1,0 +1,7 @@
+User: admin
+Email: admin@jazzbud.com
+Password: JBudNew@123
+
+Test User:
+User: testuser
+Password: Tester1234
