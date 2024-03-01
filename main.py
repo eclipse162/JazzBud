@@ -42,9 +42,12 @@ def get_artist_image():
         artist = items[0]
         print(artist['name'], artist['images'][0]['url'])
 def main():
+    # Reference: Spotipy examples page
     #birdy_albums()
     #_30sec_samples()
     #get_artist_image()
+
+    # Reference: https://towardsdatascience.com/extracting-song-data-from-the-spotify-api-using-python-b1e79388d50
 
     # Authentication - without user, current not working
     #client_credentials_manager = SpotifyClientCredentials(client_id=os.environ['SPOTIFY_CLIENT_ID'], client_secret=os.environ['SPOTIFY_CLIENT_SECRET'])
@@ -54,11 +57,15 @@ def main():
 
     song_link = "https://open.spotify.com/track/1YQWosTIljIvxAgHWTp7KP"
     # parse song link
-    s_uri = song_link.split("/")
+    s_uri = song_link.split("/")[-1]
     print(s_uri)
-    song_uri = "1YQWosTIljIvxAgHWTp7KP"
 
-    print(sp.audio_features(song_uri)[0])
+    print("JSON:", sp.audio_features(s_uri)[0])
+    # reference: https://stackoverflow.com/questions/35989666/convert-milliseconds-to-hours-min-and-seconds-python
+    track_secs = float(((sp.audio_features(s_uri)[0]["duration_ms"])/1000)%60)
+    track_mins = float(((sp.audio_features(s_uri)[0]["duration_ms"])/(1000*60))%60)
+
+    print(f'Song duration: {int(track_mins)}:{int(track_secs)}')
 
 
 main()
