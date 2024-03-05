@@ -91,29 +91,3 @@ def create_segment(song_id, segment_name, start_time, end_time, segment_descript
 
 def get_segment_by_id(segment_id):
     return session.query(Segment).filter(Segment.segment_id == segment_id).first()
-
-# Example usage:
-if __name__ == "__main__":
-    # Create a new user
-    user = create_user(spotify_user_id='spotify123', username='example_user')
-
-    # Update user's username
-    updated_user = update_username(user_id=user.user_id, new_username='new_username')
-
-    # Create a new song
-    song = create_song(spotify_song_id='spotify:123', title='Example Song', artist='Example Artist', album='Example Album', genre='Example Genre', release_year=2024)
-
-    # Create a new segment associated with the song
-    segment = create_segment(song_id=song.song_id, segment_name='Verse', start_time=30, end_time=60, segment_description='Example verse')
-
-    # Retrieve a user by their ID
-    retrieved_user = get_user_by_id(user_id=user.user_id)
-    print("Retrieved User:", retrieved_user.username)
-
-    # Retrieve a song by its ID
-    retrieved_song = get_song_by_id(song_id=song.song_id)
-    print("Retrieved Song:", retrieved_song.title)
-
-    # Retrieve a segment by its ID
-    retrieved_segment = get_segment_by_id(segment_id=segment.segment_id)
-    print("Retrieved Segment:", retrieved_segment.segment_name)
