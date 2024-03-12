@@ -1,0 +1,182 @@
+Reference video: https://youtu.be/ZxMB6Njs3ck?si=InqA5Lp8-Alz4UeZ
+
+==================================
+||		Django Installation		||
+==================================
+
+- Create a python venv in target folder
+	python -m venv env
+
+- Move into venv using source command
+	source env/Scripts/activate
+	
+- Install Django
+	pip install django
+
+==============================
+||		Django Commands		||
+==============================
+
+- Create project
+	django-admin startproject <project name>
+
+- Move into project name directory, then run server
+	cd <project name>
+	python manage.py runserver
+	
+- Server can now be accessed using http://127.0.0.1:8000, CTRL+C to break
+
+- Create core application components
+	python manage.py startapp core
+	
+- Under <project name> directory, add reference to 'core' under INSTALLED_APPS variable
+
+
+==============================
+||		Create Views		||
+==============================
+
+- Define request function under views.py
+
+	def index(request):
+		return render(request, 'core/index.html')
+
+- Create directory under core > templates > core, then inside create index.html file
+
+- In index.html file, create sample front page file (see JazzBud for example index.html file)
+
+- In urls.py, create a reference to index file
+	from <project name>.core.views import index
+	
+- Add path to urlpatterns list
+
+	path('', index, name="index"),
+	
+- The "name=" variable makes the URL available in HTML code to be called like below:
+	ex. <a href="{% url 'index' %}" class="text-lg text-teal-500 hover:text-teal-700">Index Page</a>
+	
+	The URL will be referenced with the same name as the specified name parameter
+
+A1-1 Add references to the database models to core/views.py
+	ex. from item.models import Category, Item
+	
+A1-2 Reference database models under the index() function
+	ex. # get top 6 items that are not sold
+		items = Item.objects.filter(is_sold=False)[0:6]
+		categories = Category.objects.all()
+		return render(request, 'core/index.html', {
+			'categories': categories,
+			'items': items
+		})
+
+- Create details page for item by defining the following function:
+
+	from django.shortcuts import render, get_object_or_404
+	from .models import Item
+
+	def detail(request, pk):
+		item = get_object_or_404(Item, pk=pk)
+
+		return render(request, 'item/detail.html', {
+			'item': item
+		})
+
+- Create 'templates' folder and 'item' folder under <project_name>/item/templates/item, then create the detail.html file 
+under this folder
+
+- Create details template for displaying the item description/metadata in detail.html (more details in reference video [24:55])
+
+======================================
+||		Create Database Model		||
+======================================
+
+- Add a new category in the models.py file
+	ex. class Category(models.Model):
+			name = models.CharField(max_length=255)
+
+- Inside of the app working directory that contains manage.py, migrate changes using command line
+	ex. python manage.py makemigrations
+	
+- Let Django execute the script and migrate changes
+	ex. python manage.py migrate
+
+- Create a super user that will access the newly created database
+	ex. python manage.py createsuperuser
+	
+	* Note that when using Git Bash, use the following command instead:
+		Source (https://stackoverflow.com/questions/26980003/unable-to-create-superuser-in-django-due-to-not-working-in-tty)
+		winpty python manage.py createsuperuser
+		
+A1-1 Navigate to admin.py and import database models that were created
+	ex. from .models import Category
+	
+A1-2 Register database model by typing the following code
+	ex. admin.site.register(Category)
+	
+A2-1 Under models.py, define a string representation as follows:
+	Class MainParent(models.Model):
+		name = models.CharField(max_length=255)
+		
+		# add the following lines
+		Class Meta:
+			verbose_name_plural = 'NewName'
+			
+		def __str__(self):
+			return self.name
+
+
+==============================================
+||		Log In To Administration Site		||
+==============================================
+
+- Go to http://localhost:8000/admin
+
+- Log in using the super user credentials
+
+- Note that created groups and users can be shown in this site, but if models are not yet registered
+from the steps above (Create Database Model section A1), the items will NOT show up.
+
+- In Items, you can add new categories by clicking on "Add +", then specifying a name for the item
+
+- There may be an issue with adding new items where the specified item name does not show up and
+is relatively non-descriptive. Specify the string representation in the models.py class to fix this issue
+(Section A2)
+
+==================================
+||		Configure Images		||
+==================================
+
+ - Open settings.py under the project name folder
+ 
+ - Add media settings as follows:
+		# store media URL and default media save location
+	ex. MEDIA_URL = 'media/'
+		MEDIA_ROOT = BASE_DIR / 'media'
+		
+		
+==============================================
+||		Setting Sign Up Functionality		||
+==============================================
+
+- Create new urls.py under 'core' folder
+
+- Create code using template as follows:
+
+	from django.urls import path
+	from . import views
+
+	app_name = 'core'
+
+	urlpatterns = [
+		path('', views.index, name='index'),
+		path('contact/', views.contact, name='contact'),
+	]
+
+- Using this reference, remove 'path' line inside of <project_name>/urls.py and replace with:
+	path('', include('core.urls')),
+	
+- Update any references to the previous path inside of base.html if needed
+	ex. {% url 'contact' %} to {% url 'core:contact' %}
+		
+
+		
