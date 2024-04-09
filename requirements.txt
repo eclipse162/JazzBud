@@ -30,7 +30,7 @@ platformdirs==4.2.0
 pockets==0.9.1
 prompt-toolkit==3.0.43
 psutil==5.9.8
-psycopg2-binary==2.9.9
+psycopg2==2.9.9
 pure-eval==0.2.2
 Pygments==2.17.2
 python-dateutil==2.9.0.post0
