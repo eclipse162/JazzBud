@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['https://jazzbud.onrender.com/']
 # Application definition
 
 INSTALLED_APPS = [
-    'render.apps.RenderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
