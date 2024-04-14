@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'jbud.wsgi.application'
 #load_dotenv()
 
 #DATABASE_URL = os.getenv("DATABASE_URL")
-DATABASE_URL = "postgres://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
+DATABASE_URL = "postgres://admin:Q9iK5wUzobCuXmgQYjpyvI30mC5M0iqW@dpg-co7bm6ed3nmc73e7s4r0-a.oregon-postgres.render.com/jbudclone"
 
 DATABASES = {
     "default": dj_database_url.parse(DATABASE_URL)
