@@ -84,10 +84,16 @@ WSGI_APPLICATION = 'jbud.wsgi.application'
 #DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASE_URL = "postgres://admin:Q9iK5wUzobCuXmgQYjpyvI30mC5M0iqW@dpg-co7bm6ed3nmc73e7s4r0-a.oregon-postgres.render.com/jbudclone"
 
-DATABASES = {
-    "default": dj_database_url.parse(DATABASE_URL)
-}
+#DATABASES = {
+    #"default": dj_database_url.parse(DATABASE_URL)
+#}
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://admin:Q9iK5wUzobCuXmgQYjpyvI30mC5M0iqW@dpg-co7bm6ed3nmc73e7s4r0-a.oregon-postgres.render.com/jbudclone',
+        conn_max_age=600
+        )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -123,11 +129,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR/'assets'
+STATIC_URL = '/static/'
+#STATIC_ROOT = '/' + BASE_DIR/'assets'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
