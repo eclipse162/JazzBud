@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-#w9=u+v@xv4nof#r4*bzan5d3-y^v$otbsx5-s7a-6kn#frrs4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://jazzbud.onrender.com/']
+ALLOWED_HOSTS = ['https://jazzbud.onrender.com/', 'http://jazzbud.onrender.com/', 'jazzbud.onrender.com']
 
 
 # Application definition
