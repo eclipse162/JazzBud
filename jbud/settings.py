@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#w9=u+v@xv4nof#r4*bzan5d3-y^v$otbsx5-s7a-6kn#frrs4'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,17 +82,13 @@ WSGI_APPLICATION = 'jbud.wsgi.application'
 #load_dotenv()
 
 #DATABASE_URL = os.getenv("DATABASE_URL")
-DATABASE_URL = "postgres://admin:Q9iK5wUzobCuXmgQYjpyvI30mC5M0iqW@dpg-co7bm6ed3nmc73e7s4r0-a.oregon-postgres.render.com/jbudclone"
-
-#DATABASES = {
-    #"default": dj_database_url.parse(DATABASE_URL)
-#}
+DATABASE_URL = os.environ.get('DB_CLONE')
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://admin:Q9iK5wUzobCuXmgQYjpyvI30mC5M0iqW@dpg-co7bm6ed3nmc73e7s4r0-a.oregon-postgres.render.com/jbudclone',
+        default=DATABASE_URL,
         conn_max_age=600
-        )
+    )
 }
 
 # Password validation
