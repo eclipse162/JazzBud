@@ -29,7 +29,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://jazzbud.onrender.com/', 'http://jazzbud.onrender.com/', 'jazzbud.onrender.com']
+#NOTE: If you are running on local file system, ensure your local IP is in ALLOWED_HOSTS
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/','https://jazzbud.onrender.com/', 'http://jazzbud.onrender.com/', 'jazzbud.onrender.com']
 
 
 # Application definition
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core'
 ]
 
 MIDDLEWARE = [
