@@ -9,6 +9,7 @@ packaging==24.0
 pillow==10.2.0
 psycopg2-binary==2.9.9
 python-dotenv==1.0.1
+rest_framework==3.13.1
 sqlparse==0.4.4
 typing_extensions==4.10.0
 tzdata==2024.1
