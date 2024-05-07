@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
 
-from core.views import index
+from core.views import index, about
 
 def home(request):
     return HttpResponse('Home page')
@@ -28,7 +28,7 @@ def about(request):
 
 urlpatterns = [
     path('', index, name='index'),
+    path('about/', about, name='about'),
     path('admin/', admin.site.urls),
-    path('', home),
-    path('about/', about),
+    path('', home)
 ]
