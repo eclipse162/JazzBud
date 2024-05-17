@@ -10,6 +10,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True)
     spotify_user_id = Column(String(255))
     username = Column(String(50), unique=True, nullable=False)
+    user_segments = relationship("UserSegment", back_populates="user")
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -21,16 +22,24 @@ class Song(Base):
     album = Column(String(100))
     genre = Column(String(50))
     release_year = Column(Integer)
-    segments = relationship("Segment", back_populates="song")
-
+    user_segments = relationship("UserSegment", back_populates="song")
 
 class Segment(Base):
     __tablename__ = 'segments'
 
     segment_id = Column(Integer, primary_key=True)
-    song_id = Column(Integer, ForeignKey('songs.song_id'))
     segment_name = Column(String(50))
     start_time = Column(Integer)
     end_time = Column(Integer)
     segment_description = Column(Text)
-    song = relationship("Song", back_populates="segments")
+
+class UserSegment(Base):
+    __tablename__ = 'user_segments'
+
+    user_segment_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    song_id = Column(Integer, ForeignKey('songs.song_id'))
+    segment_id = Column(Integer, ForeignKey('segments.segment_id'))
+    user = relationship("User", back_populates="user_segments")
+    song = relationship("Song", back_populates="user_segments")
+    segment = relationship("Segment")
