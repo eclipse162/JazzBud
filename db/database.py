@@ -1,25 +1,23 @@
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from pathlib import Path
-from models.py import Base
 
-# Define the database URL
+# Database URL
 DATABASE_URL = "postgres://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
 
-# Create the SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+# Create the database engine
+engine = create_engine(DATABASE_URL, echo=True)
 
-# Bind the engine to the base class
-Base.metadata.bind = engine
+# Create a configured "Session" class
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create a sessionmaker
-Session = sessionmaker(bind=engine)
+# Create a Base class for our models to inherit from
+Base = declarative_base()
 
-# Create a session
-session = Session()
-
-# Create the tables
-Base.metadata.create_all(engine)
-
-# Close the session
-session.close()
+# Dependency to get the session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
