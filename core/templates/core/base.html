@@ -49,11 +49,13 @@
       </div>
 
       <div class="space-x-6">
-        <a
+        <!--<a
           href="/jazzbud/auth-url"
           class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-gray-700">
           Log In
-        </a>
+        </a>-->
+        {% block user_name %}{% endblock %}
+        {% block user_pfp %}{% endblock %}
       </div>
     </nav>
 
