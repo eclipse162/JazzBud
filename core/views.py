@@ -10,13 +10,9 @@ from requests import Request, post
 from .extras import *
 import requests
 
-# CLIENT_ID = os.environ.get('CLIENT_ID')
-# CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-# REDIRECT_URI = os.environ.get('REDIRECT_URI')
-
-CLIENT_ID = "7b37dfd9b4244b60b661ec6013ce3464"
-CLIENT_SECRET = "64c91e959d364004a13c485ae442202a"
-REDIRECT_URI = "https://jazzbud.onrender.com/"
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
 
 def index(request):
