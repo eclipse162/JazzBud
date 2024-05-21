@@ -14,10 +14,15 @@ CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
+user_name = 'Login'
+user_pfp = ''
 
 def index(request):
-    return render(request, 'core/index.html')
-
+    return render(request, 'core/index.html', {
+        'user_name': user_name,
+        'user_pfp': user_pfp
+    })
+    
 def about(request):
     return render(request, 'core/about.html')
 
@@ -164,3 +169,7 @@ class CurrentSong(APIView):
 
         print(song)
         return Response(song, status = status.HTTP_200_OK)
+
+
+
+
