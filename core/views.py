@@ -44,8 +44,6 @@ class SpotifyRequestUserAuth(APIView):
             'redirect_uri': REDIRECT_URI,
             'client_id': CLIENT_ID
         }
-        print(params)
-        print("hello world")
         response = requests.get('https://accounts.spotify.com/authorize', params=params)
         url = response.url
         return HttpResponseRedirect(url)
@@ -114,7 +112,7 @@ class ConfirmAuth(APIView):
                 user_name = user_info['display_name']
                 user_pfp = user_info['images'][0]['url']
                 #display this name on the page 
-
+                print(user_name)
             # PLEASE CAN SOMEONE HELP ME SAVE THIS USER INFO INSIDE OF THE DATABASE
 
             redirect_url = f"http://127.0.0.1:8000/jazzbud/current-song?key={key}"
