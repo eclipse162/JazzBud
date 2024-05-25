@@ -74,7 +74,7 @@ def spotify_redirect(request):
     create_tokens(auth_key, access_token, refresh_token, expires_in, token_type)
 
     # Create a redirect url to the current song details
-    redirect_url = f"http://127.0.0.1:8000/jazzbud/current-song?key={auth_key}"
+    redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={auth_key}"
     return HttpResponseRedirect(redirect_url)
 
 # Checking whether the user has been authenticated by spotify
@@ -111,7 +111,7 @@ class ConfirmAuth(APIView):
                 print(f'User ID: {user_id}, User Name: {user_name}', flush=True)
             else:
                 print('User info retrieval failed or incorrect user type.', flush=True)
-            redirect_url = f"http://127.0.0.1:8000/jazzbud/current-song?key={key}"
+            redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={key}"
             return HttpResponseRedirect(redirect_url)
         else:
             redirect_url = f"http://127.0.0.1:8000/jazzbud/auth_url"
