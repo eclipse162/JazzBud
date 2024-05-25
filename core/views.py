@@ -42,6 +42,7 @@ class SpotifyRequestUserAuth(APIView):
         }
         response = requests.get('https://accounts.spotify.com/authorize', params=params)
         url = response.url
+        print("HELLO WORLD", flush=True)
         return HttpResponseRedirect(url)
         # Redirect the spotify login page to the user
 
@@ -85,7 +86,7 @@ class ConfirmAuth(APIView):
             'Authorization': f'Bearer {access_token}',
         }
         response = requests.get('https://api.spotify.com/v1/me', headers=headers)
-        print(f'Spotify API response status: {response.status_code}, body: {response.json()}')
+        print(f'Spotify API response status: {response.status_code}, body: {response.json()}', flush=True)
         if response.status_code == 200:
             return response.json()
         else:
@@ -96,7 +97,7 @@ class ConfirmAuth(APIView):
         if not self.request.session.exists(key):
             self.request.session.create()
             key = self.request.session.session_key
-        print(f'Session key: {key}')
+        print(f'Session key: {key}', flush=True)
 
         auth_status, access_token = check_authentication(key)
         print(f'Auth status: {auth_status}, Access token: {access_token}')
@@ -107,9 +108,9 @@ class ConfirmAuth(APIView):
                 user_id = user_info['id']
                 user_name = user_info['display_name']
                 user_pfp = user_info['images'][0]['url']
-                print(f'User ID: {user_id}, User Name: {user_name}')
+                print(f'User ID: {user_id}, User Name: {user_name}', flush=True)
             else:
-                print('User info retrieval failed or incorrect user type.')
+                print('User info retrieval failed or incorrect user type.', flush=True)
             redirect_url = f"http://127.0.0.1:8000/jazzbud/current-song?key={key}"
             return HttpResponseRedirect(redirect_url)
         else:
@@ -153,5 +154,5 @@ class CurrentSong(APIView):
             "timestamp": timestamp
         }
 
-        print(song)
+        print(song, flush=True)
         return Response(song, status = status.HTTP_200_OK)
