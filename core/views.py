@@ -8,6 +8,7 @@ from rest_framework.permissions import  AllowAny
 from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
+from db.crud import *
 import requests
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -19,10 +20,6 @@ def index(request):
     
 def about(request):
     return render(request, 'core/about.html')
-
-def store_code(code: str, user_id: str):
-        # Write code here for database storage stuff
-        raise NotImplementedError
 
 # Prepare a URL for the user to authenticate with Spotify
 class SpotifyRequestUserAuth(APIView):
@@ -111,6 +108,7 @@ class ConfirmAuth(APIView):
                 # store in DB
                 user_name = user_info['display_name']
                 user_pfp = user_info['images'][0]['url']
+                create_user(user_id, user_name)
                 #display this name on the page 
                 print(user_name)
             # PLEASE CAN SOMEONE HELP ME SAVE THIS USER INFO INSIDE OF THE DATABASE
@@ -161,7 +159,3 @@ class CurrentSong(APIView):
 
         print(song)
         return Response(song, status = status.HTTP_200_OK)
-
-
-
-

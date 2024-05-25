@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from requests import post, get
 from .credentials import CLIENT_ID, CLIENT_SECRET
 
-BASE_URL = 'https://api.spotify.com/v1/'
+BASE_URL = 'https://api.spotify.com/v1/me/'
 
 # 1. Check tokens
 def check_tokens(session_id):
@@ -42,13 +42,13 @@ def check_authentication(session_id):
     tokens = check_tokens(session_id)
     if tokens:
         if tokens.expires_in <= timezone.now():
-            pass
+            refresh_token(session_id)
         return True
     return False
 
 #4. Refresh Token 
 def refresh_token(session_id):
-    refresh_token = check_tokens(session_id)
+    refresh_token = check_tokens(session_id).refresh_token
     response = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token',
         'refresh_token': refresh_token,
@@ -60,14 +60,23 @@ def refresh_token(session_id):
     expires_in = response.get('expires_in')
     token_type = response.get('token_type')
     
-    create_tokens(session_id, access_token, refresh_token, expires_in, token_type)
+    create_tokens(session_id=session_id, 
+                  access_token=access_token,
+                  refresh_token=refresh_token, 
+                  expires_in=expires_in, 
+                  token_type=token_type)
 
 def spotify_request_send(session_id, endpoint):
     tokens = check_tokens(session_id)
-    headers = {
-        'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tokens.access_token}
+    headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + tokens.access_token}
     response = get(BASE_URL + endpoint, {}, headers=headers)
+
     if response:
-        return response.json()
+        print(response)
     else:
+        print('No Response! Error with request.')
+        
+    try:
+        return response.json()
+    except:
         return {'Error': 'Issue with request'}
