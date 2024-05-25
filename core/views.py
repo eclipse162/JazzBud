@@ -84,9 +84,8 @@ class ConfirmAuth(APIView):
         headers = {
             'Authorization': f'Bearer {access_token}',
         }
-
         response = requests.get('https://api.spotify.com/v1/me', headers=headers)
-
+        print(f'Spotify API response status: {response.status_code}, body: {response.json()}')
         if response.status_code == 200:
             return response.json()
         else:
@@ -97,24 +96,23 @@ class ConfirmAuth(APIView):
         if not self.request.session.exists(key):
             self.request.session.create()
             key = self.request.session.session_key
+        print(f'Session key: {key}')
+
         auth_status, access_token = check_authentication(key)
+        print(f'Auth status: {auth_status}, Access token: {access_token}')
 
         if auth_status:
-            # Wil be redirected to the current song details
             user_info = self.get_user(access_token)
-            if user_info["type"] == "user":
+            if user_info and user_info["type"] == "user":
                 user_id = user_info['id']
-                # store in DB
                 user_name = user_info['display_name']
                 user_pfp = user_info['images'][0]['url']
-                #display this name on the page 
-                print(user_name)
-            # PLEASE CAN SOMEONE HELP ME SAVE THIS USER INFO INSIDE OF THE DATABASE
-
+                print(f'User ID: {user_id}, User Name: {user_name}')
+            else:
+                print('User info retrieval failed or incorrect user type.')
             redirect_url = f"http://127.0.0.1:8000/jazzbud/current-song?key={key}"
             return HttpResponseRedirect(redirect_url)
         else:
-            # Will redirect to spotify login page
             redirect_url = f"http://127.0.0.1:8000/jazzbud/auth_url"
             return HttpResponseRedirect(redirect_url)
         
