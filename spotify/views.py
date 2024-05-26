@@ -7,8 +7,7 @@ from requests import Request, post
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from db.crud import create_tokens, get_token
-
+from db.crud import create_token, get_token
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
