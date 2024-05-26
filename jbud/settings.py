@@ -23,8 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECURITY WARNING: keep the secret key used in production secret!
+#SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "django-insecure-fqaly@xz+@s@-gkiv-qh4j8!nhw2s^207bl&pek__$+eg1j*pc"
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 #NOTE: If you are running on local file system, ensure your local IP is in ALLOWED_HOSTS
@@ -40,8 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core.apps.CoreConfig',
-    'rest_framework'
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'jbud.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'reactapp/build')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,20 +82,16 @@ WSGI_APPLICATION = 'jbud.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # load .env file with DB URL
+#load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
+#DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.environ.get('DB_CLONE')
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jazzbudb',
-        'USER': 'jazzbuddy',
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -132,7 +130,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR/'assets'
-
 
 if not DEBUG:
     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)

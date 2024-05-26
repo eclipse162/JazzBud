@@ -15,8 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.http import HttpResponse
+
+from core.views import index, about
 
 def home(request):
     return HttpResponse('Home page')
@@ -25,9 +27,8 @@ def about(request):
     return HttpResponse('About page')
 
 urlpatterns = [
-    path('', home),
-    path('', include('core.urls')),
+    path('', index, name='index'),
     path('about/', about, name='about'),
     path('admin/', admin.site.urls),
-    path('spotify/', include('spotify.urls'))
+    path('', home)
 ]
