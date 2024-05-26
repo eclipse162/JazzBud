@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-import datetime
+from django.utils import timezone
 
 Base = declarative_base()
 
@@ -10,7 +10,7 @@ class Token(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=timezone.now())
     access_token = Column(String(500))
     refresh_token = Column(String(500))
     expires_in = Column(DateTime)
