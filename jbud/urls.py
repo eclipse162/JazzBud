@@ -25,9 +25,9 @@ def about(request):
     return HttpResponse('About page')
 
 urlpatterns = [
+    path('', home),
     path('', include('core.urls')),
     path('about/', about, name='about'),
     path('admin/', admin.site.urls),
-    path('', home),
-    path('jazzbud/', include('core.urls'))
+    path('spotify/', include('spotify.urls'))
 ]

@@ -1,9 +1,11 @@
+from datetime import timedelta
+from django.utils import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, User, Song, Segment
+from models import Base, User, Song, Segment, Token
 
 # Create SQLAlchemy engine
-DATABASE_URL = "postgres://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
+DATABASE_URL = "postgresql://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
 
@@ -29,6 +31,23 @@ def create_segment(song_id, user_id, segment_name, start_time, end_time, segment
     session.commit()
     return new_segment
 
+def create_token(user_id, access_token, refresh_token, expires_in, token_type):
+    token = get_token(user_id)
+    expires_in = timezone.now() + timedelta(seconds=expires_in)
+
+    if token:
+        tkn = session.query(Token).filter(Token.user_id == user_id).one()
+        tkn.access_token = access_token
+        tkn.refresh_token = refresh_token
+        tkn.expires_in = expires_in
+        tkn.token_type = token_type
+    else:
+        tkn = Token(user_id=user_id, access_token=access_token, refresh_token=refresh_token, expires_in=expires_in, token_type=token_type)
+        session.add(tkn)
+
+    session.commit()
+    return token
+
 # Read operations
 def get_user(user_id):
     return session.query(User).filter(User.user_id == user_id).first()
@@ -38,6 +57,14 @@ def get_song(song_id):
 
 def get_segment(segment_id):
     return session.query(Segment).filter(Segment.segment_id == segment_id).first()
+
+def get_token(session_id):
+    user = session.query(User).filter(User.user_id == session_id).first()
+
+    if user and user.token:
+        return user.token
+    else:
+        return None
 
 # Update operations
 def update_user(user_id, spotify_user_id=None, username=None):
