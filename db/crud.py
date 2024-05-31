@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+=======
+from datetime import timedelta
+from django.utils import timezone
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from .models import Base, User, Song, Segment, Token
+>>>>>>> 7ec99a924d38d7f0751dafb726fd549450065a8d
 
 # Create SQLAlchemy engine
 DATABASE_URL = "postgres://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
