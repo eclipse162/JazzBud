@@ -1,13 +1,14 @@
 import os
 
 from datetime import timedelta
+from db.models import User, Token
 from rest_framework import status
 from django.utils import timezone
 from requests import Request, post
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from db.crud import create_token, get_token
+from db.crud import create_token, get_token, get_spotify_user, update_user, create_user
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -18,7 +19,7 @@ TOKEN_URL = 'https://accounts.spotify.com/api/token'
 API_BASE_URL = 'https://api.spotify.com/v1/'
 
 class AuthURL(APIView):
-    def login(self, request, format=None):
+    def get(self, request, format=None):
         scopes = "streaming \
                 user-top-read \
                 user-read-private \
@@ -61,26 +62,35 @@ def auth_callback(request, format=None):
     if not request.session.exists(request.session.session_key):
         request.session.create()
 
-    create_tokens(request.session.session_key, 
-                  access_token, 
-                  refresh_token, 
-                  expires_in, 
-                  token_type)
+    user = create_user(request.session.session_key, request.session.session_key)
+    user_id = user.user_id
+    print("user id: ")
+    print(user_id)
+    create_token(user_id,
+                access_token, 
+                refresh_token, 
+                expires_in, 
+                token_type)
     
-    return redirect('core:')
+    return redirect('core:index')
 
 def is_authenticated(session_id):
-    token = get_token(session_id)
+    user = get_spotify_user(session_id)
 
-    if token: 
+    if user: 
+        token = get_token(user.user_id)
         expiry_time = token.expires_in
         if expiry_time <= timezone.now():
-            refresh_token(session_id)
+            refresh = refresh_token(session_id)
+            spotify_user_id = token.spotify_user_id
+            user_with_id = get_spotify_user(spotify_user_id)
+            update_user(user_with_id, is_authenticated=True, token=refresh)
         return True
     return False
 
 def refresh_token(session_id):
-    refresh_token = get_token(session_id).refresh_token
+    user = get_spotify_user(session_id)
+    refresh_token = get_token(user.user_id).refresh_token
 
     request_data = {
         'grant_type': 'refresh_token',
@@ -94,8 +104,8 @@ def refresh_token(session_id):
     access_token = response.get('access_token')
     refresh_token = response.get('refresh_token')
 
-    create_tokens(session_id, access_token, refresh_token, expires_in, token_type)
-    return access_token
+    refresh = create_token(user.user_id, access_token, refresh_token, expires_in, token_type)
+    return refresh
 
 class IsAuthenticated(APIView):
     def get(self, request, format=None):

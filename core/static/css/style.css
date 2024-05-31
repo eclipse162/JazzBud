@@ -1,0 +1,129 @@
+#main_splash {
+    height: auto;
+    width: auto;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    border: solid;
+    border-width: 10px;
+    border-color: black;
+    background-color: black;
+}
+
+@font-face {
+    font-family: Clutchee;
+    src: url('../fonts/clutchee.otf');
+}
+
+.bg_img {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/bg_main.png");
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    overflow: auto;
+}
+
+.header {
+    background-color: black;
+    height: 20%;
+    width: 100%;
+}
+
+#jazzbud_title {
+    font-family: "Clutchee", "Arial", sans-serif;
+    font-size: 120px;
+    /*font-weight: 600;*/
+    color:  #6ca4a7;
+    padding-left: 60px;
+    padding-bottom: 5px;
+}
+
+#jazzbud_desc {
+    padding-top: 30px;
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 30px;
+}
+
+#jazzbud_desc2 {
+    padding-top: 200px;
+    padding-bottom: 20px;
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 25px;
+}
+
+#jazzbud_tagline {
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 60px;
+}
+
+.taglines {
+    display: block;
+    padding-left: 150px;
+    padding-top: 30px;
+    width: 100%;
+    top: 0;
+}
+
+.splash_buttons {
+    width: 100%;
+    padding-left: 200px;
+    bottom: 0;
+}
+
+
+/* --------- BUTTONS --------- */
+.btn:link, 
+.btn:visited,
+input[type=submit]{
+    display: inline-block;
+    padding: 10px 30px;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 200px;
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+}
+
+.btn-full:link,
+.btn-full:visited,
+input[type=submit] {
+    border: 1px solid #689d6a;
+    background-color: #689d6a;
+    color: #fff;
+    margin-right: 15px;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    border: 1px solid #689d6a;
+    color: #689d6a;
+}
+
+.btn:hover,
+.btn:active,
+input[type=submit]:hover,
+input[type=submit]:active {
+    background-color: #427b58;
+}
+
+.btn-full:hover,
+.btn-full:active {
+    border: 1px solid #427b58;
+}
+
+.btn-ghost:hover,
+.btn-ghost:active {
+    border: 1px solid #427b58;
+    color: #fff;
+}
