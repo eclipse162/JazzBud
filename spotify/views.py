@@ -72,7 +72,7 @@ def auth_callback(request, format=None):
                 expires_in, 
                 token_type)
     
-    return redirect('core:index')
+    return redirect('core:home')
 
 def is_authenticated(session_id):
     user = get_spotify_user(session_id)
