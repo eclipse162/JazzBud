@@ -1,4 +1,5 @@
 import os
+import requests
 
 from datetime import timedelta
 from db.models import User, Token
@@ -60,7 +61,7 @@ def auth_callback(request, format=None):
     expires_in = response.get('expires_in')
     token_type = response.get('token_type')
 
-    user_info = request.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
+    user_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
     spotify_user_id = user_info.get('id')
     spotify_display = user_info.get('display_name')
     session_id = request.session.session_key
@@ -85,7 +86,7 @@ def is_authenticated(session_id):
     if user: 
         token = get_token(user.user_id)
         expiry_time = token.expires_in
-        
+
         if expiry_time.tzinfo is None:
             expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
 
