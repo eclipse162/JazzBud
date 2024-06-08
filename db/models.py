@@ -9,12 +9,14 @@ class User(Base):
     __tablename__ = 'users'
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
-    spotify_user_id = Column(String(255), unique=True)
     username = Column(String(50), unique=True, nullable=False)
-    session_id = Column(String(255))
+    spotify_user_id = Column(String(255), unique=True)
+    is_authenticated = Column(Boolean, default=False)
     display_name = Column(String(50))
-    segments = relationship("Segment", back_populates="user")
+    session_id = Column(String(255))
+
     token = relationship("Token", uselist=False, back_populates="user")
+    segments = relationship("Segment", back_populates="user")
 
 class Token(Base):
     __tablename__ = 'tokens'
