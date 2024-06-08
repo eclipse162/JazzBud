@@ -85,6 +85,10 @@ def is_authenticated(session_id):
     if user: 
         token = get_token(user.user_id)
         expiry_time = token.expires_in
+        
+        if expiry_time.tzinfo is None:
+            expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
+
         if expiry_time <= timezone.now():
             refresh = refresh_token(session_id)
             update_user(user.user_id, token=refresh)
