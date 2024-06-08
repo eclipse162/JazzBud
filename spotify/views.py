@@ -8,7 +8,7 @@ from requests import Request, post
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from db.crud import create_token, get_token, get_spotify_user, update_user, create_user
+from db.crud import create_token, get_token, get_session_user, update_user, create_user
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -63,36 +63,36 @@ def auth_callback(request, format=None):
     user_info = request.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
     spotify_user_id = user_info.get('id')
     spotify_display = user_info.get('display_name')
+    session_id = request.session.session_key
 
-    if not request.session.exists(request.session.session_key):
+    if not request.session.exists(session_id):
         request.session.create()
 
-    user = create_user(spotify_user_id, spotify_user_id, spotify_display)
+    user = create_user(spotify_user_id=spotify_user_id, username=spotify_user_id, display_name=spotify_display, session_id=session_id, is_authenticated=True)
     
-    create_token(user.user_id,
+    new_token = create_token(user.user_id,
                 access_token, 
                 refresh_token, 
                 expires_in, 
                 token_type)
     
+    update_user(user.user_id, token=new_token)
     return redirect('core:home')
 
 def is_authenticated(session_id):
-    user = get_spotify_user(session_id)
+    user = get_session_user(session_id)
 
     if user: 
         token = get_token(user.user_id)
         expiry_time = token.expires_in
         if expiry_time <= timezone.now():
             refresh = refresh_token(session_id)
-            spotify_user_id = token.spotify_user_id
-            user_with_id = get_spotify_user(spotify_user_id)
-            update_user(user_with_id, is_authenticated=True, token=refresh)
+            update_user(user.user_id, token=refresh)
         return True
     return False
 
 def refresh_token(session_id):
-    user = get_spotify_user(session_id)
+    user = get_session_user(session_id)
     refresh_token = get_token(user.user_id).refresh_token
 
     request_data = {

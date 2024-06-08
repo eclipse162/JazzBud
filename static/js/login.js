@@ -13,6 +13,8 @@ function authenticateSpotify(event) {
           .catch((error) => {
             console.error("Error:", error);
           });
+      } else {
+        window.location.href = "/home";
       }
     })
     .catch((error) => {

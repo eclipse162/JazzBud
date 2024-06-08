@@ -15,8 +15,8 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Create operations
-def create_user(spotify_user_id, username, display_name=None):
-    new_user = User(spotify_user_id=spotify_user_id, username=username, display_name=display_name)
+def create_user(spotify_user_id, username, display_name=None, is_authenticated=False, token=None):
+    new_user = User(spotify_user_id=spotify_user_id, username=username, display_name=display_name, is_authenticated=is_authenticated, token=token)
     session.add(new_user)
     session.commit()
     return new_user
@@ -55,8 +55,8 @@ def create_token(user_id, access_token, refresh_token, expires_in, token_type):
 def get_user(user_id):
     return session.query(User).filter(User.user_id == user_id).first()
 
-def get_spotify_user(spotify_user_id):
-    return session.query(User).filter(User.spotify_user_id == spotify_user_id).first()
+def get_session_user(session_id):
+    return session.query(User).filter(User.session_id == session_id).first()
 
 def get_song(song_id):
     return session.query(Song).filter(Song.song_id == song_id).first()
