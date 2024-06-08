@@ -15,8 +15,8 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Create operations
-def create_user(spotify_user_id, username):
-    new_user = User(spotify_user_id=spotify_user_id, username=username)
+def create_user(spotify_user_id, username, display_name=None):
+    new_user = User(spotify_user_id=spotify_user_id, username=username, display_name=display_name)
     session.add(new_user)
     session.commit()
     return new_user
@@ -73,7 +73,7 @@ def get_token(session_id):
         return None
 
 # Update operations
-def update_user(user_id, spotify_user_id=None, username=None, is_authenticated=None, token=None):
+def update_user(user_id, spotify_user_id=None, username=None, display_name=None, is_authenticated=None, token=None):
     user = get_user(user_id)
     if user:
         if spotify_user_id:
@@ -82,6 +82,8 @@ def update_user(user_id, spotify_user_id=None, username=None, is_authenticated=N
             user.username = username
         if is_authenticated:
             user.is_authenticated = is_authenticated
+        if display_name:
+            user.display_name = display_name
         if token:
             user.token = token
         session.commit()

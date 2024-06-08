@@ -1,29 +1,9 @@
-function authenticateSpotify(event) {
-  event.preventDefault(); // Prevent the default action of the link
+let userID = "user-id";
 
-  fetch("/spotify/is-authenticated")
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.status) {
-        fetch("/spotify/auth")
-          .then((response) => response.json())
-          .then((data) => {
-            window.location.href = data.url;
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+async function getUserInfo(userID) {
+  let response = await fetch("/api/user/info");
+  let data = await response.json();
+  return data;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const loginButton = document.getElementById("spotify-login-button");
-  if (loginButton) {
-    loginButton.addEventListener("click", authenticateSpotify);
-  } else {
-  }
-});
+let usernameLink = document.getElementById("username-link");

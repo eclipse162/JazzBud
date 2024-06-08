@@ -14,9 +14,10 @@ CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
+API_BASE_URL = 'https://api.spotify.com/v1/'
+SPOTIFY_ME_URL = 'https://api.spotify.com/v1/me'
 AUTH_URL = 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
-API_BASE_URL = 'https://api.spotify.com/v1/'
 
 class AuthURL(APIView):
     def get(self, request, format=None):
@@ -59,14 +60,16 @@ def auth_callback(request, format=None):
     expires_in = response.get('expires_in')
     token_type = response.get('token_type')
 
+    user_info = request.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
+    spotify_user_id = user_info.get('id')
+    spotify_display = user_info.get('display_name')
+
     if not request.session.exists(request.session.session_key):
         request.session.create()
 
-    user = create_user(request.session.session_key, request.session.session_key)
-    user_id = user.user_id
-    print("user id: ")
-    print(user_id)
-    create_token(user_id,
+    user = create_user(spotify_user_id, spotify_user_id, spotify_display)
+    
+    create_token(user.user_id,
                 access_token, 
                 refresh_token, 
                 expires_in, 

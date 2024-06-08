@@ -11,6 +11,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     spotify_user_id = Column(String(255), unique=True)
     username = Column(String(50), unique=True, nullable=False)
+    display_name = Column(String(50))
     segments = relationship("Segment", back_populates="user")
     token = relationship("Token", uselist=False, back_populates="user")
 
