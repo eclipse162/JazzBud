@@ -58,6 +58,9 @@ def get_user(user_id):
 def get_session_user(session_id):
     return session.query(User).filter(User.session_id == session_id).first()
 
+def get_spotify_user(spotify_user_id):
+    return session.query(User).filter(User.spotify_user_id == spotify_user_id).first()
+
 def get_song(song_id):
     return session.query(Song).filter(Song.song_id == song_id).first()
 
