@@ -118,9 +118,9 @@ class IsAuthenticated(APIView):
     def get(self, request, format=None):
         session_id = self.request.session.session_key
         user = get_session_user(session_id)
-        is_auth = user.is_authenticated 
+        is_auth = False
 
-        if is_auth:
+        if user:
             is_auth = refresh_user(session_id)
-            
+
         return Response({'status': is_auth}, status=status.HTTP_200_OK)
