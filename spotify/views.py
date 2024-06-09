@@ -140,7 +140,7 @@ class IsAuthenticated(APIView):
 
         return Response({'status': is_auth}, status=status.HTTP_200_OK)
 
-class SpotifyAPI:
+class SpotifyAPI(APIView):
     def populate_user_info(self, request):
         session_id = request.session.session_key
         user = get_session_user(session_id)
