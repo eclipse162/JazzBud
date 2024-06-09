@@ -6,6 +6,7 @@ from db.models import User, Token
 from rest_framework import status
 from django.utils import timezone
 from requests import Request, post
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -138,3 +139,24 @@ class IsAuthenticated(APIView):
             is_auth = refresh_user(session_id)
 
         return Response({'status': is_auth}, status=status.HTTP_200_OK)
+
+class SpotifyAPI:
+    def populate_user_info(self, request):
+        session_id = request.session.session_key
+        user = get_session_user(session_id)
+        token = get_token(user)
+        access_token = token.access_token
+
+        spotify_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
+
+        user_info = {
+            'user_id': spotify_info.get('id'),
+            'display name': spotify_info.get('display_name'),
+            'profile_url': spotify_info.get('images')[0].get('url')
+        }
+        
+        return user_info
+    
+    def get(self, request):
+        user_info = SpotifyAPI.populate_user_info(request)
+        return JsonResponse(user_info)
