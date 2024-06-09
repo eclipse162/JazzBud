@@ -14,7 +14,7 @@ function authenticateSpotify(event) {
             console.error("Error:", error);
           });
       } else {
-        window.location.href = "/home";
+        window.location.href = "/core/home";
       }
     })
     .catch((error) => {
