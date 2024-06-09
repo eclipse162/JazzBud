@@ -80,7 +80,7 @@ def auth_callback(request, format=None):
     update_user(user.user_id, token=new_token)
     return redirect('core:home')
 
-def is_authenticated(session_id):
+def refresh_user(session_id):
     user = get_session_user(session_id)
 
     if user: 
@@ -94,7 +94,6 @@ def is_authenticated(session_id):
             refresh = refresh_token(session_id)
             update_user(user.user_id, token=refresh)
         return True
-    return False
 
 def refresh_token(session_id):
     user = get_session_user(session_id)
@@ -118,5 +117,10 @@ def refresh_token(session_id):
 class IsAuthenticated(APIView):
     def get(self, request, format=None):
         session_id = self.request.session.session_key
-        is_auth = is_authenticated(session_id)
+        user = get_session_user(session_id)
+        is_auth = user.is_authenticated 
+
+        if is_auth:
+            is_auth = refresh_user(session_id)
+            
         return Response({'status': is_auth}, status=status.HTTP_200_OK)
