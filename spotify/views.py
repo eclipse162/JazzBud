@@ -146,7 +146,7 @@ class SpotifyAPI(APIView):
         user = get_session_user(session_id)
         token = get_token(user)
         access_token = token.access_token
-
+        
         spotify_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
 
         user_info = {
