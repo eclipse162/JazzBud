@@ -146,17 +146,17 @@ class SpotifyAPI(APIView):
         user = get_session_user(session_id)
         token = get_token(user)
         access_token = token.access_token
-        
+
         spotify_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
 
         user_info = {
             'user_id': spotify_info.get('id'),
-            'display name': spotify_info.get('display_name'),
+            'display_name': spotify_info.get('display_name'),
             'profile_url': spotify_info.get('images')[0].get('url')
         }
         
         return user_info
     
     def get(self, request):
-        user_info = SpotifyAPI.populate_user_info(request)
+        user_info = self.populate_user_info(request)
         return JsonResponse(user_info)
