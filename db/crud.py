@@ -67,8 +67,8 @@ def get_song(song_id):
 def get_segment(segment_id):
     return session.query(Segment).filter(Segment.segment_id == segment_id).first()
 
-def get_token(session_id):
-    user = session.query(User).filter(User.user_id == session_id).first()
+def get_token(user_id):
+    user = session.query(User).filter(User.user_id == user_id).first()
 
     if user and user.token:
         return user.token
