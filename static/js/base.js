@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("/spotify/user-info")
+  fetch("/spotify/user_info")
     .then((response) => response.json())
     .then((data) => {
       const usernameLink = document.getElementById("username-link");
