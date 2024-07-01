@@ -35,6 +35,92 @@ body {
     width: 100%;
 }
 
+/* Homepage header + other settings */
+
+.home_page {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    overflow: auto;
+}
+
+.homepage_header {
+    background-color: #282828;
+    height: 15%;
+    width: 100%;
+    display: block;
+}
+
+.inner_header {
+    height: 100%;
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    /*background-color: green;*/
+}
+
+.logo_container {
+    height: 100%;
+    display: table;
+    float: left;
+}
+
+.logo_container h1 {
+    color:  #6ca4a7;
+    font-family: "Clutchee", "Arial", sans-serif;
+    font-size: 80px;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.navigation {
+    float: right;
+    height: 100%;
+}
+
+.navigation a {
+    height: 100%;
+    display: table;
+    float: left;
+    padding: 0px 20px; 
+}
+
+.navigation a:last-child {
+    padding-right: 0;
+}
+
+.navigation a li {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 20px;
+}
+
+.home_page_body {
+    background-color: white;
+    height: 15%;
+    width: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    overflow: auto;
+    padding: 5px;
+    margin: 15px 0px;
+}
+
+.home_page_body h1 {
+    color: black;
+}
+
+/* Homepage settings END */
+
 #jazzbud_title {
     font-family: "Clutchee", "Arial", sans-serif;
     font-size: 120px;
