@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((data) => {
       const usernameLink = document.getElementById("username-link");
       if (data && data.display_name) {
-        //usernameLink.textContent = data.display_name;
+        usernameLink.textContent = '';
         const username = document.createElement("li");
         username.innerHTML = data.display_name;
         usernameLink.appendChild(username);
