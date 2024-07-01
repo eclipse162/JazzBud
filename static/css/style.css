@@ -103,6 +103,26 @@ body {
     font-size: 20px;
 }
 
+/* -------------- Copy for Username Styling ------------- */
+
+.username a {
+    height: 100%;
+    display: table;
+    float: left;
+    padding: 0px 20px; 
+}
+
+
+.username a li {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 20px;
+}
+
 .home_page_body {
     background-color: white;
     height: 15%;
