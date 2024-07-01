@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((data) => {
       const usernameLink = document.getElementById("username-link");
       if (data && data.display_name) {
-        usernameLink.textContent = data.display_name;
-        usernameLink.classList.add("username");
+        //usernameLink.textContent = data.display_name;
+        const username = document.createElement("li");
+        username.innerHTML = data.display_name;
+        usernameLink.appendChild(username);
+        //usernameLink.classList.add("username");
       }
     })
     .catch((error) => console.error("Error fetching user info:", error));
