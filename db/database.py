@@ -21,3 +21,12 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Define the models for the database
+from .models import Base, User, Song, Segment, Token
+
+# Initialize database tables
+Base.metadata.create_all(bind=engine)
+User.__table__.create(bind=engine, checkfirst=True)
+Song.__table__.create(bind=engine, checkfirst=True)
+Segment.__table__.create(bind=engine, checkfirst=True)
