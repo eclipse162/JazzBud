@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <title>{% block title %}{% endblock %} | JazzBud</title>
   </head>
@@ -25,9 +24,14 @@
         <div class="logo_container">
           <h1>JazzBud</h1>
         </div>
-        <div class="searchbar">
-          <button></button>
+        <div class="logo_container searchBox">
+          <input class="searchInput"type="text" name="" placeholder="Search">
+          
+          <button class="searchButton" href="#">
+              <img src="{% static '/img/search.png' %}">
+          </button>
         </div>
+      </div>
         <ul class="navigation">
           <a href="#"><li>Home</li></a>
           <a href="#"><li>About</li></a>
