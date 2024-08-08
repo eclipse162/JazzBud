@@ -1,4 +1,4 @@
-# JazzBud
+# JazzBud 
 
 **Jazzbud** is a web application for sharing jazz music solos and jazz artist ratings.
 
@@ -7,15 +7,14 @@ This app allows users to **partition jazz songs from Spotify** based off musical
 In the future, this app will allow users to share their own partitioning of jazz tracks and see other users' list of artist solos, with their respective lengths and ratings.
 
 ---
-
-## Framework Used
-
+Framework Used
+------
 The application will use **React.js** and **Node.js** primarily. Other frameworks/stacks can be used after discussion with the team if it will benefit the application in the long run or if everyone else in the team feels comfortable with that stack.
 
-## Rough Roadmap
+Rough Roadmap
+------
 
 ##### Phase 1
-
 The goal with this phase is to create a client-side application that supports the following:
 
 - Users can input Spotify track
@@ -26,13 +25,13 @@ The goal with this phase is to create a client-side application that supports th
 - User can save and load track partitions
 
 ##### Phase 2
-
 - Users can upload their track partitions to a server-side database
 - Users can access other user’s track partitions and play them
 - Users can make accounts and see which partitions they’ve saved, favorited
 
-##### Phase 3
 
+##### Phase 3
 - Artist pages track which tracks they solo in
 - Solos are listed by length
 - Users can rate and favorite solos
+
