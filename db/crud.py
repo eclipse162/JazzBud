@@ -21,8 +21,8 @@ def create_user(spotify_user_id, username, display_name=None,session_id = None, 
     session.commit()
     return new_user
 
-def create_song(spotify_song_id, title, artist, album, genre, release_year):
-    new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, album=album, genre=genre, release_year=release_year)
+def create_song(spotify_song_id, title, artist, album, genre, release_year, track_length):
+    new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, album=album, genre=genre, release_year=release_year, track_length=track_length)
     session.add(new_song)
     session.commit()
     return new_song
@@ -107,6 +107,8 @@ def update_song(song_id, spotify_song_id=None, title=None, artist=None, album=No
             song.genre = genre
         if release_year:
             song.release_year = release_year
+        if track_length:
+            song.track_length = track_length
         session.commit()
     return song
 
