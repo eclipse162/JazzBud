@@ -7,6 +7,7 @@ from rest_framework.permissions import  AllowAny
 from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
+from db import Song
 import requests
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -18,6 +19,21 @@ def index(request):
     
 def about(request):
     return render(request, 'core/about.html')
+
+def search_results(request):
+    if request.method == "POST":
+        query = request.POST['query']
+
+        song_results = Song.objects.filter(spotify_song_id__contains=query)
+
+        if song_results:
+            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
+        else:
+            return render(request, 'core/search_results.html', {'query': query})
+    
+    else:
+        return render(request, 'core/search_results.html', {})
+    
 
 # Prepare a URL for the user to authenticate with Spotify
 class SpotifyRequestUserAuth(APIView):

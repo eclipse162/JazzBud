@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+<div class="home_page_body" id="search_results_section">
+  {% if query %}
+    <div>
+      <h1>Searched for... {{ query }}</h1>
+      {% if song_results %}
+        <h3>Songs results go here</h3>
+      {% else %}
+      <h3>Adding song to database...</h3>
+      {% endif %}
+    </div>
+
+  {% else %}
+    <div>
+      <h1>No song searched. Try searching for a song again.</h1>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}
