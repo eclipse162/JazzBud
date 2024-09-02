@@ -24,11 +24,16 @@
         <div class="logo_container">
           <h1>JazzBud</h1>
           <div class="logo_container searchBox">
-            <input class="searchInput"type="text" name="" placeholder="Search">
+            <form method=POST action="{% url 'search-results'%}">
+            <!--<form method=POST action="./home.html">-->
+              {% csrf_token %}
+              <input class="searchInput" type="text" name="query" placeholder="Search">
             
-            <button class="searchButton" href="#">
-                <img src="{% static '/img/search.png' %}">
-            </button>
+              <button class="searchButton" href="#">
+                  <img src="{% static '/img/search.png' %}">
+              </button>
+            </form>
+
           </div>
         </div>
         <ul class="navigation">

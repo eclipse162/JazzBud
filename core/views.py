@@ -21,6 +21,9 @@ def home(request):
 def about(request):
     return render(request, 'core/about.html')
 
+def login(request):
+    return render(request, 'core/login.html')
+
 def search_results(request):
     if request.method == "POST":
         query = request.POST['query']
