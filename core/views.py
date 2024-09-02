@@ -7,7 +7,7 @@ from rest_framework.permissions import  AllowAny
 from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
-from ..db.models import Song
+from db.models import Song
 import requests
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
