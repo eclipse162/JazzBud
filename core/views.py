@@ -30,10 +30,11 @@ def search_results(request):
         query = request.POST['query']
 
 
-        song_results = get_song(query)
-        
-        if song_results:
-            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
+        song_results = get_song(query.split("=")[1])
+
+        if song_results != "":
+            #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
+            return render(request, 'core/search_results.html', {'query': query})
         else:
             return render(request, 'core/search_results.html', {'query': query})
     
