@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
 from db.models import Song
+from db.crud import get_song
 import requests
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -16,7 +17,7 @@ REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
 
 def home(request):
-    return render(request, 'core/base.html')
+    return render(request, 'core/index.html')
     
 def about(request):
     return render(request, 'core/about.html')
@@ -28,8 +29,9 @@ def search_results(request):
     if request.method == "POST":
         query = request.POST['query']
 
-        song_results = Song.objects.filter(spotify_song_id__contains=query)
 
+        song_results = get_song(query)
+        
         if song_results:
             return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
         else:
