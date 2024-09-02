@@ -7,12 +7,13 @@ from rest_framework.permissions import  AllowAny
 from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
-from db import Song
+from ..db.models import Song
 import requests
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
+
 
 def index(request):
     return render(request, 'core/index.html')
