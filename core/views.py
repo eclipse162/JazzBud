@@ -15,8 +15,8 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
 
-def index(request):
-    return render(request, 'core/index.html')
+def home(request):
+    return render(request, 'core/base.html')
     
 def about(request):
     return render(request, 'core/about.html')
