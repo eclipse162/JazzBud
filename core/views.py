@@ -32,10 +32,15 @@ def search_results(request):
 
         song_results = get_song(query.split("=")[1])
 
-        if song_results != "":
+        if song_results:
             #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
+            # TO-DO: format song results from Song object to pass to search results page
+
+
             return render(request, 'core/search_results.html', {'query': query})
         else:
+            # TO-DO: add song to database first, then show search results 
+            
             return render(request, 'core/search_results.html', {'query': query})
     
     else:
