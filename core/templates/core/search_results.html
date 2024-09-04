@@ -7,11 +7,9 @@
     <div>
       <h1>Searched for... {{ query }}</h1>
       <h3>Song Details:</h3>
-      <p>Title: {{ title }}</p>
-      <p>Artist: {{ artist }}</p>
-      <p>Album: {{ album }}</p>
-      <p>Release Year: {{ release_year }}</p>
-      <p>Track Length: {{ track_length }}</p>
+      {% for key, value in song_results.items %}
+        <p>{{ key.capitalize() }}: {{ value }}</p>
+      {% endfor %}
     </div>
 
   {% else %}
