@@ -48,7 +48,7 @@ def search_results(request):
             'track_length': song_results.track_length / 1000  # Convert milliseconds to seconds
         }
 
-            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
+            return render(request, 'core/search_results.html', {'query': song_results, 'song_results': song_dict})
         else:
             # TO-DO: add song to database first, then show search results 
             try:
