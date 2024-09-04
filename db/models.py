@@ -41,6 +41,7 @@ class Song(Base):
     album = Column(String(100))
     genre = Column(String(50))
     release_year = Column(Integer)
+    track_length = Column(Integer)
     segments = relationship("Segment", back_populates="song")
 
 class Segment(Base):

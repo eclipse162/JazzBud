@@ -9,7 +9,7 @@ from requests import Request, post
 from .extras import *
 from db.models import Song
 from db.crud import get_song
-import requests
+import requests, search
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -29,19 +29,33 @@ def search_results(request):
     if request.method == "POST":
         query = request.POST['query']
 
+        song_id = search.extract_track_id(query)
 
-        song_results = get_song(query.split("=")[1])
+        #song_results = get_song(query.split("=")[1])
+        song_results = get_song(song_id)
 
         if song_results:
             #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
             # TO-DO: format song results from Song object to pass to search results page
+            song_dict = {
+            'spotify_song_id': song_results.id,
+            'title': song_results.title,
+            'artist': song_results.artist,
+            'album': song_results.album,
+            'genre': song_results.genre,  # Genre info is not always available
+            'release_year': song_results.release_year,
+            'track_length': song_results.track_length / 1000  # Convert milliseconds to seconds
+        }
 
-
-            return render(request, 'core/search_results.html', {'query': query})
+            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
         else:
             # TO-DO: add song to database first, then show search results 
+            try:
+                song_dict = search.create_song_from_url(query)
+                return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
             
-            return render(request, 'core/search_results.html', {'query': query})
+            except ValueError:
+                return render(request, 'core/search_results.html', {'query': None, 'song_results': None})
     
     else:
         return render(request, 'core/search_results.html', {})

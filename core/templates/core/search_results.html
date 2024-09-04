@@ -6,12 +6,17 @@
   {% if query %}
     <div>
       <h1>Searched for... {{ query }}</h1>
-      <h3>Songs results go here eventually</h3>
+      <h3>Song Details:</h3>
+      <p>Title: {{ song_dict["title"]}}</p>
+      <p>Artist: {{ song_dict["artist"]}}</p>
+      <p>Album: {{ song_dict["album"]}}</p>
+      <p>Release Year: {{ song_dict["release_year"]}}</p>
+      <p>Track Length: {{ song_dict["track_length"]}}</p>
     </div>
 
   {% else %}
     <div>
-      <h1>No song searched. Try searching for a song again.</h1>
+      <h1>No song found with that URL. Try searching for a song again.</h1>
     </div>
   {% endif %}
 </div>
