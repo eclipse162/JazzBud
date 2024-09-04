@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
 from .search import *
-from db.models import Song
 from db.crud import get_song
 import requests
 
@@ -31,7 +30,7 @@ def search_results(request):
     if request.method == "POST":
         query = request.POST['query']
 
-        song_id = search.extract_track_id(query)
+        song_id = extract_track_id(query)
 
         #song_results = get_song(query.split("=")[1])
         song_results = get_song(song_id)
@@ -53,7 +52,7 @@ def search_results(request):
         else:
             # TO-DO: add song to database first, then show search results 
             try:
-                song_dict = search.create_song_from_url(query)
+                song_dict = create_song_from_url(query)
                 return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
             
             except ValueError:
