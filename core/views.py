@@ -7,9 +7,11 @@ from rest_framework.permissions import  AllowAny
 from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
+from .search import *
 from db.models import Song
 from db.crud import get_song
-import requests, search
+import requests
+
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
