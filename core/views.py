@@ -52,7 +52,17 @@ def search_results(request):
         else:
             # TO-DO: add song to database first, then show search results 
             try:
-                song_dict = create_song_from_url(query)
+                song = create_song_from_url(query)
+                song_dict = {
+                'spotify_song_id': song.spotify_song_id,
+                'title': song.title,
+                'artist': song.artist,
+                'album': song.album,
+                'genre': song.genre,  # Genre info is not always available
+                'release_year': song.release_year,
+                'track_length': song.track_length / 1000  # Convert milliseconds to seconds
+                }
+
                 return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
             
             except ValueError:
