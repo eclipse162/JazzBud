@@ -191,7 +191,7 @@ body {
     margin: 15px 0px;
 }
 
-.home_page_body h1 {
+.home_page_body h1, h3, p {
     color: #fbf1c7;
 }
 
