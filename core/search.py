@@ -1,5 +1,6 @@
 import re, os
 import spotipy
+from db.crud import create_song
 from spotipy.oauth2 import SpotifyClientCredentials
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -29,6 +30,15 @@ def create_song_from_url(track_url):
     track_id = extract_track_id(track_url)
     if track_id:
         track_details = get_track_details(track_id)
-        return track_details
+
+        song = create_song(track_details['spotify_song_id'],
+                         track_details['title'],
+                         track_details['artist'],
+                         track_details['album'],
+                         track_details['genre'],
+                         track_details['release_year'],
+                         track_details['track_length'],)
+        
+        return song
     else:
         raise ValueError("Invalid Spotify track URL")
