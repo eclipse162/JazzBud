@@ -39,7 +39,7 @@ def search_results(request):
             #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
             # TO-DO: format song results from Song object to pass to search results page
             song_dict = {
-            'spotify_song_id': song_results.id,
+            'spotify_song_id': song_results.spotify_song_id,
             'title': song_results.title,
             'artist': song_results.artist,
             'album': song_results.album,
