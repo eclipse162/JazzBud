@@ -33,12 +33,12 @@ def search_results(request):
         song_id = extract_track_id(query)
 
         #song_results = get_song(query.split("=")[1])
-        song_results = get_song(song_id)
+        song_results = get_track_details(song_id)
 
         if song_results:
             #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
             # TO-DO: format song results from Song object to pass to search results page
-            song_dict = {
+            """song_dict = {
             'spotify_song_id': song_results.spotify_song_id,
             'title': song_results.title,
             'artist': song_results.artist,
@@ -46,9 +46,9 @@ def search_results(request):
             'genre': song_results.genre,  # Genre info is not always available
             'release_year': song_results.release_year,
             'track_length': song_results.track_length / 1000  # Convert milliseconds to seconds
-        }
+        }"""
 
-            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
+            return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
         else:
             # TO-DO: add song to database first, then show search results 
             try:
