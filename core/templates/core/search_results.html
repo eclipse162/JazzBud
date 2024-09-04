@@ -7,11 +7,11 @@
     <div>
       <h1>Searched for... {{ query }}</h1>
       <h3>Song Details:</h3>
-      <p>Title: {{ song_dict["title"]}}</p>
-      <p>Artist: {{ song_dict["artist"]}}</p>
-      <p>Album: {{ song_dict["album"]}}</p>
-      <p>Release Year: {{ song_dict["release_year"]}}</p>
-      <p>Track Length: {{ song_dict["track_length"]}}</p>
+      <p>Title: {{ song_results["title"] }}</p>
+      <p>Artist: {{ song_results["artist"] }}</p>
+      <p>Album: {{ song_results["album"] }}</p>
+      <p>Release Year: {{ song_results["release_year"] }}</p>
+      <p>Track Length: {{ song_results["track_length"] }}</p>
     </div>
 
   {% else %}
