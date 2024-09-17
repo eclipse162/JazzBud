@@ -27,8 +27,14 @@ def create_song(spotify_song_id, title, artist, album, genre, release_year, trac
     session.commit()
     return new_song
 
-def create_segment(song_id, user_id, segment_name, start_time, end_time, segment_description):
-    new_segment = Segment(song_id=song_id, user_id=user_id, segment_name=segment_name, start_time=start_time, end_time=end_time, segment_description=segment_description)
+def create_collection(song_id, collection_name, collection_description):
+    new_collection = Collection(song_id=song_id, collection_name=collection_name, collection_description=collection_description)
+    session.add(new_collection)
+    session.commit()
+    return new_collection
+
+def create_segment(collection_id, user_id, segment_name, start_time, end_time, segment_description):
+    new_segment = Segment(collection_id=collection_id, user_id=user_id, segment_name=segment_name, start_time=start_time, end_time=end_time, segment_description=segment_description)
     session.add(new_segment)
     session.commit()
     return new_segment
@@ -66,6 +72,12 @@ def get_song_by_song_id(song_id):
 
 def get_spotify_song(spotify_song_id):
     return session.query(Song).filter(Song.spotify_song_id == spotify_song_id).first()
+
+def get_collection(collection_id):
+    return session.query(Collection).filter(Collection.collection_id == collection_id).first()
+
+def get_song_collections(song_id):
+    return session.query(Collection).filter(Collection.song_id == song_id).all()
 
 def get_segment(segment_id):
     return session.query(Segment).filter(Segment.segment_id == segment_id).first()
@@ -115,11 +127,23 @@ def update_song(song_id, spotify_song_id=None, title=None, artist=None, album=No
         session.commit()
     return song
 
-def update_segment(segment_id, song_id=None, user_id=None, segment_name=None, start_time=None, end_time=None, segment_description=None):
+def update_collection(collection_id, song_id=None, collection_name=None, collection_description=None):
+    collection = get_collection(collection_id)
+    if collection:
+        if song_id:
+            collection.song_id = song_id
+        if collection_name:
+            collection.collection_name = collection_name
+        if collection_description:
+            collection.collection_description = collection_description
+        session.commit()
+    return collection
+
+def update_segment(segment_id, collection_id=None, user_id=None, segment_name=None, start_time=None, end_time=None, segment_description=None):
     segment = get_segment(segment_id)
     if segment:
-        if song_id:
-            segment.song_id = song_id
+        if collection_id:
+            segment.collection_id = collection_id
         if user_id:
             segment.user_id = user_id
         if segment_name:
@@ -154,6 +178,13 @@ def delete_segment(segment_id):
         session.delete(segment)
         session.commit()
     return segment
+
+def delete_collection(collection_id):
+    collection = get_collection(collection_id)
+    if collection:
+        session.delete(collection)
+        session.commit()
+    return collection
 
 if __name__ == "__main__":
     # Example usage
