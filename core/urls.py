@@ -7,5 +7,6 @@ app_name = 'core'
 urlpatterns = [
     path('', views.login, name='login'),
     path('home/', views.home, name='home'),
-    path('about/', views.about, name='about')
+    path('about/', views.about, name='about'),
+    path('search_results/', views.search_results, name='search-results')
 ]

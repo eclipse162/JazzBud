@@ -61,8 +61,11 @@ def get_session_user(session_id):
 def get_spotify_user(spotify_user_id):
     return session.query(User).filter(User.spotify_user_id == spotify_user_id).first()
 
-def get_song(song_id):
+def get_song_by_song_id(song_id):
     return session.query(Song).filter(Song.song_id == song_id).first()
+
+def get_spotify_song(spotify_song_id):
+    return session.query(Song).filter(Song.spotify_song_id == spotify_song_id).first()
 
 def get_segment(segment_id):
     return session.query(Segment).filter(Segment.segment_id == segment_id).first()
@@ -93,7 +96,7 @@ def update_user(user_id, spotify_user_id=None, username=None, display_name=None,
     return user
 
 def update_song(song_id, spotify_song_id=None, title=None, artist=None, album=None, genre=None, release_year=None):
-    song = get_song(song_id)
+    song = get_song_by_song_id(song_id)
     if song:
         if spotify_song_id:
             song.spotify_song_id = spotify_song_id
@@ -139,7 +142,7 @@ def delete_user(user_id):
     return user
 
 def delete_song(song_id):
-    song = get_song(song_id)
+    song = get_song_by_song_id(song_id)
     if song:
         session.delete(song)
         session.commit()
@@ -160,7 +163,7 @@ if __name__ == "__main__":
 
     # Read
     fetched_user = get_user(user.user_id)
-    fetched_song = get_song(song.song_id)
+    fetched_song = get_song_by_song_id(song.song_id)
     fetched_segment = get_segment(segment.segment_id)
 
     # Update
