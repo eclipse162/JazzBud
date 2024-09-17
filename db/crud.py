@@ -185,24 +185,3 @@ def delete_collection(collection_id):
         session.delete(collection)
         session.commit()
     return collection
-
-if __name__ == "__main__":
-    # Example usage
-    user = create_user("spotify123", "user1")
-    song = create_song("spotify_song123", "Song Title", "Artist Name", "Album Name", "Genre", 2024)
-    segment = create_segment(song.song_id, user.user_id, "Intro", 0, 30, "The introduction part of the song")
-
-    # Read
-    fetched_user = get_user(user.user_id)
-    fetched_song = get_song_by_song_id(song.song_id)
-    fetched_segment = get_segment(segment.segment_id)
-
-    # Update
-    updated_user = update_user(user.user_id, username="new_username")
-    updated_song = update_song(song.song_id, title="New Song Title")
-    updated_segment = update_segment(segment.segment_id, segment_description="Updated description")
-
-    # Delete
-    delete_segment(segment.segment_id)
-    delete_song(song.song_id)
-    delete_user(user.user_id)
