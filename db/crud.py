@@ -41,6 +41,8 @@ def create_segment(collection_id, user_id, segment_name, start_time, end_time, s
 
 def create_token(user_id, access_token, refresh_token, expires_in, token_type):
     token = get_token(user_id)
+    if user_id == None:
+        return None
     expires_in = timezone.now() + timedelta(seconds=expires_in)
     tkn = token
 

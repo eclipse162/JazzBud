@@ -4,6 +4,7 @@ from db.models import Token
 from django.utils import timezone
 from datetime import datetime, timedelta
 from requests import post, get
+from sqlalchemy.orm import session
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -20,9 +21,9 @@ session = Session()
 
 # 1. Check tokens
 def check_tokens(session_id):
-    tokens = session.query(Token).filter_by(user_id=session_id).first()
-    if tokens:
-        return tokens
+    token = session.query(Token).filter_by(user_id=session_id).first()
+    if token:
+        return token
     else:
         return None
 
@@ -89,12 +90,6 @@ def refresh_token(session_id):
     #               refresh_token=refresh_token, 
     #               expires_in=expires_in, 
     #               token_type=token_type)
-
-    tokens.access_token = access_token
-    tokens.expires_in = timezone.now() + timedelta(seconds=expires_in)
-    tokens.token_type = token_type
-    session.commit()
-    return tokens
 
 def spotify_request_send(session_id, endpoint, params={}):
     tokens = check_tokens(session_id)
