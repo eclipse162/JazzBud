@@ -6,8 +6,6 @@ from requests import post, get
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from .models import Base, Token
-
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
