@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<!-- <div class="home_page_body" id="search_results_section">
+  {% if query %}
+    <div>
+      <h1>Searched for... {{ query }}</h1>
+      <h3>Song Details:</h3>
+      {% for key, value in song_results.items %}
+        <p>{{ key.capitalize }}: {{ value }}</p>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div>
+      <h1>No song found with that URL. Try searching for a song again.</h1>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %} -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+
+    <h2>Tracks</h2>
+    <ul>
+        {% for track in tracks %}
+            <li>{{ track.name }} by {{ track.artists|join:", " }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Albums</h2>
+    <ul>
+        {% for album in albums %}
+            <li>{{ album.name }} by {{ album.artists|join:", " }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Artists</h2>
+    <ul>
+        {% for artist in artists %}
+            <li>{{ artist.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
