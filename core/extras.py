@@ -70,10 +70,10 @@ def refresh_token(session_id):
                   expires_in=expires_in, 
                   token_type=token_type)
 
-def spotify_request_send(session_id, endpoint):
+def spotify_request_send(session_id, endpoint, params={}):
     tokens = check_tokens(session_id)
     headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + tokens.access_token}
-    response = get(BASE_URL + endpoint, {}, headers=headers)
+    response = get(BASE_URL + endpoint, headers=headers, params=params)
 
     if response:
         print(response)

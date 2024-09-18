@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -26,50 +26,45 @@ def about(request):
 def login(request):
     return render(request, 'core/login.html')
 
-def search_results(request):
+def search(request):
     if request.method == "POST":
         query = request.POST['query']
+        session_id = request.session.session_key
 
-        song_id = extract_track_id(query)
-
-        #song_results = get_song(query.split("=")[1])
-        song_results = get_spotify_song(song_id)
-
-        if song_results:
-            #return render(request, 'core/search_results.html', {'query': query, 'song_results': song_results})
-            # TO-DO: format song results from Song object to pass to search results page
-            song_dict = {
-            'spotify_song_id': song_results.spotify_song_id,
-            'title': song_results.title,
-            'artist': song_results.artist,
-            'album': song_results.album,
-            'genre': song_results.genre,  # Genre info is not always available
-            'release_year': song_results.release_year,
-            'track_length': song_results.track_length / 1000  # Convert milliseconds to seconds
+        if session_id is None:
+            return redirect('core:login')
+        endpoint = "https://api.spotify.com/v1/search"
+        params = {
+            'q': query,
+            'type': 'track, artist, album',
+            'limit': 5
         }
 
-            return render(request, 'core/search_results.html', {'query': song_results, 'song_results': song_dict})
-        else:
-            # TO-DO: add song to database first, then show search results 
-            try:
-                song = create_song_from_url(query)
-                song_dict = {
-                'spotify_song_id': song.spotify_song_id,
-                'title': song.title,
-                'artist': song.artist,
-                'album': song.album,
-                'genre': song.genre,  # Genre info is not always available
-                'release_year': song.release_year,
-                'track_length': song.track_length / 1000  # Convert milliseconds to seconds
-                }
+        response = spotify_request_send(session_id, endpoint, params=params)
 
-                return render(request, 'core/search_results.html', {'query': query, 'song_results': song_dict})
-            
-            except ValueError:
-                return render(request, 'core/search_results.html', {'query': None, 'song_results': None})
-    
+        if "error" in response:
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        t_data = response.get('tracks', {})
+        tracks = t_data.get('items', [])
+        lo_tracks = handle_tracks(tracks)
+
+        a_data = response.get('albums', {})
+        albums = a_data.get('items', [])
+        lo_albums = handle_albums(albums)
+
+        ar_data = response.get('artists', {})
+        artists = ar_data.get('items', [])
+        lo_artists = handle_artists(artists)
+
+        return render(request, 'core/search.html', {
+            'query': query,
+            'tracks': lo_tracks,
+            'albums': lo_albums,
+            'artists': lo_artists
+        })
     else:
-        return render(request, 'core/search_results.html', {})
+        return render(request, 'core/search.html', {})
     
 
 # Prepare a URL for the user to authenticate with Spotify
