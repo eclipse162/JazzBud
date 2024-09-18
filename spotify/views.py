@@ -148,11 +148,14 @@ def refresh_token(session_id):
         'refresh_token': refresh_token,
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET}
-    response = post(TOKEN_URL, data=request_data).json()
 
-    # Debugging
+    response = requests.post(TOKEN_URL, data=request_data)
+
+    # Debugging: Print the raw response to check its contents
     print("Spotify API response status code:", response.status_code)
     print("Spotify API response content:", response.content)
+    
+    response_json = response.json()
     
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
