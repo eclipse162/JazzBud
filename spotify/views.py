@@ -134,6 +134,8 @@ def refresh_user(session_id):
 
         if expiry_time <= timezone.now():
             refresh = refresh_token(session_id)
+            if 'Error' in refresh:
+                return False
             update_user(user.user_id, token=refresh)
         return True
 
@@ -147,11 +149,19 @@ def refresh_token(session_id):
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET}
     response = post(TOKEN_URL, data=request_data).json()
+
+    # Debugging
+    print("Spotify API response status code:", response.status_code)
+    print("Spotify API response content:", response.content)
     
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
     access_token = response.get('access_token')
     refresh_token = response.get('refresh_token')
+
+    if not access_token or not expires_in or not token_type:
+        print("Error: Invalid response from Spotify API")
+        return {'Error': 'Invalid response from Spotify API'}
 
     refresh = create_token(user.user_id, access_token, refresh_token, expires_in, token_type)
     return refresh
