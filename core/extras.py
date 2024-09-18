@@ -1,4 +1,5 @@
 import os
+import requests
 from db.models import Token
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -21,7 +22,7 @@ session = Session()
 def check_tokens(session_id):
     tokens = session.query(Token).filter_by(user_id=session_id).first()
     if tokens:
-        return tokens[0]
+        return tokens
     else:
         return None
 
@@ -35,17 +36,20 @@ def create_tokens(session_id, access_token, refresh_token, expires_in, token_typ
         tokens.refresh_token = refresh_token
         tokens.expires_in = expires_in
         tokens.token_type = token_type
-        tokens.save(update_fields=['access_token', 
-                                   'refresh_token', 
-                                   'expires_in', 
-                                   'token_type'])
+        session.commit()
+        # tokens.save(update_fields=['access_token', 
+        #                            'refresh_token', 
+        #                            'expires_in', 
+        #                            'token_type'])
     else:
-        tokens = Token(user=session_id, 
-                       access_token=access_token, 
-                       refresh_token=refresh_token, 
-                       expires_in=expires_in, 
-                       token_type=token_type)
-        tokens.save()
+        # tokens = Token(user=session_id, 
+        #                access_token=access_token, 
+        #                refresh_token=refresh_token, 
+        #                expires_in=expires_in, 
+        #                token_type=token_type)
+        # tokens.save()
+        session.add(tokens)
+        session.commit()
 
 #3. Check Authetnication
 
@@ -60,27 +64,37 @@ def check_authentication(session_id):
 #4. Refresh Token 
 def refresh_token(session_id):
     tokens = check_tokens(session_id)
-    refresh_token = check_tokens(session_id)
-    if not refresh_token:
+    if not tokens:
         return {'Error': 'No tokens found for the session'}
     
     refresh_token = tokens.refresh_token
-    response = post('https://accounts.spotify.com/api/token', data={
+    response = requests.post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token',
         'refresh_token': refresh_token,
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET
     }).json()
 
+    print("SPOTIFY API RESPONSE", response)
+
     access_token = response.get('access_token')
     expires_in = response.get('expires_in')
     token_type = response.get('token_type')
     
-    create_tokens(session_id=session_id, 
-                  access_token=access_token,
-                  refresh_token=refresh_token, 
-                  expires_in=expires_in, 
-                  token_type=token_type)
+    if not access_token or not expires_in or not token_type:
+        return {'Error': 'Invalid response from Spotify'}
+    
+    # create_tokens(session_id=session_id, 
+    #               access_token=access_token,
+    #               refresh_token=refresh_token, 
+    #               expires_in=expires_in, 
+    #               token_type=token_type)
+
+    tokens.access_token = access_token
+    tokens.expires_in = timezone.now() + timedelta(seconds=expires_in)
+    tokens.token_type = token_type
+    session.commit()
+    return tokens
 
 def spotify_request_send(session_id, endpoint, params={}):
     tokens = check_tokens(session_id)
