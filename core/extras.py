@@ -4,15 +4,24 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from requests import post, get
 
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from .models import Base, Token
+
+
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
-
+DATABASE_URL = os.environ.get('DATABASE_URL')
 BASE_URL = 'https://api.spotify.com/v1/me/'
+
+engine = create_engine(os.environ.get('DATABASE_URL'))
+Session = sessionmaker(bind=engine)
+session = Session()
 
 # 1. Check tokens
 def check_tokens(session_id):
-    tokens = Token.objects.filter(user=session_id).first()
+    tokens = session.query(Token).filter_by(user_id=session_id).first()
     if tokens:
         return tokens[0]
     else:
@@ -52,7 +61,12 @@ def check_authentication(session_id):
 
 #4. Refresh Token 
 def refresh_token(session_id):
-    refresh_token = check_tokens(session_id).refresh_token
+    tokens = check_tokens(session_id)
+    refresh_token = check_tokens(session_id)
+    if not refresh_token:
+        return {'Error': 'No tokens found for the session'}
+    
+    refresh_token = tokens.refresh_token
     response = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token',
         'refresh_token': refresh_token,
@@ -72,6 +86,8 @@ def refresh_token(session_id):
 
 def spotify_request_send(session_id, endpoint, params={}):
     tokens = check_tokens(session_id)
+    if not tokens:
+        return {'Error': 'No tokens found for the session'}
     headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + tokens.access_token}
     response = get(BASE_URL + endpoint, headers=headers, params=params)
 
