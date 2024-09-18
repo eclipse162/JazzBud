@@ -9,5 +9,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('core/', include('core.urls')),
     path('spotify/', include('spotify.urls')),
-    path('search_results/', search_results, name='search-results')
+    path('search/', search, name='search-results')
 ]
