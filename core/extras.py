@@ -3,6 +3,7 @@ from db.models import Token
 from django.utils import timezone
 from datetime import datetime, timedelta
 from requests import post, get
+from sqlalchemy.orm import session
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -12,9 +13,9 @@ BASE_URL = 'https://api.spotify.com/v1/me/'
 
 # 1. Check tokens
 def check_tokens(session_id):
-    tokens = Token.objects.filter(user=session_id).first()
-    if tokens:
-        return tokens[0]
+    token = session.query(Token).filter_by(user_id=session_id).first()
+    if token:
+        return token
     else:
         return None
 
