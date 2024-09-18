@@ -1,3 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+
 #main_splash {
     height: auto;
     width: auto;
@@ -29,10 +37,206 @@ body {
     overflow: auto;
 }
 
+.home_page {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    overflow: auto;
+}
+
 .header {
     background-color: black;
     height: 20%;
     width: 100%;
+}
+
+.homepage_header {
+    background-color: #282828;
+    height: 15%;
+    width: 100%;
+    display: block;
+}
+
+.inner_header {
+    height: 100%;
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    /*background-color: green;*/
+}
+
+.logo_container {
+    height: 100%;
+    display: table;
+    float: left;
+}
+
+.logo_container h1 {
+    color:  #6ca4a7;
+    font-family: "Clutchee", "Arial", sans-serif;
+    font-size: 80px;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.logo_container div {
+    height: 50%;
+    display: table-cell;
+    vertical-align: middle;
+    /*padding: 50px;*/
+    margin-top: 33px;
+    margin-left: 80px;
+}
+
+.searchBox {
+    /*transform: translate(-50%,50%);*/
+    background: #2f3640;
+    height: 40px;
+    border-radius: 40px;
+    padding: 10px;
+}
+
+.searchBox img {
+    width: 50%;
+    height: 50%;
+}
+
+.searchBox:hover > .searchInput {
+    width: 240px;
+    padding: 0 6px;
+}
+
+.searchBox:hover > .searchButton {
+  background: white;
+  color : #2f3640;
+}
+
+.searchButton {
+    color: white;
+    background: white;
+    float: right;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #2f3640;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+
+.searchInput {
+    border:none;
+    background: none;
+    outline:none;
+    float:left;
+    padding: 0;
+    color: white;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 0px;
+
+}
+
+@media screen and (max-width: 620px) {
+.searchBox:hover > .searchInput {
+    width: 150px;
+    padding: 0 6px;
+}
+}
+
+
+.navigation {
+    float: right;
+    height: 100%;
+}
+
+.navigation a {
+    height: 100%;
+    display: table;
+    float: left;
+    padding: 0px 10px; 
+}
+
+.navigation a:last-child {
+    padding-right: 0;
+}
+
+.navigation a li {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 20px;
+}
+
+
+
+.home_page_body {
+    /*background-color: white;*/
+    height: 15%;
+    width: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    overflow: auto;
+    padding: 5px;
+    margin: 15px 0px;
+}
+
+.home_page_body h1, h3, p {
+    color: #fbf1c7;
+}
+
+
+
+#new_partition {
+    background-color: red;
+    height: 10%;
+    width: 45%;
+}
+
+#new_partition h1 {
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 30px;
+    text-align: left;
+}
+
+#partition_info {
+    background-color: green;
+    height: 20%;
+    width: 50%;
+}
+
+#partition_info h1 {
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 30px;
+    text-align: left;
+}
+
+#tracks {
+    background-color: blue;
+    height: 15%;
+    width: 50%;
+}
+
+#tracks h1 {
+    font-family: "Montserrat", "Arial", sans-serif;
+    font-weight: 300;
+    color: #fbf1c7;
+    font-size: 30px;
+    text-align: left;
 }
 
 #jazzbud_title {
@@ -42,6 +246,16 @@ body {
     color:  #6ca4a7;
     padding-left: 60px;
     padding-bottom: 5px;
+}
+
+#homepage_title {
+    font-family: "Clutchee", "Arial", sans-serif;
+    font-size: 80px;
+    /*font-weight: 600;*/
+    color:  #6ca4a7;
+    margin-left: 5px;
+    /*padding-left: 60px;*/
+    /*padding-bottom: 5px;*/
 }
 
 #jazzbud_desc {
@@ -84,15 +298,22 @@ body {
 
 
 /* --------- BUTTONS --------- */
+#btn_homepage {
+    float: right;
+}
+
 .btn:link, 
 .btn:visited,
 input[type=submit]{
-    display: inline-block;
+    /*display: inline-block;*/
     padding: 10px 30px;
+    margin-top: 20px;
+    margin-right: 10px;
     font-weight: 300;
     text-decoration: none;
     border-radius: 200px;
     transition: background-color 0.2s, border 0.2s, color 0.2s;
+    float: right;
 }
 
 .btn-full:link,
