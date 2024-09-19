@@ -9,6 +9,7 @@ class User(Base):
     __tablename__ = 'users'
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
+    session_id = Column(String(50))
     username = Column(String(50), unique=True, nullable=False)
     spotify_user_id = Column(String(255), unique=True)
     is_authenticated = Column(Boolean, default=False)
