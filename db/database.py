@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
 # Database URL
-DATABASE_URL = os.getenv('DATABASE_URL')
+# DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = "postgresql://jazzbuddy:FRpSvLa0sq0T4ifn6N3oC5ac1NPKt73V@dpg-cn5d2hv109ks739tk7h0-a.oregon-postgres.render.com/jazzbudb"
 
 # Create the database engine
 engine = create_engine(DATABASE_URL, echo=True)
