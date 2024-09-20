@@ -8,7 +8,8 @@ from django.http import HttpResponseRedirect
 from requests import Request, post
 from .extras import *
 from .search import *
-from db.crud import get_spotify_song
+from db.crud import get_token, create_token
+
 import requests
 
 
@@ -117,7 +118,7 @@ def spotify_redirect(request):
         request.session.create()
         auth_key = request.session.session_key
 
-    create_tokens(auth_key, access_token, refresh_token, expires_in, token_type)
+    create_token(access_token, refresh_token, expires_in, token_type)
 
     # Create a redirect url to the current song details
     redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={auth_key}"
@@ -145,7 +146,7 @@ class ConfirmAuth(APIView):
             key = self.request.session.session_key
         print(f'Session key: {key}', flush=True)
 
-        auth_status, access_token = check_authentication(key)
+        auth_status, access_token = check_authentication(key, session)
         print(f'Auth status: {auth_status}, Access token: {access_token}')
 
         if auth_status:

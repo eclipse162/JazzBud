@@ -6,7 +6,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from requests import post, get
 from sqlalchemy.orm import session
-
+from db.crud import create_token, get_token, get_session_user
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
@@ -15,80 +15,28 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 BASE_URL = 'https://api.spotify.com/v1/me/'
 
+def authenticate_user(session, session_key, user_id):
+    session[session_key] = {'user_id': user_id}
 
-# 1. Check tokens
-def check_tokens(session_id):
-    with get_db() as db:
-        token = db.query(Token).filter_by(user_id=session_id).first()
-        return token if token else None
+def check_authentication(session_key, session):
+    user_data = session.get(session_key)
+    token = None
 
-# 2. Create and update tokens
-def create_tokens(session_id, access_token, refresh_token, expires_in, token_type):
-    with get_db() as db:
-        tokens = check_tokens(session_id)
-        expires_in = timezone.now() + timedelta(seconds=expires_in)
-
-        if tokens:
-            tokens.access_token = access_token
-            tokens.refresh_token = refresh_token
-            tokens.expires_in = expires_in
-            tokens.token_type = token_type
-            tokens.session_id = session_id
-            tokens.created_at = timezone.now()
-        else:
-            tokens = Token(session_id=session_id, 
-                           access_token=access_token, 
-                           refresh_token=refresh_token, 
-                           expires_in=expires_in, 
-                           token_type=token_type,
-                           created_at=timezone.now())
-            db.add(tokens)
-        db.commit()
-
-#3. Check Authetnication
-
-def check_authentication(session_id):
-    tokens = check_tokens(session_id)
-    if tokens:
-        if tokens.expires_in <= timezone.now():
-            refresh_token(session_id)
-        return True
-    return False
-
-#4. Refresh Token 
-def refresh_token(session_id):
-    tokens = check_tokens(session_id)
-    if not tokens:
-        return {'Error': 'No tokens found for the session'}
-    
-    refresh_token = tokens.refresh_token
-    response = requests.post('https://accounts.spotify.com/api/token', data={
-        'grant_type': 'refresh_token',
-        'refresh_token': refresh_token,
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET
-    }).json()
-
-    print("SPOTIFY API RESPONSE", response)
-
-    access_token = response.get('access_token')
-    expires_in = response.get('expires_in')
-    token_type = response.get('token_type')
-    
-    if not access_token or not expires_in or not token_type:
-        return {'Error': 'Invalid response from Spotify'}
-    
-    # create_tokens(session_id=session_id, 
-    #               access_token=access_token,
-    #               refresh_token=refresh_token, 
-    #               expires_in=expires_in, 
-    #               token_type=token_type)
+    if user_data:
+        user_id = user_data.get('user_id')
+        if user_id:
+            token = get_token(user_id)
+        if token:
+            return True, token.access_token
+        
+    return token is not None
 
 def spotify_request_send(session_id, endpoint, params={}):
-    tokens = check_tokens(session_id)
-    if not tokens:
+    user = get_session_user(session_id)
+    token = get_token(user.user_id)
+    if not token:
         return {'Error': 'No tokens found for the session'}
-    headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + tokens.access_token}
+    headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + token.access_token}
     response = get(BASE_URL + endpoint, headers=headers, params=params)
 
     if response:
@@ -98,5 +46,43 @@ def spotify_request_send(session_id, endpoint, params={}):
         
     try:
         return response.json()
-    except:
+    except Exception as e:
+        print("Error parsing response: {e}")
         return {'Error': 'Issue with request'}
+    
+def refresh_token(session_id):
+    user = get_session_user(session_id)
+    cur_token = get_token(user.user_id)
+
+    refresh_token = cur_token.refresh_token if cur_token else None
+    
+    if not refresh_token:
+        print("Error: No refresh token found for the user")
+        return {'Error': 'No refresh token found for the user'}
+
+    request_data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET}
+
+    response = requests.post(TOKEN_URL, data=request_data)
+
+    if response.status_code == 200:
+        data = response.json()
+        token_type = data.get('token_type')
+        expires_in = data.get('expires_in')
+        access_token = data.get('access_token')
+        new_refresh = data.get('refresh_token', refresh_token)
+    else:
+        print("Error: Failed to retrieve tokens from Spotify")
+        print("Spotify API response status code:", response.status_code)
+        print("Spotify API response content:", response.content)
+        return {'Error': 'Failed to retrieve tokens from Spotify'}
+
+    if not access_token or not expires_in or not token_type:
+        print("Error: Invalid response from Spotify API")
+        return {'Error': 'Invalid response from Spotify API'}
+
+    refresh = create_token(user.user_id, access_token, new_refresh, expires_in, token_type)
+    return refresh
