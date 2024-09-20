@@ -2,6 +2,7 @@ import os
 import logging
 import requests
 
+from db.database import get_db
 from datetime import timedelta
 from db.models import User, Token
 from rest_framework import status
@@ -11,8 +12,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from db.crud import create_token, get_token, get_session_user, get_spotify_user, update_user, create_user
 from core.extras import refresh_token, authenticate_user
+from db.crud import create_token, get_token, get_session_user, get_spotify_user, update_user, create_user
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -121,7 +122,7 @@ def auth_callback(request, format=None):
                 token_type)
 
     update_user(user.user_id, token=new_token)
-    authenticate_user(request.session, session_id, user.user_id)
+    authenticate_user(request.session, user.user_id)
     return redirect('core:home')
 
 def refresh_user(session_id):

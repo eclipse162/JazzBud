@@ -40,7 +40,7 @@ def search(request):
             'limit': 5
         }
 
-        response = spotify_request_send(session_id, endpoint, params=params)
+        response = spotify_request_send(request.session, session_id, endpoint, params=params)
 
         if "error" in response:
             return Response({}, status=status.HTTP_204_NO_CONTENT)

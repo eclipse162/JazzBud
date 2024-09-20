@@ -15,8 +15,8 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 BASE_URL = 'https://api.spotify.com/v1/me/'
 
-def authenticate_user(session, session_key, user_id):
-    session[session_key] = {'user_id': user_id}
+def authenticate_user(session, user_id):
+    session['user_id'] = user_id
 
 def check_authentication(session_key, session):
     user_data = session.get(session_key)
@@ -29,14 +29,23 @@ def check_authentication(session_key, session):
         if token:
             return True, token.access_token
         
-    return token is not None
+    return False, None
 
-def spotify_request_send(session_id, endpoint, params={}):
-    user = get_session_user(session_id)
-    token = get_token(user.user_id)
+def spotify_request_send(session, session_key, endpoint, params={}):
+    user_data = session.get(session_key)
+    if not user_data:
+        return {'Error': 'No user data found in session'}
+    
+    user_id = user_data.get('user_id')
+    if not user_id:
+        return {'Error': 'No user ID found in session data'}
+    
+    token = get_token(user_id)
     if not token:
         return {'Error': 'No tokens found for the session'}
-    headers = {'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + token.access_token}
+    
+    headers = {'Content-Type' : 'application/json', 
+               'Authorization' : 'Bearer ' + token.access_token}
     response = get(BASE_URL + endpoint, headers=headers, params=params)
 
     if response:
