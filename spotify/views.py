@@ -151,16 +151,28 @@ def refresh_token(session_id):
 
     response = requests.post(TOKEN_URL, data=request_data)
 
+    if response.status_code == 200:
+        data = response.json()
+        token_type = data.get('token_type')
+        expires_in = data.get('expires_in')
+        access_token = data.get('access_token')
+        refresh_token = data.get('refresh_token')
+    else:
+        print("Error: Failed to retrieve tokens from Spotify")
+        print("Spotify API response status code:", response.status_code)
+        print("Spotify API response content:", response.content)
+        return {'Error': 'Failed to retrieve tokens from Spotify'}
+
     # Debugging: Print the raw response to check its contents
-    print("Spotify API response status code:", response.status_code)
-    print("Spotify API response content:", response.content)
+    # print("Spotify API response status code:", response.status_code)
+    # print("Spotify API response content:", response.content)
     
-    response_json = response.json()
+    # response_json = response.json()
     
-    token_type = response.get('token_type')
-    expires_in = response.get('expires_in')
-    access_token = response.get('access_token')
-    refresh_token = response.get('refresh_token')
+    # token_type = response.get('token_type')
+    # expires_in = response.get('expires_in')
+    # access_token = response.get('access_token')
+    # refresh_token = response.get('refresh_token')
 
     if not access_token or not expires_in or not token_type:
         print("Error: Invalid response from Spotify API")
