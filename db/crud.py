@@ -4,7 +4,6 @@ from django.utils import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import Base, User, Song, Segment, Token, Collection
-from spotify.views import refresh_token
 from .database import get_db
 
 # Create operations
@@ -90,6 +89,8 @@ def get_segment(segment_id):
         return db.query(Segment).filter(Segment.segment_id == segment_id).first()
 
 def get_token(user_id):
+    from spotify.views import refresh_token
+    
     with get_db() as db:
         user = db.query(User).filter(User.user_id == user_id).first()
 
