@@ -36,22 +36,27 @@ def create_segment(collection_id, user_id, segment_name, start_time, end_time, s
         return new_segment
 
 def create_token(user_id, access_token, refresh_token, expires_in, token_type):
+    if user_id == None:
+        print('User ID is None', flush=True)
+        return None
+    
     with get_db() as db:
-        token = get_token(user_id)
-        if user_id == None:
-            return None
         expires_in = timezone.now() + timedelta(seconds=expires_in)
+        token = db.query(Token).filter(Token.user_id == user_id).first()
 
         if token:
-            # token = db.query(Token).filter(Token.user_id == user_id).one()
             token.access_token = access_token
             token.refresh_token = refresh_token
             token.expires_in = expires_in
             token.token_type = token_type
         else:
-            token = Token(user_id=user_id, access_token=access_token, refresh_token=refresh_token, expires_in=expires_in, token_type=token_type)
+            token = Token(
+                user_id=user_id, 
+                access_token=access_token,
+                refresh_token=refresh_token, 
+                expires_in=expires_in, 
+                token_type=token_type)
             db.add(token)
-
         db.commit()
         return token
 
@@ -90,18 +95,23 @@ def get_segment(segment_id):
 
 def get_token(user_id):
     from spotify.views import refresh_token
-    
+
     with get_db() as db:
         user = db.query(User).filter(User.user_id == user_id).first()
 
         if user and user.token:
-            if user.token.expires_in <= timezone.now():
-                print('Token expired. Refreshing token...', flush=True)
+            expiry_time = user.token.expires_in
+
+            if expiry_time.tzinfo is None:
+                expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
+
+            if expiry_time <= timezone.now():
                 token = refresh_token(user.session_id)
                 user.token = token
                 db.commit()
-            return user.token
+            return token
         else:
+            print('No token found for the user', flush=True)
             return None
 
 # Update operations
