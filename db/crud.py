@@ -4,6 +4,7 @@ from django.utils import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import Base, User, Song, Segment, Token, Collection
+from spotify.views import refresh_token
 from .database import get_db
 
 # Create operations
@@ -93,6 +94,11 @@ def get_token(user_id):
         user = db.query(User).filter(User.user_id == user_id).first()
 
         if user and user.token:
+            if user.token.expires_in <= timezone.now():
+                print('Token expired. Refreshing token...', flush=True)
+                token = refresh_token(user.session_id)
+                user.token = token
+                db.commit()
             return user.token
         else:
             return None

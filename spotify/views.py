@@ -141,7 +141,13 @@ def refresh_user(session_id):
 
 def refresh_token(session_id):
     user = get_session_user(session_id)
-    refresh_token = get_token(user.user_id).refresh_token
+    cur_token = get_token(user.user_id)
+
+    refresh_token = cur_token.refresh_token if cur_token else None
+    
+    if not refresh_token:
+        print("Error: No refresh token found for the user")
+        return {'Error': 'No refresh token found for the user'}
 
     request_data = {
         'grant_type': 'refresh_token',
@@ -156,30 +162,20 @@ def refresh_token(session_id):
         token_type = data.get('token_type')
         expires_in = data.get('expires_in')
         access_token = data.get('access_token')
-        refresh_token = data.get('refresh_token')
+        new_refresh = data.get('refresh_token', refresh_token)
     else:
         print("Error: Failed to retrieve tokens from Spotify")
         print("Spotify API response status code:", response.status_code)
         print("Spotify API response content:", response.content)
         return {'Error': 'Failed to retrieve tokens from Spotify'}
 
-    # Debugging: Print the raw response to check its contents
-    # print("Spotify API response status code:", response.status_code)
-    # print("Spotify API response content:", response.content)
-    
-    # response_json = response.json()
-    
-    # token_type = response.get('token_type')
-    # expires_in = response.get('expires_in')
-    # access_token = response.get('access_token')
-    # refresh_token = response.get('refresh_token')
-
     if not access_token or not expires_in or not token_type:
         print("Error: Invalid response from Spotify API")
         return {'Error': 'Invalid response from Spotify API'}
 
-    refresh = create_token(user.user_id, access_token, refresh_token, expires_in, token_type)
+    refresh = create_token(user.user_id, access_token, new_refresh, expires_in, token_type)
     return refresh
+
 
 class IsAuthenticated(APIView):
     def get(self, request, format=None):
