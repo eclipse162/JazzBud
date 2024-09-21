@@ -129,35 +129,35 @@ def auth_callback(request, format=None):
     authenticate_user(request.session, user.user_id)
     return redirect('core:home')
 
-def refresh_user(session_id):
-    with get_db() as db:
-        user = get_session_user(db, session_id)
+def refresh_user(db, session_id):
+    user = get_session_user(db, session_id)
 
-        if user: 
-            token = get_token(db, user.user_id)
-            expiry_time = token.expires_in
+    if user: 
+        token = get_token(db, user.user_id)
+        expiry_time = token.expires_in
 
-            if expiry_time.tzinfo is None:
-                expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
+        if expiry_time.tzinfo is None:
+            expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
 
-            if expiry_time <= timezone.now():
-                token = refresh_token(user.session_id)
-                user.token = token
-                db.commit()
+        if expiry_time <= timezone.now():
+            token = refresh_token(user.session_id)
+            user.token = token
+            db.commit()
+        return True
+    return False
 
 
 class IsAuthenticated(APIView):
     def get(self, request, format=None):
-        # Check if the session exists
         if not request.session.session_key:
             request.session.create()
         
         session_id = request.session.session_key
-        user = get_session_user(db, session_id)
         is_auth = False
-
-        if user != None:
-            is_auth = refresh_user(session_id)
+        with get_db() as db:
+            user = get_session_user(db, session_id)
+            if user != None:
+                is_auth = refresh_user(db, session_id)
 
         return Response({'status': is_auth}, status=status.HTTP_200_OK)
 

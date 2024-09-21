@@ -9,6 +9,7 @@ from requests import Request, post
 from .extras import *
 from .search import *
 from db.crud import get_token, create_token
+from spotify.views import refresh_user
 
 import requests
 
@@ -33,6 +34,12 @@ def search(request):
 
         if session_id is None:
             return redirect('core:login')
+        
+        with get_db as db:
+            user = get_session_user(db, session_id)
+            if user is None or not refresh_user(db, session_id):
+                return redirect('core:login')
+            
         endpoint = "https://api.spotify.com/v1/search"
         params = {
             'q': query,
