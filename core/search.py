@@ -43,11 +43,18 @@ def handle_albums(albums):
     return lo_albums
 
 def handle_artists(artists):
-    return [{
-        'spotify_artist_id': artist['id'],
-        'cover': artist['images'][1]['url'] if len(artist['images']) > 1 else artist['images'][0]['url'],
-        'name': artist['name']
-    } for artist in artists]
+    lo_artists = []
+    for artist in artists:
+        if artist['images']: 
+            cover = artist['images'][1]['url'] if len(artist['images']) > 1 else artist['images'][0]['url']
+        else:
+            cover = None 
+        lo_artists.append({
+            'spotify_artist_id': artist['id'],
+            'cover': cover,
+            'name': artist['name']
+        })
+    return lo_artists
 
 def extract_track_id(url):
     match = re.search(r'spotify\.com\/track\/([a-zA-Z0-9]+)', url)
