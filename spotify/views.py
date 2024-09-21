@@ -103,10 +103,9 @@ def auth_callback(request, format=None):
         request.session.create()
     session_id = request.session.session_key
 
-
     with get_db() as db:
         user = get_spotify_user(db, spotify_user_id)
-        
+
         if user:
             user.session_id = session_id
             user.is_authenticated = True
@@ -126,6 +125,7 @@ def auth_callback(request, format=None):
 
         update_user(db, user.user_id, token=new_token)
         db.commit()
+        db.refresh(user)
 
     authenticate_user(request.session, user.user_id)
     return redirect('core:home')
