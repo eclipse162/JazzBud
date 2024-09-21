@@ -163,7 +163,7 @@
       {% if artists %}
           {% for artist in artists %}
               <div class="artist-card">
-                  <img src="{{ artist.cover }}" alt="{{ zanewins.jpeg }}" style="width:150px; height:150px; border-radius:50%;">
+                  <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
                   <div class="artist-info">
                       <div class="artist-name">{{ artist.name }}</div>
                       <div class="artist-title">Artist</div>
