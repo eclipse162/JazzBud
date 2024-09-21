@@ -31,7 +31,7 @@
 <ul>
     {% if tracks %}
         {% for track in tracks %}
-            <li>{{ track.name }} by {{ track.artists|join:", " }}</li>
+            <li>{{ track.title }} by {{ track.artist }}</li>
         {% endfor %}
     {% else %}
         <li>No tracks found</li>
@@ -42,7 +42,7 @@
 <ul>
     {% if albums %}
         {% for album in albums %}
-            <li>{{ album.name }} by {{ album.artists|join:", " }}</li>
+            <li>{{ album.title }} by {{ album.artist }}</li>
         {% endfor %}
     {% else %}
         <li>No albums found</li>
