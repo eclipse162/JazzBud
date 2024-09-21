@@ -59,7 +59,7 @@ def spotify_request_send(session, session_key, endpoint, params={}):
     
     headers = {'Content-Type' : 'application/json', 
                'Authorization' : 'Bearer ' + token.access_token}
-    response = get(BASE_URL + endpoint, headers=headers, params=params)
+    response = get(endpoint, headers=headers, params=params)
 
     if response:
         print(response)
