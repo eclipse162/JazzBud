@@ -35,7 +35,7 @@ def search(request):
         if session_id is None:
             return redirect('core:login')
         
-        with get_db as db:
+        with get_db() as db:
             user = get_session_user(db, session_id)
             if user is None or not refresh_user(db, session_id):
                 return redirect('core:login')
