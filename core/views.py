@@ -8,7 +8,7 @@ from requests import Request, post
 from spotify.views import refresh_user
 from rest_framework.views import APIView
 from db.crud import get_token, create_token
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from rest_framework.response import Response
 from django.shortcuts import render, redirect
 from rest_framework.permissions import  AllowAny
@@ -49,19 +49,23 @@ def search(request):
             
             
         endpoint = "https://api.spotify.com/v1/search"
+        headers = {'Authorization': f'Bearer {token}'}
         params = {
             'q': query,
-            'type': 'track, artist, album',
+            'type': 'track,artist,album',
             'limit': 5
         }
+        
+        sp = spotipy.Spotify(auth=token)
+        results = sp.search(q=query, type='track,artist,album', limit=5)
+        print("SPOTIPY RESULTS: ", results)
 
-        headers = {'Content-Type' : 'application/json', 
-               'Authorization' : 'Bearer ' + token.access_token}
-        response = requests.get(endpoint, headers=headers, params=params).json()
-        print(f"SPOTIFY RESPONSE: {response}")
+        raw_response = requests.get(endpoint, headers=headers, params=params)
+        response = raw_response.json()
+        print("REGULAR JSON RESULTS: ", response)
 
         if "error" in response:
-            return Response({}, status=status.HTTP_204_NO_CONTENT)
+            return JsonResponse({}, status=204)
         
         t_data = response.get('tracks', {})
         tracks = t_data.get('items', [])
