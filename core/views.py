@@ -40,7 +40,13 @@ def search(request):
             user = get_session_user(db, session_id)
             if user is None or not refresh_user(db, session_id):
                 return redirect('core:login')
-            token = get_token(db, session_id)
+            authenticate_user(request.session, user.user_id)
+
+            user_id = user.user_id
+            token = get_token(db, user_id)
+            if token is None:
+                return redirect('core:login')
+            
             
         endpoint = "https://api.spotify.com/v1/search"
         params = {

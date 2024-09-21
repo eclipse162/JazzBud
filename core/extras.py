@@ -45,6 +45,7 @@ def check_authentication(session_key, session):
     return False, None
 
 def spotify_request_send(session, endpoint, params={}):
+    
     user_id = session.get('user_id')
     if not user_id:
         return {'Error': 'No user ID found in session data'}
