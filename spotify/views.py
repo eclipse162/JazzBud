@@ -103,44 +103,47 @@ def auth_callback(request, format=None):
         request.session.create()
     session_id = request.session.session_key
 
-    user = get_spotify_user(spotify_user_id)
+    user = get_spotify_user(db, spotify_user_id)
 
-    if user:
-        user.session_id = session_id
-        user.is_authenticated = True
-    else:
-        user = create_user(spotify_user_id=spotify_user_id, 
-                           username=spotify_user_id, 
-                           display_name=spotify_display, 
-                           session_id=session_id, 
-                           is_authenticated=True)
+    with get_db() as db:
+        if user:
+            user.session_id = session_id
+            user.is_authenticated = True
+        else:
+            user = create_user(db, spotify_user_id=spotify_user_id, 
+                                username=spotify_user_id, 
+                                display_name=spotify_display, 
+                                session_id=session_id, 
+                                is_authenticated=True)
 
-    new_token = create_token(user.user_id,
-                access_token, 
-                refresh_token, 
-                expires_in, 
-                token_type)
+        new_token = create_token(db,
+                    user.user_id,
+                    access_token, 
+                    refresh_token, 
+                    expires_in, 
+                    token_type)
 
-    update_user(user.user_id, token=new_token)
+        update_user(db, user.user_id, token=new_token)
+        db.commit()
+
     authenticate_user(request.session, user.user_id)
     return redirect('core:home')
 
 def refresh_user(session_id):
-    user = get_session_user(session_id)
+    with get_db() as db:
+        user = get_session_user(db, session_id)
 
-    if user: 
-        token = get_token(user.user_id)
-        expiry_time = token.expires_in
+        if user: 
+            token = get_token(db, user.user_id)
+            expiry_time = token.expires_in
 
-        if expiry_time.tzinfo is None:
-            expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
+            if expiry_time.tzinfo is None:
+                expiry_time = timezone.make_aware(expiry_time, timezone.get_default_timezone())
 
-        if expiry_time <= timezone.now():
-            refresh = refresh_token(session_id)
-            if 'Error' in refresh:
-                return False
-            update_user(user.user_id, token=refresh)
-        return True
+            if expiry_time <= timezone.now():
+                token = refresh_token(user.session_id)
+                user.token = token
+                db.commit()
 
 
 class IsAuthenticated(APIView):
@@ -150,7 +153,7 @@ class IsAuthenticated(APIView):
             request.session.create()
         
         session_id = request.session.session_key
-        user = get_session_user(session_id)
+        user = get_session_user(db, session_id)
         is_auth = False
 
         if user != None:
