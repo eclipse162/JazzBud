@@ -64,10 +64,10 @@ def search(request):
         artists = ar_data.get('items', [])
         lo_artists = handle_artists(artists)
 
-        logging.info(f"Query: {query}")
-        logging.info(f"Tracks: {lo_tracks}")
-        logging.info(f"Albums: {lo_albums}")
-        logging.info(f"Artists: {lo_artists}")
+        print(f"Query: {query}")
+        print(f"Tracks: {lo_tracks}")
+        print(f"Albums: {lo_albums}")
+        print(f"Artists: {lo_artists}")
 
         return render(request, 'core/search.html', {
             'query': query,

@@ -5,6 +5,26 @@
 {% block title %}Search{% endblock %}
 {% block content %}
 
+<style>
+  body {
+      color: white;
+      font-size: 18px;
+  }
+  h1, h2 {
+      color: white;
+  }
+  ul {
+      list-style-type: none;
+      padding: 0;
+  }
+  li {
+      background: #333;
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #555;
+  }
+</style>
+
 <h1>Search Results for "{{ query }}"</h1>
 
 <h2>Tracks</h2>
