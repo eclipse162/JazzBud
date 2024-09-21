@@ -40,6 +40,7 @@ def search(request):
             user = get_session_user(db, session_id)
             if user is None or not refresh_user(db, session_id):
                 return redirect('core:login')
+            token = get_token(db, session_id)
             
         endpoint = "https://api.spotify.com/v1/search"
         params = {
@@ -48,7 +49,9 @@ def search(request):
             'limit': 5
         }
 
-        response = spotify_request_send(request.session, endpoint, params=params)
+        headers = {'Content-Type' : 'application/json', 
+               'Authorization' : 'Bearer ' + token.access_token}
+        response = requests.get(endpoint, headers=headers, params=params)
         print(f"SPOTIFY RESPONSE: {response}")
 
         if "error" in response:
