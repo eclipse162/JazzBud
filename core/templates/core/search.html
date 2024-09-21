@@ -2,6 +2,7 @@
 
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}Search{% endblock %}
 {% block content %}
 
@@ -17,15 +18,28 @@
       list-style-type: none;
       padding: 0;
   }
-  li {
-      background: #333;
-      margin: 5px 0;
-      padding: 10px;
-      border: 1px solid #555;
+
+  .album-content {
+    display: flex;
+    align-items: center;
+}
+
+  .album-cover {
+      width: 120px; /* Adjust size as needed */
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 10px;
   }
+
+  .album-info {
+      display: flex;
+      flex-direction: column;
+  }
+
   .album-title {
-    font-size: 18px;
-    font-weight: bold;
+      font-size: 18px;
+      font-weight: bold;
   }
 
   .album-artist {
@@ -120,13 +134,11 @@
   }
 </style>
 
-<h1>Search Results for "{{ query }}"</h1>
-
 <main style="padding-top:20px;">
 
   <div class="p-5">
     <br>
-    <h2 class="text-2xl font-bold mb-4">Search Results</h2>
+    <h2 class="text-2xl font-bold mb-4">Search Results for "{{ query }}"</h2>
     <div class="divide-y divide-gray-800">
       <!-- Single Track Row -->
       {% for track in tracks %}
@@ -140,118 +152,52 @@
             </a>
           </div>
         </div>
-        <div class="text-gray-400">{{track.track_length}}</div>
+        <div class="text-gray-400">{{ track.track_length|ms_to_minutes_seconds }}</div>
       </div>
       {% endfor %}
     </div>
   </div>
 
+  <div class="browse-all-title">Artists</div>
 
-    <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
-        <!-- Artist Card -->
-        {% if artists %}
-            {% for artist in artists %}
-                <div class="artist-card">
-                    <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;">
-                    <div class="artist-info">
-                        <div class="artist-name">{{ artist.name }}</div>
-                        <div class="artist-title">Artist</div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No artists found</p>
-        {% endif %}
-    </section>
-    <!-- Repeat sections for other categories with more content cards -->
-  
-  <!-- "Browse All" Section Title -->
+  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
+      <!-- Artist Card -->
+      {% if artists %}
+          {% for artist in artists %}
+              <div class="artist-card">
+                  <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;">
+                  <div class="artist-info">
+                      <div class="artist-name">{{ artist.name }}</div>
+                      <div class="artist-title">Artist</div>
+                  </div>
+              </div>
+          {% endfor %}
+      {% else %}
+          <p>No artists found</p>
+      {% endif %}
+  </section>
+
   <div class="browse-all-title">Albums</div>
-
-  <!-- "Browse All" Section Content -->
   
-
-  <h2>Albums</h2>
-  <div class="albums-container">
+  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
       {% if albums %}
           {% for album in albums %}
               <div class="category-card">
                   <a style="text-decoration: none; color: white;" href="/album/{{ album.spotify_album_id }}">
+                    <div class="album-content"></div>
                       <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
-                      <div class="album-title">{{ album.title }}</div>
-                      <div class="album-artist">{{ album.artist }}</div>
+                      <div class="album-cover">
+                        <div class="album-title">{{ album.title }}</div>
+                        <div class="album-artist">{{ album.artist }}</div>
+                      </div>
+                    </div>
                   </a>
               </div>
           {% endfor %}
       {% else %}
           <p>No albums found</p>
       {% endif %}
-  </div>
-
-<div class="browse-all">
-    <!-- Category Card -->
-    {% for track in second_six_tracks %}
-    <div class="category-card">
-        <a style="text-decoration: none; color: white;" href="/music/{{track.id}}">
-            <img src="{{track.cover_url}}" alt="{{track.name}}">
-            <div class="category-title">{{track.name}}</div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
-
-<div class="browse-all">
-    <!-- Category Card -->
-    {% for track in third_six_tracks %}
-    <div class="category-card">
-        <a style="text-decoration: none; color: white;" href="/music/{{track.id}}">
-            <img src="{{track.cover_url}}" alt="{{track.name}}">
-            <div class="category-title">{{track.name}}</div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
-
+    </section>
 </main>
-
-<h2>Tracks</h2>
-<ul>
-    {% if tracks %}
-        {% for track in tracks %}
-            <li>{{ track.title }} by {{ track.artist }}</li>
-        {% endfor %}
-    {% else %}
-        <li>No tracks found</li>
-    {% endif %}
-</ul>
-
-<h2>Albums</h2>
-<ul>
-    {% if albums %}
-        {% for album in albums %}
-            <li>{{ album.title }} by {{ album.artist }}</li>
-        {% endfor %}
-    {% else %}
-        <li>No albums found</li>
-    {% endif %}
-</ul>
-
-<h2>Artists</h2>
-<div class="artists-container">
-    {% if artists %}
-        {% for artist in artists %}
-            <div class="artist-card">
-                <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;">
-                <div class="artist-info">
-                    <div class="artist-name">{{ artist.name }}</div>
-                    <div class="artist-title">Artist</div>
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No artists found</p>
-    {% endif %}
-</div>
-</ul>
 
 {% endblock %}
