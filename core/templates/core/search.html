@@ -47,7 +47,7 @@
       color: #aaa;
   }
 
-  .artist-card {
+  .card {
     width: 200px;
     height: 255px;
     background-color: #181818;
@@ -60,6 +60,20 @@
     margin: 0 5px 20px;
     display: inline-block;
   }
+
+  /* .category-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 8px;
+      background: #181818;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      height: 240px;
+      width: 220px;
+  } */
 
   .artist-card img {
       margin-top: 10px;
@@ -93,21 +107,6 @@
     gap: 115px;
     padding: 10px;
     background-color: #121212; /* or any other color you prefer */
-  }
-
-  .category-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      border-radius: 8px;
-      background: #181818;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-      height: 240px;
-      width: 220px;
   }
 
   .category-card img {
@@ -164,7 +163,7 @@
       <!-- Artist Card -->
       {% if artists %}
           {% for artist in artists %}
-              <div class="artist-card">
+              <div class="ccard">
                   <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;">
                   <div class="artist-info">
                       <div class="artist-name">{{ artist.name }}</div>
@@ -178,8 +177,25 @@
   </section>
 
   <div class="browse-all-title">Albums</div>
-  
+
   <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
+    <!-- Artist Card -->
+    {% if artists %}
+        {% for artist in artists %}
+            <div class="card">
+              <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
+                <div class="artist-info">
+                  <div class="album-title">{{ album.title }}</div>
+                  <div class="album-artist">{{ album.artist }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No albums found</p>
+    {% endif %}
+</section>
+  
+  <!-- <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
       {% if albums %}
           {% for album in albums %}
               <div class="category-card">
@@ -197,7 +213,7 @@
       {% else %}
           <p>No albums found</p>
       {% endif %}
-    </section>
+    </section> -->
 </main>
 
 {% endblock %}
