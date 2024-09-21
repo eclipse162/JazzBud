@@ -165,23 +165,28 @@ class SpotifyAPI(APIView):
     def populate_user_info(self, request):
         session_id = request.session.session_key
         print(f"Session ID: {session_id}")
-        user = get_session_user(session_id)
-        print(f"User: {user}")
-        if not user:
-            return {'error': 'User not found'}
-        token = get_token(user.user_id)
-        if not token:
-            return {'error': 'Token not found'}
-        access_token = token.access_token
-        spotify_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
-        print(f"Spotify info: {spotify_info}")
+        if not session_id:
+            return {'error': 'Session not found'}
 
-        user_info = {
-            'user_id': spotify_info.get('id'),
-            'display_name': spotify_info.get('display_name'),
-            'profile_url': (spotify_info.get('images')[0].get('url') 
-                    if spotify_info.get('images') else None)
-        }
+        with get_db() as db:
+            user = get_session_user(db, session_id)
+            if not user:
+                return {'error': 'User not found'}
+            
+            token = get_token(db, user.user_id)
+            if not token:
+                return {'error': 'Token not found'}
+            
+            access_token = token.access_token
+            spotify_info = requests.get(SPOTIFY_ME_URL, headers={'Authorization': f'Bearer {access_token}'}).json()
+            print(f"Spotify info: {spotify_info}")
+
+            user_info = {
+                'user_id': spotify_info.get('id'),
+                'display_name': spotify_info.get('display_name'),
+                'profile_url': (spotify_info.get('images')[0].get('url') 
+                        if spotify_info.get('images') else None)
+            }
         
         return user_info
     
