@@ -125,13 +125,13 @@ def refresh_token(session_id):
             response = post(TOKEN_URL, data=request_data)
 
             if response.status_code != 200:
-                logging.error(f"Error from Spotify token endpoint: {response.text}")
+                print(f"Error from Spotify token endpoint: {response.text}")
                 return None
 
             try:
                 response_data = response.json()
             except ValueError as e:
-                logging.error(f"JSON decode error: {str(e)}; Response text: {response.text}")
+                print(f"JSON decode error: {str(e)}; Response text: {response.text}")
                 return None
 
             access_token = response_data.get('access_token')
