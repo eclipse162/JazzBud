@@ -9,12 +9,11 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 def handle_tracks(tracks):
     lo_tracks = []
     for track in tracks:
-        for artist in track['artists']:
-            lo_tracks.append({
-                'artist': ', '.join(artist['name']),
-                'artist_id': ', '.join(artist['id'])
-            })
+        artist_names = [artist['name'] for artist in track['artists']]
+        artist_ids = [artist['id'] for artist in track['artists']]
         lo_tracks.append({
+            'artist': ', '.join(artist_names),
+            'artist_id': ', '.join(artist_ids),
             'spotify_song_id': track['id'],
             'title': track['name'],
             'album': track['album']['name'],
@@ -27,16 +26,14 @@ def handle_tracks(tracks):
 
 def handle_albums(albums):
     lo_albums = []
-
     for album in albums:
-        for artist in album['artists']:
-            lo_albums.append({
-                'artist': ', '.join(artist['name']),
-                'artist_id': ', '.join(artist['id'])
-            })
+        artist_names = [artist['name'] for artist in album['artists']]
+        artist_ids = [artist['id'] for artist in album['artists']]
         lo_albums.append({
+            'artist': ', '.join(artist_names),
+            'artist_id': ', '.join(artist_ids),
             'spotify_album_id': album['id'],
-            'cover': album['images'][1]['url'],
+            'cover': album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url'],
             'title': album['name'],
             'release_year': album['release_date'][:4]
         })
