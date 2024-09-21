@@ -125,7 +125,9 @@ def spotify_redirect(request):
         request.session.create()
         auth_key = request.session.session_key
 
-    create_token(access_token, refresh_token, expires_in, token_type)
+    with get_db() as db:
+        create_token(db, access_token, refresh_token, expires_in, token_type)
+        db.commit()
 
     # Create a redirect url to the current song details
     redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={auth_key}"
@@ -153,23 +155,23 @@ class ConfirmAuth(APIView):
             key = self.request.session.session_key
         print(f'Session key: {key}', flush=True)
 
-        auth_status, access_token = check_authentication(key, session)
-        print(f'Auth status: {auth_status}, Access token: {access_token}')
-
-        if auth_status:
-            user_info = self.get_user(access_token)
-            if user_info and user_info["type"] == "user":
-                user_id = user_info['id']
-                user_name = user_info['display_name']
-                user_pfp = user_info['images'][0]['url']
-                print(f'User ID: {user_id}, User Name: {user_name}', flush=True)
+        with get_db() as db:
+            auth_status, access_token = check_authentication(key, session)
+            print(f'Auth status: {auth_status}, Access token: {access_token}')
+            if auth_status:
+                user_info = get_user(db, access_token)
+                if user_info and user_info["type"] == "user":
+                    user_id = user_info['id']
+                    user_name = user_info['display_name']
+                    user_pfp = user_info['images'][0]['url']
+                    print(f'User ID: {user_id}, User Name: {user_name}', flush=True)
+                else:
+                    print('User info retrieval failed or incorrect user type.', flush=True)
+                redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={key}"
+                return HttpResponseRedirect(redirect_url)
             else:
-                print('User info retrieval failed or incorrect user type.', flush=True)
-            redirect_url = f"http://127.0.0.1:8000/jazzbud/check-auth?key={key}"
-            return HttpResponseRedirect(redirect_url)
-        else:
-            redirect_url = f"http://127.0.0.1:8000/jazzbud/auth_url"
-            return HttpResponseRedirect(redirect_url)
+                redirect_url = f"http://127.0.0.1:8000/jazzbud/auth_url"
+                return HttpResponseRedirect(redirect_url)
         
 class CurrentSong(APIView):
     kwarg = "key"

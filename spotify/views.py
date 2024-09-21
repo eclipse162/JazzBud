@@ -134,6 +134,9 @@ def refresh_user(db, session_id):
 
     if user: 
         token = get_token(db, user.user_id)
+        if not token:
+            return False
+        
         expiry_time = token.expires_in
 
         if expiry_time.tzinfo is None:

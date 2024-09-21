@@ -1,4 +1,5 @@
 import os
+import logging
 from datetime import timedelta
 from django.utils import timezone
 from sqlalchemy import create_engine
@@ -75,15 +76,26 @@ def get_song_collections(db, song_id):
 def get_segment(db, segment_id):
     return db.query(Segment).filter(Segment.segment_id == segment_id).first()
 
-def get_token(db, user_id):
-    user = db.query(User).filter(User.user_id == user_id).first()
+# def get_token(db, user_id):
+#     logging.info(f'Getting token for user {user_id}')
+#     user = db.query(User).filter(User.user_id == user_id).first()
 
-    if user and user.token:
-        return user.token
+#     if user and user.token:
+#         logging.info(f'Token found for user {user_id}')
+#         return user.token
         
+#     else:
+#         print('No token found for the user', flush=True)
+#         return None
+
+def get_token(db, user_id):
+    logging.info(f"Fetching token for user_id: {user_id}")
+    token = db.query(Token).filter_by(user_id=user_id).first()
+    if token:
+        logging.info(f"Token found: {token}")
     else:
-        print('No token found for the user', flush=True)
-        return None
+        logging.warning(f"No token found for user_id: {user_id}")
+    return token
 
 # Update operations
 def update_user(db, user_id, spotify_user_id=None, username=None, display_name=None, is_authenticated=None, token=None):
