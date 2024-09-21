@@ -103,9 +103,10 @@ def auth_callback(request, format=None):
         request.session.create()
     session_id = request.session.session_key
 
-    user = get_spotify_user(db, spotify_user_id)
 
     with get_db() as db:
+        user = get_spotify_user(db, spotify_user_id)
+        
         if user:
             user.session_id = session_id
             user.is_authenticated = True
