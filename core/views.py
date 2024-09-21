@@ -1,18 +1,18 @@
-from django.shortcuts import render, redirect
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
-from rest_framework.views import APIView
-from rest_framework.permissions import  AllowAny
-from django.http import HttpResponseRedirect
-from requests import Request, post
-from .extras import *
-from .search import *
-from db.crud import get_token, create_token
-from spotify.views import refresh_user
-
 import requests
+import logging
 
+from .search import *
+from .extras import *
+from rest_framework import status
+from requests import Request, post
+from spotify.views import refresh_user
+from rest_framework.views import APIView
+from db.crud import get_token, create_token
+from django.http import HttpResponseRedirect
+from rest_framework.response import Response
+from django.shortcuts import render, redirect
+from rest_framework.permissions import  AllowAny
+from rest_framework.viewsets import GenericViewSet
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -63,6 +63,11 @@ def search(request):
         ar_data = response.get('artists', {})
         artists = ar_data.get('items', [])
         lo_artists = handle_artists(artists)
+
+        logging.info(f"Query: {query}")
+        logging.info(f"Tracks: {lo_tracks}")
+        logging.info(f"Albums: {lo_albums}")
+        logging.info(f"Artists: {lo_artists}")
 
         return render(request, 'core/search.html', {
             'query': query,

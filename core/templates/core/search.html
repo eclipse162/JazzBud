@@ -2,24 +2,7 @@
 {% load static %}
 {% block title %}Search{% endblock %}
 {% block content %}
-<!-- <div class="home_page_body" id="search_results_section">
-  {% if query %}
-    <div>
-      <h1>Searched for... {{ query }}</h1>
-      <h3>Song Details:</h3>
-      {% for key, value in song_results.items %}
-        <p>{{ key.capitalize }}: {{ value }}</p>
-      {% endfor %}
-    </div>
 
-  {% else %}
-    <div>
-      <h1>No song found with that URL. Try searching for a song again.</h1>
-    </div>
-  {% endif %}
-</div>
-
-{% endblock %} -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +10,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Search Results for "{{ query }}"</h1>

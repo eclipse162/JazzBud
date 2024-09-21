@@ -124,10 +124,10 @@ def auth_callback(request, format=None):
                     token_type)
 
         update_user(db, user.user_id, token=new_token)
+        
         db.commit()
         db.refresh(user)
-
-    authenticate_user(request.session, user.user_id)
+        authenticate_user(request.session, user.user_id)
     return redirect('core:home')
 
 def refresh_user(db, session_id):
