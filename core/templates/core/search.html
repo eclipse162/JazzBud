@@ -47,7 +47,7 @@
       color: #aaa;
   }
 
-  .artist-card {
+  .artist-card, .album-card {
     width: 200px;
     height: 255px;
     background-color: #181818;
@@ -163,7 +163,7 @@
       {% if artists %}
           {% for artist in artists %}
               <div class="artist-card">
-                  <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;">
+                  <img src="{{ artist.cover }}" alt="{{ zanewins.jpeg }}" style="width:150px; height:150px; border-radius:50%;">
                   <div class="artist-info">
                       <div class="artist-name">{{ artist.name }}</div>
                       <div class="artist-title">Artist</div>
@@ -196,7 +196,7 @@
   <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
       {% if albums %}
           {% for album in albums %}
-              <div class="category-card">
+              <div class="album-card">
                   <a style="text-decoration: none; color: white;" href="/album/{{ album.spotify_album_id }}">
                     <div class="album-content"></div>
                       <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
