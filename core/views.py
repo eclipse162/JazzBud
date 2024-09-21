@@ -57,7 +57,7 @@ def search(request):
 
         headers = {'Content-Type' : 'application/json', 
                'Authorization' : 'Bearer ' + token.access_token}
-        response = requests.get(endpoint, headers=headers, params=params)
+        response = requests.get(endpoint, headers=headers, params=params).json()
         print(f"SPOTIFY RESPONSE: {response}")
 
         if "error" in response:
