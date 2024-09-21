@@ -31,6 +31,7 @@ def search(request):
     if request.method == "POST":
         query = request.POST['query']
         session_id = request.session.session_key
+        print(f"Session ID: {session_id}")
 
         if session_id is None:
             return redirect('core:login')
@@ -48,7 +49,7 @@ def search(request):
         }
 
         response = spotify_request_send(request.session, session_id, endpoint, params=params)
-        print(response, flush=True)
+        print(f"SPOTIFY RESPONSE: {response}")
 
         if "error" in response:
             return Response({}, status=status.HTTP_204_NO_CONTENT)
