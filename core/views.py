@@ -49,14 +49,14 @@ def search(request):
             
             
         endpoint = "https://api.spotify.com/v1/search"
-        headers = {'Authorization': f'Bearer {token}'}
+        headers = {'Authorization': f'Bearer {token.access_token}'}
         params = {
             'q': query,
             'type': 'track,artist,album',
             'limit': 5
         }
         
-        sp = spotipy.Spotify(auth=token)
+        sp = spotipy.Spotify(auth=token.access_token)
         results = sp.search(q=query, type='track,artist,album', limit=5)
         print("SPOTIPY RESULTS: ", results)
 
