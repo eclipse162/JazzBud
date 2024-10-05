@@ -145,10 +145,14 @@
         class="w-48 h-48 md:w-64 md:h-64 album-cover" />
     </div>
     <!-- Album Info -->
+    <a href="{% url 'artist_page' artist.name|custom_slugify artist.artist_id %}">
     <div>
       <h1 class="text-4xl font-bold mb-2">{{ album.title }}</h1>
       <p class="text-lg text-gray-400 mb-2">
-        {{ album.artist }} &middot; {{ album.release_year }}
+        <a href="{% url 'artist_page' album.artist|custom_slugify album.artist_id %}" class="hover:underline">
+          {{ album.artist }}
+        </a>
+        &middot; {{ album.release_year }}
       </p>
     </div>
   </div>
