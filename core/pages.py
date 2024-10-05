@@ -28,8 +28,10 @@ def populate_album(album_id):
     album_full = album_data['album']
     track_full = album_data['tracks']['items']
 
+    print(f"Album Full: {album_full}")
+
     tracklist = handle_album_tracks(track_full)
-    album = handle_albums(album_full)[0]
+    album = (handle_albums(album_full))[0]
     album['tracklist'] = tracklist
 
     return album
