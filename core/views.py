@@ -82,14 +82,16 @@ def search(request):
     
 def artist_page(request, artist_name, artist_id):
     artist = populate_artist(artist_id)
-    html_content = render(request, 'core/artist_page.html', {'artist': artist, 'artist_name': artist_name}).content
+    artist_unformatted = artist['name']
+    html_content = render(request, 'core/artist_page.html', {'artist': artist, 'artist_name': artist_unformatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
 
 def album_page(request, artist_name, album_name, album_id):
     album = populate_album(album_id)
-    html_content = render(request, 'core/album_page.html', {'album': album, 'album_name': album_name}).content
+    album_unformatted = album['name']
+    html_content = render(request, 'core/album_page.html', {'album': album, 'album_name': album_unformatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
