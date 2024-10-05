@@ -130,10 +130,11 @@
   }
 
   .artist-banner {
-    height: 60vh; /* Height of the banner */
+    height: 30vh; /* Height of the banner */
     display: flex;
     align-items: center;
-    background: linear-gradient(to right, #191919 70%, transparent);
+    background: linear-gradient(to right, #000000 70%, transparent), url('path/to/artist-image.jpg');
+    background-size: cover;
     padding-left: 5%; /* Adds some space for the artist name */
     position: relative;
   }
@@ -146,20 +147,6 @@
       left: 5%; /* Keeps the artist name on the left side */
       z-index: 1; /* Ensures the text is above the gradient and image */
   }
-
-  .image-container {
-      width: 30%; /* 30% width for the image */
-      display: flex;
-      justify-content: flex-end;
-      position: absolute;
-      right: 0; /* Ensures the image sticks to the right */
-  }
-
-  .image-container img {
-      width: 100%;
-      height: auto;
-      object-fit: cover; /* Keeps the image proportional */
-  }
 </style>
 
 
@@ -167,12 +154,9 @@
 
   <div class="artist-banner">
     <div class="artist-name">
-      {{ artist.name }}
+        {{ artist.name }}
     </div>
-    <div class="image-container">
-      <img src="{{ artist.cover }}" alt="{{ artist.name }}" alt="Artist Image">
-    </div>
-  </div>
+</div>
 
   <div class="p-5">
     <br>

@@ -29,6 +29,7 @@
     border-radius: 10px;
     object-fit: cover;
     margin-right: 10px;
+    border: 2px solid #b6b5b5;
   }
 
   .album-info {
@@ -139,7 +140,7 @@
       <img
         src="{{ album.cover }}"
         alt="{{ album.name }}"
-        class="w-48 h-48 md:w-64 md:h-64" />
+        class="w-48 h-48 md:w-64 md:h-64 album-cover" />
     </div>
     <!-- Album Info -->
     <div>
@@ -163,7 +164,7 @@
           </div>
         </div>
         <div class="text-gray-400">
-          {{ track.duration_ms|ms_to_minutes_seconds }}
+          {{ track.track_length|ms_to_minutes_seconds }}
         </div>
       </div>
       {% endfor %}
