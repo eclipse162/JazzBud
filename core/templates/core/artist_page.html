@@ -158,7 +158,7 @@
     {% if artist.albums %}
       {% for album in artist.albums %}
         <div class="album-card">
-          <a href="{% url 'album_page' artist.title|custom_slugify album.title|custom_slugify album.album_id %}">
+          <a href="{% url 'album_page' artist.name|custom_slugify album.title|custom_slugify album.album_id %}">
             <div class="album-content"></div>
             <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
             <div class="album-cover">

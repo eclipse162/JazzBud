@@ -89,11 +89,11 @@ def artist_page(request, artist_name, artist_id):
     response['Content-Type'] = 'text/html'
     return response
 
-def album_page(request, artist_name, album_name, album_id):
+def album_page(request, artist_name, album_title, album_id):
     album = populate_album(album_id)
-    album_formatted = album['name']
+    album_formatted = album['title']
     
-    html_content = render(request, 'core/album_page.html', {'album': album, 'album_name': album_formatted}).content
+    html_content = render(request, 'core/album_page.html', {'album': album, 'album_title': album_formatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
