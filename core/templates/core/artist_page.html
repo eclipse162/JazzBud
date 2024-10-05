@@ -133,10 +133,29 @@
     height: 30vh; /* Height of the banner */
     display: flex;
     align-items: center;
-    background: linear-gradient(to right, #000000 70%, transparent), url('{{ album.cover }}');
-    background-size: cover;
-    padding-left: 5%; /* Adds some space for the artist name */
+    justify-content: flex-start;
     position: relative;
+    padding-left: 5%; /* Adds some space for the artist name */
+    overflow: hidden; /* Ensure content doesn't overflow */
+  }
+
+  .artist-banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 70%; /* Adjust the width of the gradient */
+      height: 100%;
+      background: linear-gradient(to right, #000000 70%, transparent);
+      z-index: 1; /* Ensure the gradient is above the image */
+  }
+
+  .artist-banner img {
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      right: 5%;
+      z-index: 0; /* Ensure the image is below the gradient */
   }
 
   .artist-name {
@@ -153,10 +172,11 @@
 <main style="padding-top:20px;">
 
   <div class="artist-banner">
+    <img src="{{ album.cover }}" alt="{{ artist.name }}">
     <div class="artist-name">
         {{ artist.name }}
     </div>
-</div>
+  </div>
 
   <div class="p-5">
     <br>
