@@ -13,11 +13,11 @@ def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
     related_artists = handle_artists(artist_data['related']['artists'])
 
-    top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:4])
+    top_tracks = handle_album_tracks(artist_data['top_tracks']['tracks'][0:4])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
     artist = handle_artists([artist_data['artist']])[0]
-    artist['related'] = handle_artists(related_artists)
+    artist['related'] = related_artists
     artist['top_tracks'] = top_tracks
     artist['albums'] = handle_albums(popular_albums)
 
