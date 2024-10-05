@@ -160,59 +160,45 @@
 
   <div class="browse-all-title">Artists</div>
 
-  <section
-    style="
-      margin-top: 0px;
-      padding: 0px;
-      overflow-x: auto;
-      white-space: nowrap;
-    ">
+  <section style="margin-top: 0px; padding: 0px; overflow-x: auto; white-space: nowrap;">
     <!-- Artist Card -->
-    {% if artists %} {% for artist in artists %}
-    <div class="artist-card">
-      <form action="{% url 'core:artist_page' artist.name|custom_slugify %}" method="get" style="display: inline">
-        <input type="hidden" name="id" value="{{ artist.artist_id }}" />
-        <a href="#" onclick="this.closest('form').submit(); return false;">
-          <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width: 150px; height: 150px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
-          <div class="artist-info">
-            <div class="artist-name">{{ artist.name }}</div>
-            <div class="artist-title">Artist</div>
-          </div>
-        </a>
-      </form>
-    </div>
-    {% endfor %} {% else %}
-    <p>No artists found</p>
-    {% endif %}
-  </section>
-
-  <div class="browse-all-title">Albums</div>
-  <section
-    style="
-      margin-top: 0px;
-      padding: 0px;
-      overflow-x: auto;
-      white-space: nowrap;
-    ">
-    {% if albums %} {% for album in albums %}
-    <div class="album-card">
-      <form action="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}" method="get" style="display: inline">
-        <input type="hidden" name="id" value="{{ album.album_id }}" />
-        <a href="#" onclick="this.closest('form').submit(); return false;">
-          <div class="album-content">
-            <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 150px; height: 150px; border-radius: 10px" />
-            <div class="album-cover">
-              <div class="album-title">{{ album.title }}</div>
-              <div class="album-artist">{{ album.artist }}</div>
+    {% if artists %}
+        {% for artist in artists %}
+            <div class="artist-card">
+                <a href="{% url 'core:artist_page' artist.name|custom_slugify artist.artist_id %}">
+                    <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width: 150px; height: 150px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
+                    <div class="artist-info">
+                        <div class="artist-name">{{ artist.name }}</div>
+                        <div class="artist-title">Artist</div>
+                    </div>
+                </a>
             </div>
-          </div>
-        </a>
-      </form>
-    </div>
-    {% endfor %} {% else %}
-    <p>No albums found</p>
+        {% endfor %}
+    {% else %}
+        <p>No artists found</p>
     {% endif %}
-  </section>
+</section>
+
+<div class="browse-all-title">Albums</div>
+<section style="margin-top: 0px; padding: 0px; overflow-x: auto; white-space: nowrap;">
+    {% if albums %}
+        {% for album in albums %}
+            <div class="album-card">
+                <a href="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify album.album_id %}">
+                    <div class="album-content">
+                        <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 150px; height: 150px; border-radius: 10px" />
+                        <div class="album-cover">
+                            <div class="album-title">{{ album.title }}</div>
+                            <div class="album-artist">{{ album.artist }}</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No albums found</p>
+    {% endif %}
+</section>
 </main>
 
 {% endblock %}
