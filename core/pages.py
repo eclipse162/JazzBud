@@ -13,7 +13,7 @@ def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
     related_artists = handle_artists(artist_data['related']['artists'])
 
-    top_tracks = handle_album_tracks(artist_data['top_tracks']['tracks'][0:4])
+    top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:4])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
     artist = handle_artists([artist_data['artist']])[0]
@@ -70,7 +70,7 @@ def handle_album_tracks(tracks):
             'artist_id': ', '.join(artist_ids),
             'spotify_song_id': track['id'],
             'title': track['name'],
-            'track_length': track['duration_ms'] / 1000,
+            'track_length': track['duration_ms'],
             'track_number': track['track_number']
         })
     return lo_tracks

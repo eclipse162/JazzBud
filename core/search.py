@@ -79,5 +79,5 @@ def get_track_details(track_id):
         'album': track['album']['name'],
         'genre': 'N/A',  # Genre info is not always available
         'release_year': track['album']['release_date'][:4],
-        'track_length': track['duration_ms'] / 1000  # Convert milliseconds to seconds
+        'track_length': track['duration_ms']
     }
