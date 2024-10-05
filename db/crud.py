@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.utils import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, User, Song, Segment, Token, Collection
+from .models import Base, User, Song, Segment, Token, Collection, Artist, Album
 from .database import get_db
 
 # Create operations
@@ -17,6 +17,16 @@ def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, 
     new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)
     db.add(new_song)
     return new_song
+
+def create_artist(db, artist_id, name, slug):
+    new_artist = Artist(artist_id=artist_id, name=name, slug=slug)
+    db.add(new_artist)
+    return new_artist
+
+def create_album(db, album_id, name, slug, artist_id, cover):
+    new_album = Album(album_id=album_id, name=name, slug=slug, artist_id=artist_id, cover=cover)
+    db.add(new_album)
+    return new_album
 
 def create_collection(db, song_id, collection_name, collection_description):
     new_collection = Collection(song_id=song_id, collection_name=collection_name, collection_description=collection_description)
@@ -76,17 +86,17 @@ def get_song_collections(db, song_id):
 def get_segment(db, segment_id):
     return db.query(Segment).filter(Segment.segment_id == segment_id).first()
 
-# def get_token(db, user_id):
-#     logging.info(f'Getting token for user {user_id}')
-#     user = db.query(User).filter(User.user_id == user_id).first()
+def get_artist_by_slug(db, slug):
+    return db.query(Artist).filter(Artist.slug == slug).first()
 
-#     if user and user.token:
-#         logging.info(f'Token found for user {user_id}')
-#         return user.token
-        
-#     else:
-#         print('No token found for the user', flush=True)
-#         return None
+def get_album_by_slug(db, slug):
+    return db.query(Album).filter(Album.slug == slug).first()
+
+def get_album(db, album_id):
+    return db.query(Album).filter(Album.album_id == album_id).first()
+
+def get_artist(db, artist_id):
+    return db.query(Artist).filter(Artist.artist_id == artist_id).first()
 
 def get_token(db, user_id):
     logging.info(f"Fetching token for user_id: {user_id}")
@@ -131,6 +141,28 @@ def update_song(db, song_id, spotify_song_id=None, title=None, artist=None, albu
         if track_length:
             song.track_length = track_length
     return song
+
+def update_artist(db, artist_id, name=None, slug=None):
+    artist = db.query(Artist).filter(Artist.artist_id == artist_id).first()
+    if artist:
+        if name:
+            artist.name = name
+        if slug:
+            artist.slug = slug
+        db.commit()
+    return artist
+
+def update_album(db, album_id, name=None, slug=None, cover=None):
+    album = db.query(Album).filter(Album.album_id == album_id).first()
+    if album:
+        if name:
+            album.name = name
+        if slug:
+            album.slug = slug
+        if cover:
+            album.cover = cover
+        db.commit()
+    return album
 
 def update_collection(db, collection_id, song_id=None, collection_name=None, collection_description=None):
     collection = get_collection(db, collection_id)
@@ -184,3 +216,17 @@ def delete_collection(db, collection_id):
     if collection:
         db.delete(collection)
     return collection
+
+def delete_artist(db, artist_id):
+    artist = db.query(Artist).filter(Artist.artist_id == artist_id).first()
+    if artist:
+        db.delete(artist)
+        db.commit()
+    return artist
+
+def delete_album(db, album_id):
+    album = db.query(Album).filter(Album.album_id == album_id).first()
+    if album:
+        db.delete(album)
+        db.commit()
+    return album

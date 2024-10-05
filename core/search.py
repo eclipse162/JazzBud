@@ -1,7 +1,16 @@
 import re, os
 import spotipy
-from db.crud import create_song
+import requests
+from db.database import get_db
+from requests import request, get
+from spotify.views import refresh_user
 from spotipy.oauth2 import SpotifyClientCredentials
+
+# from django.shortcuts import render, redirect, get_object_or_404
+# from db.crud import create_album, get_album, create_artist, get_artist
+# from db.crud import create_artist, create_album, get_token, get_session_user
+# from core.extras import authenticate_user, check_authentication, spotify_request_send
+
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -32,7 +41,7 @@ def handle_albums(albums):
         lo_albums.append({
             'artist': ', '.join(artist_names),
             'artist_id': ', '.join(artist_ids),
-            'spotify_album_id': album['id'],
+            'album_id': album['id'],
             'cover': album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url'],
             'title': album['name'],
             'release_year': album['release_date'][:4]
@@ -47,7 +56,7 @@ def handle_artists(artists):
         else:
             cover = None 
         lo_artists.append({
-            'spotify_artist_id': artist['id'],
+            'artist_id': artist['id'],
             'cover': cover,
             'name': artist['name']
         })
@@ -72,20 +81,3 @@ def get_track_details(track_id):
         'release_year': track['album']['release_date'][:4],
         'track_length': track['duration_ms'] / 1000  # Convert milliseconds to seconds
     }
-
-def create_song_from_url(track_url):
-    track_id = extract_track_id(track_url)
-    if track_id:
-        track_details = get_track_details(track_id)
-
-        song = create_song(track_details['spotify_song_id'],
-                         track_details['title'],
-                         track_details['artist'],
-                         track_details['album'],
-                         track_details['genre'],
-                         track_details['release_year'],
-                         track_details['track_length'],)
-        
-        return song
-    else:
-        raise ValueError("Invalid Spotify track URL")
