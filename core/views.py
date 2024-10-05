@@ -37,18 +37,18 @@ def search(request):
         print(f"Session ID: {session_id}")
 
         if session_id is None:
-            return redirect('core:login')
+            return redirect('login')
         
         with get_db() as db:
             user = get_session_user(db, session_id)
             if user is None or not refresh_user(db, session_id):
-                return redirect('core:login')
+                return redirect('login')
             authenticate_user(request.session, user.user_id)
 
             user_id = user.user_id
             token = get_token(db, user_id)
             if token is None:
-                return redirect('core:login')
+                return redirect('login')
         
         sp = spotipy.Spotify(auth=token.access_token)
         response = sp.search(q=query, type='track,artist,album', limit=5)

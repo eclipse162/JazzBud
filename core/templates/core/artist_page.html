@@ -158,7 +158,7 @@
     {% if artist.albums %}
       {% for album in artist.albums %}
         <div class="album-card">
-          <a href="{% url 'core:album_page' artist.name|custom_slugify album.title|custom_slugify album.album_id %}">
+          <a href="{% url 'album_page' artist.name|custom_slugify album.title|custom_slugify album.album_id %}">
             <div class="album-content"></div>
             <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
             <div class="album-cover">
@@ -179,7 +179,7 @@
     {% if artist.related %}
       {% for related_artist in artist.related %}
         <div class="artist-card">
-          <a href="{% url 'core:artist_page' related_artist.name|custom_slugify related_artist.artist_id %}">
+          <a href="{% url 'artist_page' related_artist.name|custom_slugify related_artist.artist_id %}">
             <img src="{{ related_artist.cover }}" alt="{{ related_artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
             <div class="artist-info">
               <div class="artist-name">{{ related_artist.name }}</div>
