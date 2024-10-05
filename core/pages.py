@@ -29,7 +29,7 @@ def populate_album(album_id):
     album_info = album_data['album']
 
     tracklist = handle_album_tracks(track_full)
-    album = handle_albums(album_info)[0]
+    album = handle_albums(album_info)
     album['tracklist'] = tracklist
 
     return album
