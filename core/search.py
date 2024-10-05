@@ -38,11 +38,15 @@ def handle_albums(albums):
     for album in albums:
         artist_names = [artist['name'] for artist in album['artists']]
         artist_ids = [artist['id'] for artist in album['artists']]
+        if 'images' in album and album['images']:
+            cover_url = album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url']
+        else:
+            cover_url = album['cover']
         lo_albums.append({
             'artist': ', '.join(artist_names),
             'artist_id': ', '.join(artist_ids),
             'album_id': album['id'],
-            'cover': album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url'],
+            'cover': cover_url,
             'title': album['name'],
             'release_year': album['release_date'][:4]
         })
