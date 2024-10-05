@@ -2,6 +2,7 @@
 
 {% extends 'core/base.html' %}
 {% load static %}
+{% load slugify %}
 {% load custom_filters %}
 {% block title %}Search{% endblock %}
 {% block content %}
@@ -182,7 +183,7 @@
       {% if albums %}
           {% for album in albums %}
               <div class="album-card">
-                <a href="{% url 'core:album_page' album.artist_name|slugify album.title|slugify %}?id={{ album.album_id }}">
+                <a href="{% url 'core:album_page' album.artist|slugify album.title|slugify %}?id={{ album.album_id }}">
                     <div class="album-content"></div>
                       <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
                       <div class="album-cover">
