@@ -42,13 +42,19 @@ def handle_albums(albums):
             cover_url = album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url']
         else:
             cover_url = album['cover']
+
+        if 'release_date' in album:
+            release_year = album['release_date'][:4]
+        else:
+            release_year = album['release_year']
+            
         lo_albums.append({
             'artist': ', '.join(artist_names),
             'artist_id': ', '.join(artist_ids),
             'album_id': album['id'],
             'cover': cover_url,
             'title': album['name'],
-            'release_year': album['release_date'][:4]
+            'release_year': release_year
         })
     return lo_albums
 
