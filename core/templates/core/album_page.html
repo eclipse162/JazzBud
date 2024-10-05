@@ -24,11 +24,8 @@
   }
 
   .album-cover {
-    width: 120px; /* Adjust size as needed */
-    height: 120px;
-    border-radius: 10px;
+    border-radius: 4px;
     object-fit: cover;
-    margin-right: 10px;
     border: 2px solid #b6b5b5;
   }
 
@@ -131,6 +128,11 @@
     margin-left: 20px; /* Align with the padding of the grid */
     padding-top: 20px; /* Space above the title */
   }
+
+  .track-number {
+    width: 20px; /* Adjust width as needed */
+    text-align: right; /* Align text to the right */
+  }
 </style>
 
 <main style="padding-top: 20px">
@@ -145,9 +147,8 @@
     <!-- Album Info -->
     <div>
       <h1 class="text-4xl font-bold mb-2">{{ album.title }}</h1>
-      <p class="text-lg text-gray-400 mb-2">{{ album.artist }}</p>
-      <p class="text-sm text-gray-400">
-        {{ album.release_year }}
+      <p class="text-lg text-gray-400 mb-2">
+        {{ album.artist }} &middot; {{ album.release_year }}
       </p>
     </div>
   </div>
@@ -159,8 +160,11 @@
       {% for track in album.tracklist %}
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center space-x-4">
+          <div class="track-number text-gray-400">
+            {{ track.track_number }}
+          </div>
           <div>
-            <p class="text-base font-medium">{{ track.title }}</p>
+            <p class="text-base font-medium"> {{ track.title }}</p>
           </div>
         </div>
         <div class="text-gray-400">
