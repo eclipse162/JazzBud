@@ -80,13 +80,11 @@ def search(request):
     else:
         return render(request, 'core/search.html', {})
     
-def artist_page(request, artist_name):
-    artist_id = request.GET.get('id')
+def artist_page(request, artist_name, artist_id):
     artist = populate_artist(artist_id)
     
     return render(request, 'core/artist_page.html', {'artist': artist}, {'artist_name': artist_name})
 
-def album_page(request, album_name):
-    album_id = request.GET.get('id')
+def album_page(request, artist_name, album_name, album_id):
     album = populate_album(album_id)
     return render(request, 'core/album_page.html', {'album': album}, {'album_name': album_name})
