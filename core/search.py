@@ -29,7 +29,7 @@ def handle_tracks(tracks):
             'album_id': track['album']['id'],
             'cover': track['album']['images'][1]['url'] if len(track['album']['images']) > 1 else track['album']['images'][0]['url'],
             'release_year': track['album']['release_date'][:4] if 'release_date' in track['album'] else 'Unknown',
-            'track_length': track['duration_ms'] / 1000
+            'track_length': track['duration_ms']
         })
     return lo_tracks
 

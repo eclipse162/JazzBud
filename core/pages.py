@@ -80,16 +80,27 @@ def sort_albums(tracks, albums):
     album_ids = set()
 
     for track in tracks:
-        album = track['album']
-        if album['id'] not in album_ids:
-            popular_albums.append(album)
-            album_ids.add(album['id'])
+        id = track['album_id']
+        name = track['album']
+        if id not in album_ids:
+            popular_albums.append({
+                'id': id,
+                'name': name,
+                'cover': track['cover'],
+                'release_year': track['release_year']
+            })
+            album_ids.add(id)
 
     for album in albums:
         if len(popular_albums) >= 4:
             break
         if album['id'] not in album_ids:
-            popular_albums.append(album)
+            popular_albums.append({
+                'id': album['id'],
+                'name': album['name'],
+                'cover': album['images'][0]['url'],
+                'release_year': album['release_date'][:4]
+            })
             album_ids.add(album['id'])
 
     return popular_albums
