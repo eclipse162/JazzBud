@@ -89,7 +89,7 @@ def sort_albums(tracks, albums):
                 'name': album_name,
                 'cover': track['cover'],
                 'release_year': track['release_year'],
-                'artists': [{'name': track['artist']}]
+                'artists': [{'name': track['artist'], 'id': track['artist_id']}]
             })
             album_ids.add(album_id)
 
@@ -103,7 +103,7 @@ def sort_albums(tracks, albums):
                 'name': album['name'],
                 'cover': album['images'][0]['url'],
                 'release_year': album['release_date'][:4] if 'release_date' in album else 'Unknown',
-                'artists': album['artists']
+                'artists': [{'name': artist['name'], 'id': artist['id']} for artist in album['artists']]
             })
             album_ids.add(album['id'])
 
