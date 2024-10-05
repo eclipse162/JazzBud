@@ -139,15 +139,15 @@
     overflow: hidden; /* Ensure content doesn't overflow */
   }
 
-  .artist-banner::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 70%; /* Adjust the width of the gradient */
-      height: 100%;
-      background: linear-gradient(to right, #000000 70%, transparent);
-      z-index: 1; /* Ensure the gradient is above the image */
+  .artist-banner {
+    height: 30vh; /* Height of the banner */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding-left: 5%; /* Adds some space for the artist name */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    background: linear-gradient(to right, #000000 50%, transparent); /* Adjust the gradient */
   }
 
   .artist-banner img {
