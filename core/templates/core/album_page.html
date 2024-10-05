@@ -1,0 +1,172 @@
+{% extends 'core/base.html' %} {% load static %} {% load custom_filters %} {%
+block title %}Album Page{% endblock %} {% block content %}
+
+<style>
+  body {
+    color: white;
+    font-size: 18px;
+  }
+  h1,
+  h2 {
+    color: white;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .album-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .album-cover {
+    width: 120px; /* Adjust size as needed */
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .album-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .album-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .album-artist {
+    font-size: 14px;
+    color: #aaa;
+  }
+
+  .artist-card,
+  .album-card {
+    width: 200px;
+    height: 255px;
+    background-color: #181818;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 0 5px 20px;
+    display: inline-block;
+  }
+
+  .artist-card img {
+    margin-top: 10px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+
+  .artist-card .artist-name {
+    font-size: 18px;
+    color: #fff;
+    margin-top: 8px;
+  }
+
+  .artist-card .artist-title {
+    font-size: 13px;
+    color: #b3b3b3;
+  }
+
+  .content h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .browse-all {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 115px;
+    padding: 10px;
+    background-color: #121212; /* or any other color you prefer */
+  }
+
+  .category-card {
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    background: #181818;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    height: 240px;
+    width: 220px;
+  }
+
+  .category-card img {
+    width: 100%;
+    height: auto;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .category-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  /* Add more specific styles for badges if needed */
+  .browse-all-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 20px; /* Align with the padding of the grid */
+    padding-top: 20px; /* Space above the title */
+  }
+</style>
+
+<main style="padding-top: 20px">
+  <div class="flex flex-col md:flex-row items-start md:items-center p-5">
+    <!-- Album Cover -->
+    <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+      <img
+        src="{{ album_data.images.0.url }}"
+        alt="{{ album_data.name }}"
+        class="w-48 h-48 md:w-64 md:h-64" />
+    </div>
+    <!-- Album Info -->
+    <div>
+      <h1 class="text-4xl font-bold mb-2">{{ album_data.name }}</h1>
+      <p class="text-lg text-gray-400 mb-2">{{ album_data.artists.0.name }}</p>
+      <p class="text-sm text-gray-400">
+        {{ album_data.release_date|date:"Y" }}
+      </p>
+    </div>
+  </div>
+
+  <div class="p-5">
+    <h2 class="text-2xl font-bold mb-4">Tracks</h2>
+    <div class="divide-y divide-gray-800">
+      <!-- Single Track Row -->
+      {% for track in album_data.tracks.items %}
+      <div class="flex justify-between items-center py-3">
+        <div class="flex items-center space-x-4">
+          <div>
+            <p class="text-base font-medium">{{ track.name }}</p>
+            <p class="text-xs text-gray-400">{{ track.artists.0.name }}</p>
+          </div>
+        </div>
+        <div class="text-gray-400">
+          {{ track.duration_ms|ms_to_minutes_seconds }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+
+{% endblock %}

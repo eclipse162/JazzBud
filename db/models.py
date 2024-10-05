@@ -47,7 +47,6 @@ class Album(Base):
     album_id = Column(String(255))
     name = Column(String(255), nullable=False)
     slug = Column(String(255), unique=True, nullable=False)
-    artist_id = Column((String(100)), ForeignKey('artists.artist_id'), nullable=False)
     artist = relationship("Artist", back_populates="albums")
     cover = Column(String(255))
 class Song(Base):
