@@ -162,6 +162,8 @@
       <!-- Artist Card -->
       {% if artists %}
           {% for artist in artists %}
+          <pre>Original: {{ artist.name|default:"No name" }}</pre>
+            <pre>Slugified: {{ artist.name|custom_slugify }}</pre>
               <div class="artist-card">
                 <a href="{% url 'core:artist_page' artist.name|custom_slugify %}?id={{ artist.artist_id }}">
                   <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
@@ -181,6 +183,9 @@
   <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
       {% if albums %}
           {% for album in albums %}
+          <pre>Original: {{ album.artist_name|default:"No artist" }}</pre>
+            <pre>Slugified: {{ album.artist_name|custom_slugify }}</pre>
+            <pre>{{ album.title|default:"No title" }} by {{ album.artist_name|default:"No artist" }}</pre>
               <div class="album-card">
                 <a href="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}?id={{ album.album_id }}">
                     <div class="album-content"></div>
