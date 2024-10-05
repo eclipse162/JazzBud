@@ -1,9 +1,7 @@
-
-
 {% extends 'core/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %} {{ artist_name }} {% endblock %}
+{% block title %} {{ artist_name }} | JazzBud{% endblock %}
 {% block content %}
 
 <style>
@@ -133,20 +131,19 @@
 </style>
 
 <main style="padding-top:20px;">
-
   <div class="p-5">
     <br>
-    <h2 class="text-2xl font-bold mb-4">Top Tracks"</h2>
+    <h2 class="text-2xl font-bold mb-4">Top Tracks</h2>
     <div class="divide-y divide-gray-800">
       <!-- Single Track Row -->
       {% for track in artist.top_tracks %}
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center space-x-4">
-          <img src="{{track.cover}}" alt="{{track.title}}" class="w-12 h-12">
+          <img src="{{ track.cover }}" alt="{{ track.title }}" class="w-12 h-12">
           <div>
-            <a href="/music/{{track.spotify_song_id}}">
-              <p class="text-base font-medium">{{track.title}}</p>
-              <p class="text-xs text-gray-400">{{track.artist}}</p>
+            <a href="/music/{{ track.spotify_song_id }}">
+              <p class="text-base font-medium">{{ track.title }}</p>
+              <p class="text-xs text-gray-400">{{ track.artist }}</p>
             </a>
           </div>
         </div>
@@ -157,46 +154,45 @@
   </div>
 
   <div class="browse-all-title">Discography</div>
-  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
-      {% if artist.albums %}
-          {% for album in artist.albums %}
-              <div class="album-card">
-                <a href="{% url 'core:album_page' artist.name|custom_slugify album.title|custom_slugify %}?id={{ album.album_id }}">
-                    <div class="album-content"></div>
-                      <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
-                      <div class="album-cover">
-                        <div class="album-title">{{ album.title }}</div>
-                        <div class="album-artist">{{ album.artist }}</div>
-                      </div>
-                    </div>
-                  </a>
-              </div>
-          {% endfor %}
-      {% else %}
-          <p>No albums found</p>
-      {% endif %}
-    </section>
+  <section style="margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
+    {% if artist.albums %}
+      {% for album in artist.albums %}
+        <div class="album-card">
+          <a href="{% url 'core:album_page' artist.name|custom_slugify album.title|custom_slugify %}?id={{ album.album_id }}">
+            <div class="album-content"></div>
+            <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
+            <div class="album-cover">
+              <div class="album-title">{{ album.title }}</div>
+              <div class="album-artist">{{ album.artist }}</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No albums found</p>
+    {% endif %}
+  </section>
 
   <div class="browse-all-title">Related Artists</div>
-
-  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
-      <!-- Artist Card -->
-      {% if artist.related %}
-          {% for artist in artist.related %}
-              <div class="artist-card">
-                <a href="{% url 'core:artist_page' artist.name|custom_slugify %}?id={{ artist.artist_id }}">
-                  <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
-                  <div class="artist-info">
-                      <div class="artist-name">{{ artist.name }}</div>
-                      <div class="artist-title">Artist</div>
-                  </div>
-                </a>
-              </div>
-          {% endfor %}
-      {% else %}
-          <p>No artists found</p>
-      {% endif %}
+  <section style="margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
+    <!-- Artist Card -->
+    {% if artist.related %}
+      {% for related_artist in artist.related %}
+        <div class="artist-card">
+          <a href="{% url 'core:artist_page' related_artist.name|custom_slugify %}?id={{ related_artist.artist_id }}">
+            <img src="{{ related_artist.cover }}" alt="{{ related_artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
+            <div class="artist-info">
+              <div class="artist-name">{{ related_artist.name }}</div>
+              <div class="artist-title">Artist</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No related artists found</p>
+    {% endif %}
   </section>
 </main>
 
+<script src="{% static 'js/base.js' %}"></script>
 {% endblock %}
