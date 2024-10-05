@@ -80,16 +80,16 @@ def sort_albums(tracks, albums):
     album_ids = set()
 
     for track in tracks:
-        id = track['album_id']
+        album_id = track['album_id']
         name = track['album']
-        if id not in album_ids:
+        if album_id not in album_ids:
             popular_albums.append({
-                'id': id,
+                'id': album_id,
                 'name': name,
                 'cover': track['cover'],
                 'release_year': track['release_year']
             })
-            album_ids.add(id)
+            album_ids.add(album_id)
 
     for album in albums:
         if len(popular_albums) >= 4:
@@ -99,7 +99,42 @@ def sort_albums(tracks, albums):
                 'id': album['id'],
                 'name': album['name'],
                 'cover': album['images'][0]['url'],
-                'release_year': album['release_date'][:4]
+                'release_year': album['release_date'][:4],
+                'artists': album['artists']
+            })
+            album_ids.add(album['id'])
+
+    return popular_albums
+
+def sort_albums(tracks, albums):
+    popular_albums = []
+    album_ids = set()
+
+    # Add albums from tracks
+    for track in tracks:
+        album_id = track['album_id']
+        album_name = track['album']
+        if album_id not in album_ids:
+            popular_albums.append({
+                'id': album_id,
+                'name': album_name,
+                'cover': track['cover'],
+                'release_year': track['release_year'],
+                'artists': [{'name': track['artist']}]
+            })
+            album_ids.add(album_id)
+
+    # Add remaining albums if less than 4
+    for album in albums:
+        if len(popular_albums) >= 4:
+            break
+        if album['id'] not in album_ids:
+            popular_albums.append({
+                'id': album['id'],
+                'name': album['name'],
+                'cover': album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url'],
+                'release_year': album['release_date'][:4] if 'release_date' in album else 'Unknown',
+                'artists': album['artists']
             })
             album_ids.add(album['id'])
 
