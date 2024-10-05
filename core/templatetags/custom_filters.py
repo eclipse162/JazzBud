@@ -1,5 +1,6 @@
 # core/custom_filters.py
 from django import template
+from django.utils.text import slugify
 
 register = template.Library()
 
@@ -13,3 +14,7 @@ def ms_to_minutes_seconds(ms):
         return f"{minutes}:{seconds:02d}"
     except (ValueError, TypeError):
         return "3:00"
+    
+@register.filter
+def custom_slugify(value):
+    return slugify(value)
