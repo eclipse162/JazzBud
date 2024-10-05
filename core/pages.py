@@ -11,12 +11,12 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
-    artist = handle_artists([artist_data['artist']])[0]
     related_artists = handle_artists(artist_data['related']['artists'])
 
     top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:4])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
+    artist = handle_artists([artist_data['artist']])[0]
     artist['related'] = related_artists
     artist['top_tracks'] = top_tracks
     artist['albums'] = handle_albums(popular_albums)
@@ -79,26 +79,32 @@ def sort_albums(tracks, albums):
     popular_albums = []
     album_ids = set()
 
+    # Add albums from tracks
     for track in tracks:
         album_id = track['album_id']
-        name = track['album']
+        album_name = track['album']
         if album_id not in album_ids:
             popular_albums.append({
                 'id': album_id,
-                'name': name,
+                'name': album_name,
                 'cover': track['cover'],
                 'release_year': track['release_year'],
-                'artist': track['artist'],
-                'artist_id': track['artist_id']
+                'artists': [{'name': track['artist']}]
             })
             album_ids.add(album_id)
 
+    # Add remaining albums if less than 4
     for album in albums:
         if len(popular_albums) >= 4:
             break
-
         if album['id'] not in album_ids:
-            popular_albums.append(album)
+            popular_albums.append({
+                'id': album['id'],
+                'name': album['name'],
+                'cover': album['images'][0]['url'],
+                'release_year': album['release_date'][:4] if 'release_date' in album else 'Unknown',
+                'artists': album['artists']
+            })
             album_ids.add(album['id'])
 
     return popular_albums
