@@ -11,7 +11,7 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
-    related_artists = handle_artists(artist_data['related']['artists'])
+    related_artists = handle_artists(artist_data['related']['artists'])[0:5]
 
     top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:5])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
@@ -95,7 +95,7 @@ def sort_albums(tracks, albums):
 
     # Add remaining albums if less than 4
     for album in albums:
-        if len(popular_albums) >= 4:
+        if len(popular_albums) >= 5:
             break
         if album['id'] not in album_ids:
             popular_albums.append({
