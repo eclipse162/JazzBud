@@ -1,4 +1,5 @@
 # core/custom_filters.py
+import re
 from django import template
 from django.utils.text import slugify
 
