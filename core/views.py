@@ -14,7 +14,7 @@ from db.crud import get_token, create_token
 from rest_framework.response import Response
 from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -82,9 +82,14 @@ def search(request):
     
 def artist_page(request, artist_name, artist_id):
     artist = populate_artist(artist_id)
-    
-    return render(request, 'core/artist_page.html', {'artist': artist}, {'artist_name': artist_name})
+    html_content = render(request, 'core/artist_page.html', {'artist': artist, 'artist_name': artist_name}).content
+    response = HttpResponse(html_content)
+    response['Content-Type'] = 'text/html'
+    return response
 
 def album_page(request, artist_name, album_name, album_id):
     album = populate_album(album_id)
-    return render(request, 'core/album_page.html', {'album': album}, {'album_name': album_name})
+    html_content = render(request, 'core/album_page.html', {'album': album, 'album_name': album_name}).content
+    response = HttpResponse(html_content)
+    response['Content-Type'] = 'text/html'
+    return response
