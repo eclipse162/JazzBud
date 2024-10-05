@@ -16,7 +16,7 @@ def populate_artist(artist_id):
     top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:4])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
-    artist = handle_artists(artist_data['artist'])[0]
+    artist = handle_artists([artist_data['artist']])[0]
     artist['related'] = handle_artists(related_artists)
     artist['top_tracks'] = top_tracks
     artist['albums'] = handle_albums(popular_albums)
@@ -42,6 +42,7 @@ def handle_artists(artists):
             'cover': artist['images'][0]['url'],
             'name': artist['name']
         })
+    return lo_artists
 
 def retrieve_artist_data(artist_id):
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
@@ -76,17 +77,19 @@ def handle_album_tracks(tracks):
 
 def sort_albums(tracks, albums):
     popular_albums = []
-    n = 0
+    album_ids = set()
 
     for track in tracks:
         album = track['album']
-        if album['id'] not in popular_albums:
-            popular_albums[n] = album
-            n += 1
+        if album['id'] not in album_ids:
+            popular_albums.append(album)
+            album_ids.add(album['id'])
 
-    if n < 4:
-        for album in albums:
-            if album['id'] not in popular_albums:
-                popular_albums[n] = album
+    for album in albums:
+        if len(popular_albums) >= 4:
+            break
+        if album['id'] not in album_ids:
+            popular_albums.append(album)
+            album_ids.add(album['id'])
 
     return popular_albums

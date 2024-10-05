@@ -38,12 +38,13 @@
 
   .album-title {
     font-size: 18px;
-    font-weight: bold;
+    color: #fff;
+    margin-top: 8px;
   }
 
   .album-artist {
-    font-size: 14px;
-    color: #aaa;
+    font-size: 13px;
+    color: #b3b3b3;
   }
 
   .artist-card,
@@ -169,17 +170,10 @@
     <!-- Artist Card -->
     {% if artists %} {% for artist in artists %}
     <div class="artist-card">
-      <form
-        action="{% url 'core:artist_page' artist.name|custom_slugify %}"
-        method="get"
-        style="display: inline">
+      <form action="{% url 'core:artist_page' artist.name|custom_slugify %}" method="get" style="display: inline">
         <input type="hidden" name="id" value="{{ artist.artist_id }}" />
         <a href="#" onclick="this.closest('form').submit(); return false;">
-          <img
-            src="{{ artist.cover }}"
-            alt="{{ artist.name }}"
-            style="width: 150px; height: 150px; border-radius: 50%"
-            onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
+          <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width: 150px; height: 150px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
           <div class="artist-info">
             <div class="artist-name">{{ artist.name }}</div>
             <div class="artist-title">Artist</div>
@@ -202,17 +196,11 @@
     ">
     {% if albums %} {% for album in albums %}
     <div class="album-card">
-      <form
-        action="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}"
-        method="get"
-        style="display: inline">
+      <form action="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}" method="get" style="display: inline">
         <input type="hidden" name="id" value="{{ album.album_id }}" />
         <a href="#" onclick="this.closest('form').submit(); return false;">
           <div class="album-content">
-            <img
-              src="{{ album.cover }}"
-              alt="{{ album.title }}"
-              style="width: 150px; height: 150px; border-radius: 10px" />
+            <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 150px; height: 150px; border-radius: 10px" />
             <div class="album-cover">
               <div class="album-title">{{ album.title }}</div>
               <div class="album-artist">{{ album.artist }}</div>
