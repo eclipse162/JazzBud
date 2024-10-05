@@ -1,59 +1,56 @@
-
-
-{% extends 'core/base.html' %}
-{% load static %}
-{% load custom_filters %}
-{% block title %}Search{% endblock %}
-{% block content %}
+{% extends 'core/base.html' %} {% load static %} {% load custom_filters %} {%
+block title %}Search{% endblock %} {% block content %}
 
 <style>
   body {
-      color: white;
-      font-size: 18px;
+    color: white;
+    font-size: 18px;
   }
-  h1, h2 {
-      color: white;
+  h1,
+  h2 {
+    color: white;
   }
   ul {
-      list-style-type: none;
-      padding: 0;
+    list-style-type: none;
+    padding: 0;
   }
 
   .album-content {
     display: flex;
     align-items: center;
-}
+  }
 
   .album-cover {
-      width: 120px; /* Adjust size as needed */
-      height: 120px;
-      border-radius: 10px;
-      object-fit: cover;
-      margin-right: 10px;
+    width: 120px; /* Adjust size as needed */
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 10px;
   }
 
   .album-info {
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
 
   .album-title {
-      font-size: 18px;
-      font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
   }
 
   .album-artist {
-      font-size: 14px;
-      color: #aaa;
+    font-size: 14px;
+    color: #aaa;
   }
 
-  .artist-card, .album-card {
+  .artist-card,
+  .album-card {
     width: 200px;
     height: 255px;
     background-color: #181818;
     border-radius: 10px;
     padding: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -62,29 +59,29 @@
   }
 
   .artist-card img {
-      margin-top: 10px;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 8px;
+    margin-top: 10px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
   }
 
   .artist-card .artist-name {
-      font-size: 18px;
-      color: #fff;
-      margin-top: 8px;
+    font-size: 18px;
+    color: #fff;
+    margin-top: 8px;
   }
 
   .artist-card .artist-title {
-      font-size: 13px;
-      color: #b3b3b3;
+    font-size: 13px;
+    color: #b3b3b3;
   }
 
   .content h2 {
-        color: #fff;
-        font-size: 24px;
-        margin-bottom: 20px;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 
   .browse-all {
@@ -96,53 +93,52 @@
   }
 
   .category-card {
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      border-radius: 8px;
-      background: #181818;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-      height: 240px;
-      width: 220px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    background: #181818;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    height: 240px;
+    width: 220px;
   }
 
   .category-card img {
-      width: 100%;
-      height: auto;
-      margin-top: 12px;
-      margin-bottom: 10px;
-      border-radius: 4px;
+    width: 100%;
+    height: auto;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
   }
 
   .category-title {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
   }
 
   /* Add more specific styles for badges if needed */
   .browse-all-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #fff;
-      margin-left: 20px; /* Align with the padding of the grid */
-      padding-top: 20px; /* Space above the title */
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 20px; /* Align with the padding of the grid */
+    padding-top: 20px; /* Space above the title */
   }
 </style>
 
-<main style="padding-top:20px;">
-
+<main style="padding-top: 20px">
   <div class="p-5">
-    <br>
+    <br />
     <h2 class="text-2xl font-bold mb-4">Search Results for "{{ query }}"</h2>
     <div class="divide-y divide-gray-800">
       <!-- Single Track Row -->
       {% for track in tracks %}
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center space-x-4">
-          <img src="{{track.cover}}" alt="{{track.title}}" class="w-12 h-12">
+          <img src="{{track.cover}}" alt="{{track.title}}" class="w-12 h-12" />
           <div>
             <a href="/music/{{track.spotify_song_id}}">
               <p class="text-base font-medium">{{track.title}}</p>
@@ -150,7 +146,9 @@
             </a>
           </div>
         </div>
-        <div class="text-gray-400">{{ track.track_length|ms_to_minutes_seconds }}</div>
+        <div class="text-gray-400">
+          {{ track.track_length|ms_to_minutes_seconds }}
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -158,50 +156,72 @@
 
   <div class="browse-all-title">Artists</div>
 
-  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
-      <!-- Artist Card -->
-      {% if artists %}
-          {% for artist in artists %}
-          <pre>Original: {{ artist.name|default:"No name" }}</pre>
-            <pre>Slugified: {{ artist.name|custom_slugify }}</pre>
-              <div class="artist-card">
-                <a href="{% url 'core:artist_page' artist.name|custom_slugify %}?id={{ artist.artist_id }}">
-                  <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width:150px; height:150px; border-radius:50%;" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';">
-                  <div class="artist-info">
-                      <div class="artist-name">{{ artist.name }}</div>
-                      <div class="artist-title">Artist</div>
-                  </div>
-                </a>
-              </div>
-          {% endfor %}
-      {% else %}
-          <p>No artists found</p>
-      {% endif %}
+  <section
+    style="
+      margin-top: 0px;
+      padding: 0px;
+      overflow-x: auto;
+      white-space: nowrap;
+    ">
+    <!-- Artist Card -->
+    {% if artists %} {% for artist in artists %}
+    <div class="artist-card">
+      <form
+        action="{% url 'core:artist_page' artist.name|custom_slugify %}"
+        method="get"
+        style="display: inline">
+        <input type="hidden" name="id" value="{{ artist.artist_id }}" />
+        <a href="#" onclick="this.closest('form').submit(); return false;">
+          <img
+            src="{{ artist.cover }}"
+            alt="{{ artist.name }}"
+            style="width: 150px; height: 150px; border-radius: 50%"
+            onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
+          <div class="artist-info">
+            <div class="artist-name">{{ artist.name }}</div>
+            <div class="artist-title">Artist</div>
+          </div>
+        </a>
+      </form>
+    </div>
+    {% endfor %} {% else %}
+    <p>No artists found</p>
+    {% endif %}
   </section>
 
   <div class="browse-all-title">Albums</div>
-  <section style=" margin-top:0px; padding:0px; overflow-x:auto; white-space:nowrap;">
-      {% if albums %}
-          {% for album in albums %}
-          <pre>Original: {{ album.artist_name|default:"No artist" }}</pre>
-            <pre>Slugified: {{ album.artist_name|custom_slugify }}</pre>
-            <pre>{{ album.title|default:"No title" }} by {{ album.artist_name|default:"No artist" }}</pre>
-              <div class="album-card">
-                <a href="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}?id={{ album.album_id }}">
-                    <div class="album-content"></div>
-                      <img src="{{ album.cover }}" alt="{{ album.title }}" style="width:150px; height:150px; border-radius:10px;">
-                      <div class="album-cover">
-                        <div class="album-title">{{ album.title }}</div>
-                        <div class="album-artist">{{ album.artist }}</div>
-                      </div>
-                    </div>
-                  </a>
-              </div>
-          {% endfor %}
-      {% else %}
-          <p>No albums found</p>
-      {% endif %}
-    </section>
+  <section
+    style="
+      margin-top: 0px;
+      padding: 0px;
+      overflow-x: auto;
+      white-space: nowrap;
+    ">
+    {% if albums %} {% for album in albums %}
+    <div class="album-card">
+      <form
+        action="{% url 'core:album_page' album.artist|custom_slugify album.title|custom_slugify %}"
+        method="get"
+        style="display: inline">
+        <input type="hidden" name="id" value="{{ album.album_id }}" />
+        <a href="#" onclick="this.closest('form').submit(); return false;">
+          <div class="album-content">
+            <img
+              src="{{ album.cover }}"
+              alt="{{ album.title }}"
+              style="width: 150px; height: 150px; border-radius: 10px" />
+            <div class="album-cover">
+              <div class="album-title">{{ album.title }}</div>
+              <div class="album-artist">{{ album.artist }}</div>
+            </div>
+          </div>
+        </a>
+      </form>
+    </div>
+    {% endfor %} {% else %}
+    <p>No albums found</p>
+    {% endif %}
+  </section>
 </main>
 
 {% endblock %}
