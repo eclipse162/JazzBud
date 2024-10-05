@@ -84,9 +84,9 @@ def artist_page(request, artist_name):
     artist_id = request.GET.get('id')
     artist = populate_artist(artist_id)
     
-    return render(request, 'core/artist_page.html', {'artist_data': artist})
+    return render(request, 'core/artist_page.html', {'artist': artist}, {'artist_name': artist_name})
 
 def album_page(request, album_name):
     album_id = request.GET.get('id')
     album = populate_album(album_id)
-    return render(request, 'core/album_page.html', {'album_data': album})
+    return render(request, 'core/album_page.html', {'album': album}, {'album_name': album_name})

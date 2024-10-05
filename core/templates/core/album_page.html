@@ -1,5 +1,8 @@
-{% extends 'core/base.html' %} {% load static %} {% load custom_filters %} {%
-block title %}Album Page{% endblock %} {% block content %}
+{% extends 'core/base.html' %} 
+{% load static %} 
+{% load custom_filters %} 
+{%block title %} {{ album_name }} {% endblock %} 
+{% block content %}
 
 <style>
   body {
@@ -134,16 +137,16 @@ block title %}Album Page{% endblock %} {% block content %}
     <!-- Album Cover -->
     <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
       <img
-        src="{{ album_data.images.0.url }}"
-        alt="{{ album_data.name }}"
+        src="{{ album.images.0.url }}"
+        alt="{{ album.name }}"
         class="w-48 h-48 md:w-64 md:h-64" />
     </div>
     <!-- Album Info -->
     <div>
-      <h1 class="text-4xl font-bold mb-2">{{ album_data.name }}</h1>
-      <p class="text-lg text-gray-400 mb-2">{{ album_data.artists.0.name }}</p>
+      <h1 class="text-4xl font-bold mb-2">{{ album.name }}</h1>
+      <p class="text-lg text-gray-400 mb-2">{{ album.artists.0.name }}</p>
       <p class="text-sm text-gray-400">
-        {{ album_data.release_date|date:"Y" }}
+        {{ album.release_date|date:"Y" }}
       </p>
     </div>
   </div>
@@ -152,7 +155,7 @@ block title %}Album Page{% endblock %} {% block content %}
     <h2 class="text-2xl font-bold mb-4">Tracks</h2>
     <div class="divide-y divide-gray-800">
       <!-- Single Track Row -->
-      {% for track in album_data.tracks.items %}
+      {% for track in album.tracks.items %}
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center space-x-4">
           <div>
