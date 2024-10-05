@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %} 
 {% load static %} 
 {% load custom_filters %} 
-{%block title %} {{ album_name }} {% endblock %} 
+{%block title %} {{ album_title }} {% endblock %} 
 {% block content %}
 
 <style>
@@ -137,16 +137,16 @@
     <!-- Album Cover -->
     <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
       <img
-        src="{{ album.images.0.url }}"
+        src="{{ album.cover }}"
         alt="{{ album.name }}"
         class="w-48 h-48 md:w-64 md:h-64" />
     </div>
     <!-- Album Info -->
     <div>
-      <h1 class="text-4xl font-bold mb-2">{{ album.name }}</h1>
-      <p class="text-lg text-gray-400 mb-2">{{ album.artists.0.name }}</p>
+      <h1 class="text-4xl font-bold mb-2">{{ album.title }}</h1>
+      <p class="text-lg text-gray-400 mb-2">{{ album.artist }}</p>
       <p class="text-sm text-gray-400">
-        {{ album.release_date|date:"Y" }}
+        {{ album.release_year }}
       </p>
     </div>
   </div>
@@ -155,12 +155,11 @@
     <h2 class="text-2xl font-bold mb-4">Tracks</h2>
     <div class="divide-y divide-gray-800">
       <!-- Single Track Row -->
-      {% for track in album.tracks.items %}
+      {% for track in album.tracklist %}
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center space-x-4">
           <div>
-            <p class="text-base font-medium">{{ track.name }}</p>
-            <p class="text-xs text-gray-400">{{ track.artists.0.name }}</p>
+            <p class="text-base font-medium">{{ track.title }}</p>
           </div>
         </div>
         <div class="text-gray-400">
