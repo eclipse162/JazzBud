@@ -25,13 +25,12 @@ def populate_artist(artist_id):
 
 def populate_album(album_id):
     album_data = retrieve_album_data(album_id)
-    album_full = album_data['album']
-    track_full = album_data['tracks']['items']
+    track_data = album_data['tracks']['items']
 
-    print(f"Album Full: {album_full}")
+    print(f"Album Full: {album_data}")
 
-    tracklist = handle_album_tracks(track_full)
-    album = (handle_albums(album_full))[0]
+    tracklist = handle_album_tracks(track_data)
+    album = handle_albums([album_data])[0]
     album['tracklist'] = tracklist
 
     return album
@@ -57,10 +56,8 @@ def retrieve_artist_data(artist_id):
 
 def retrieve_album_data(album_id):
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
-    album_data = {
-        'album': sp.album(album_id),
-        'tracks': sp.album_tracks(album_id)
-    }; return album_data
+    album_data = sp.album(album_id)
+    return album_data
 
 def handle_album_tracks(tracks):
     lo_tracks = []
