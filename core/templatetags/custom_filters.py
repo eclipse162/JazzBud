@@ -17,4 +17,6 @@ def ms_to_minutes_seconds(ms):
     
 @register.filter
 def custom_slugify(value):
+    slugified_value = slugify(value)
+    print(f"Original: {value}, Slugified: {slugified_value}")
     return slugify(value)
