@@ -26,10 +26,9 @@ def populate_artist(artist_id):
 def populate_album(album_id):
     album_data = retrieve_album_data(album_id)
     track_full = album_data['tracks']['items']
-    album_info = album_data['album']
 
     tracklist = handle_album_tracks(track_full)
-    album = handle_albums(album_info)
+    album = handle_albums([album_data])[0]
     album['tracklist'] = tracklist
 
     return album
