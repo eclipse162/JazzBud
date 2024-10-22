@@ -1,0 +1,142 @@
+.album-page {
+  padding-top: 20px;
+}
+
+.album-header {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 5px;
+}
+
+@media (min-width: 768px) {
+  .album-header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.album-cover-container {
+  flex-shrink: 0;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .album-cover-container {
+    margin-bottom: 0;
+    margin-right: 24px;
+  }
+}
+
+.album-cover {
+  width: 12rem;
+  height: 12rem;
+}
+
+@media (min-width: 768px) {
+  .album-cover {
+    width: 16rem;
+    height: 16rem;
+  }
+}
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.album-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.album-artist {
+  font-size: 1.125rem;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.artist-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.artist-link:hover {
+  text-decoration: underline;
+}
+
+.album-tracks {
+  padding: 20px;
+}
+
+.tracks-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.tracks-list {
+  border-top: 1px solid #374151;
+}
+
+.track-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  position: relative;
+}
+
+.track-row:hover {
+  background-color: #333;
+}
+
+.track-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.track-number {
+  color: #9ca3af;
+  width: 20px;
+  text-align: right;
+}
+
+.track-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.track-length-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.3s ease;
+  display: none;
+}
+
+.track-row:hover .add-button {
+  display: inline-block;
+}
+
+.add-button:hover {
+  color: #bc4200;
+}
+
+.add-button:focus {
+  outline: none;
+}
+
+.track-length {
+  color: #9ca3af; /* Tailwind's gray-400 */
+}

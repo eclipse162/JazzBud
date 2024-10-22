@@ -8,8 +8,8 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/album_page.css' %}">
 
-<main class="album-page">
-  <div class="album-header">
+<main class="track-edit">
+  <div class="track-header">
     <div class="album-cover-container">
       <img
         src="{{ album.cover }}"
@@ -54,3 +54,49 @@
 </main>
 
 {% endblock %}
+
+
+<style>
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  #search-input:focus + .dropdown-content {
+    display: block;
+  }
+
+  /* <input type="text" id="search-input" placeholder="Search for artists...">
+  <div id="dropdown" class="dropdown-content"></div>
+
+  document.getElementById('search-input').addEventListener('input', function() {
+  const query = this.value;
+  if (query.length > 2) {  // Start searching after 3 characters
+      fetch(`/search?query=${query}&type=artist&limit=2`)
+          .then(response => response.json())
+          .then(data => {
+              const dropdown = document.getElementById('dropdown');
+              dropdown.innerHTML = '';
+              data.forEach(artist => {
+                  const item = document.createElement('div');
+                  item.className = 'dropdown-item';
+                  item.textContent = artist.name;
+                  dropdown.appendChild(item);
+              });
+          });
+  }
+  }); */
+</style>
