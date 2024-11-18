@@ -20,7 +20,7 @@ body {
     border-width: 10px;
     border-color: black;
     background-color: black;
-    height: 97vh
+    height: 97vh;
 }
 
 @font-face {
@@ -196,7 +196,6 @@ body {
 }
 
 
-
 #new_partition {
     background-color: red;
     height: 10%;
@@ -294,6 +293,60 @@ body {
     width: 100%;
     padding-left: 200px;
     bottom: 0;
+}
+
+/* --------------- EDIT TABLE ----------------- */
+.editContainer {
+    padding-top: 2%;
+    padding-right: 10%;
+    display: flex;
+    align-items: grid;
+    gap: 50px;
+}
+
+.editTable table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: right;
+}
+
+.editTable #headers{
+    border: none;
+}
+
+.editTable table, th, td {
+    border: 1px solid white;
+}
+
+.editTable td {
+    padding: 10px;
+    text-align: end;
+}
+
+.editTable input[type="text"] {
+    width: 90%;
+    padding: 5px;
+    text-align: right;
+}
+
+.artistTable table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.artistTable table, th, td {
+    border: 1px solid white;
+}
+
+.artistTable td {
+    padding: 10px;
+    text-align: end;
+}
+
+.artistTable input[type="text"] {
+    width: 90%;
+    padding: 5px;
+    text-align: right;
 }
 
 
