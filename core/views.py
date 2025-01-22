@@ -103,3 +103,6 @@ def track_page(request, artist_name, track_title, track_id):
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
+
+def new_partition_page(request):
+    return render(request, 'core/new_partition.html')
