@@ -99,7 +99,7 @@ def track_page(request, artist_name, track_title, track_id):
     track = populate_track(track_id)
     track_formatted = track['title']
     
-    html_content = render(request, 'core/track_page.html', {'track': track, 'track_title': track_formatted}).content
+    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
