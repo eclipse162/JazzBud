@@ -1,8 +1,5 @@
-{% extends 'core/base.html' %} 
-{% load static %} 
-{% load custom_filters %} 
-{%block title %}Search{% endblock %} 
-{% block content %}
+{% extends 'core/base.html' %} {% load static %} {% load custom_filters %}
+{%block title %}Search{% endblock %} {% block content %}
 
 <style>
   body {
@@ -144,7 +141,8 @@
         <div class="flex items-center space-x-4">
           <img src="{{track.cover}}" alt="{{track.title}}" class="w-12 h-12" />
           <div>
-            <a href="/music/{{track.spotify_song_id}}">
+            <a
+              href="{% url 'track_papge' artist.name|custom_slugify artist.artist_id %}">
               <p class="text-base font-medium">{{track.title}}</p>
               <p class="text-xs text-gray-400">{{track.artist}}</p>
             </a>
@@ -160,45 +158,62 @@
 
   <div class="browse-all-title">Artists</div>
 
-  <section style="margin-top: 0px; padding: 0px; overflow-x: auto; white-space: nowrap;">
+  <section
+    style="
+      margin-top: 0px;
+      padding: 0px;
+      overflow-x: auto;
+      white-space: nowrap;
+    ">
     <!-- Artist Card -->
-    {% if artists %}
-        {% for artist in artists %}
-            <div class="artist-card">
-                <a href="{% url 'artist_page' artist.name|custom_slugify artist.artist_id %}">
-                    <img src="{{ artist.cover }}" alt="{{ artist.name }}" style="width: 150px; height: 150px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
-                    <div class="artist-info">
-                        <div class="artist-name">{{ artist.name }}</div>
-                        <div class="artist-title">Artist</div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No artists found</p>
+    {% if artists %} {% for artist in artists %}
+    <div class="artist-card">
+      <a
+        href="{% url 'artist_page' artist.name|custom_slugify artist.artist_id %}">
+        <img
+          src="{{ artist.cover }}"
+          alt="{{ artist.name }}"
+          style="width: 150px; height: 150px; border-radius: 50%"
+          onerror="this.onerror=null;this.src='/static/img/zanewins.jpeg';" />
+        <div class="artist-info">
+          <div class="artist-name">{{ artist.name }}</div>
+          <div class="artist-title">Artist</div>
+        </div>
+      </a>
+    </div>
+    {% endfor %} {% else %}
+    <p>No artists found</p>
     {% endif %}
-</section>
+  </section>
 
-<div class="browse-all-title">Albums</div>
-<section style="margin-top: 0px; padding: 0px; overflow-x: auto; white-space: nowrap;">
-    {% if albums %}
-        {% for album in albums %}
-            <div class="album-card">
-                <a href="{% url 'album_page' album.artist|custom_slugify album.title|custom_slugify album.album_id %}">
-                    <div class="album-content">
-                        <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 150px; height: 150px; border-radius: 10px" />
-                        <div class="album-cover">
-                            <div class="album-title">{{ album.title }}</div>
-                            <div class="album-artist">{{ album.artist }}</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No albums found</p>
+  <div class="browse-all-title">Albums</div>
+  <section
+    style="
+      margin-top: 0px;
+      padding: 0px;
+      overflow-x: auto;
+      white-space: nowrap;
+    ">
+    {% if albums %} {% for album in albums %}
+    <div class="album-card">
+      <a
+        href="{% url 'album_page' album.artist|custom_slugify album.title|custom_slugify album.album_id %}">
+        <div class="album-content">
+          <img
+            src="{{ album.cover }}"
+            alt="{{ album.title }}"
+            style="width: 150px; height: 150px; border-radius: 10px" />
+          <div class="album-cover">
+            <div class="album-title">{{ album.title }}</div>
+            <div class="album-artist">{{ album.artist }}</div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %} {% else %}
+    <p>No albums found</p>
     {% endif %}
-</section>
+  </section>
 </main>
 
 {% endblock %}
