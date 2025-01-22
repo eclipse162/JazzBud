@@ -142,7 +142,7 @@
           <img src="{{track.cover}}" alt="{{track.title}}" class="w-12 h-12" />
           <div>
             <a
-              href="{% url 'track_papge' artist.name|custom_slugify artist.artist_id %}">
+              href="{% url 'track_page' artist.name|custom_slugify artist.artist_id %}">
               <p class="text-base font-medium">{{track.title}}</p>
               <p class="text-xs text-gray-400">{{track.artist}}</p>
             </a>
