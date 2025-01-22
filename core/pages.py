@@ -11,13 +11,13 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
-    related_artists = handle_artists(artist_data['related']['artists'])[0:5]
+    # related_artists = handle_artists(artist_data['related']['artists'])[0:5]
 
     top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:5])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
     artist = handle_artists([artist_data['artist']])[0]
-    artist['related'] = related_artists
+    # artist['related'] = related_artists
     artist['top_tracks'] = top_tracks
     artist['albums'] = handle_albums(popular_albums)
 
@@ -50,7 +50,7 @@ def retrieve_artist_data(artist_id):
     artist_data = {
         'artist': sp.artist(artist_id),
         'albums': sp.artist_albums(artist_id, album_type='album', limit=4),
-        'related': sp.artist_related_artists(artist_id),
+        # 'related': sp.artist_related_artists(artist_id),
         'top_tracks': sp.artist_top_tracks(artist_id, country='US')
     }; return artist_data
 
