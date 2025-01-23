@@ -1,11 +1,9 @@
-{% extends 'core/base.html' %}
-{% load static %}
-{% block title %}Edit a Partition{% endblock %}
-{% block content %}
-<div class="home_page_body" id="new_partition">
+{% extends 'core/base.html' %} {% load static %} {% block title %}Edit a
+Partition{% endblock %} {% block content %}
+<div class="home_page_body" id="edit_partition">
   <div>
     <h1>New Partition</h1>
-    <a href="{% url 'new_partition' %}" class="fill-div"></a>
+    <a href="{% url 'edit_partition' %}" class="fill-div"></a>
   </div>
 </div>
 
@@ -21,5 +19,3 @@
   </div>
 </div>
 {% endblock %}
-
-
