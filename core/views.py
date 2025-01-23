@@ -5,9 +5,10 @@ from .pages import *
 from .search import *
 from .extras import *
 from slugify import slugify
-from db.models import Artist, Album
+from django.db.models import Q
 from rest_framework import status
 from requests import Request, post
+from db.models import Artist, Album
 from spotify.views import refresh_user
 from rest_framework.views import APIView
 from db.crud import get_token, create_token
@@ -76,6 +77,37 @@ def search(request):
         })
     else:
         return render(request, 'core/search.html', {})
+    
+def artist_search(request):
+    query = request.GET.get['query']
+    session_id = request.session.session_key
+    print(f"Session ID: {session_id}")
+
+    if session_id is None:
+        return redirect('login')
+    
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+    
+    sp = spotipy.Spotify(auth=token.access_token)
+    response = sp.search(q=query, type='artist', limit=3)
+    
+    if "error" in response:
+        return JsonResponse({}, status=204)
+
+    ar_data = response.get('artists', {})
+    artists = ar_data.get('items', [])
+    lo_artists = handle_artists(artists)
+
+    return render(request, 'partials/results.html', {'artists': lo_artists})
     
 def artist_page(request, artist_name, artist_id):
     artist = populate_artist(artist_id)

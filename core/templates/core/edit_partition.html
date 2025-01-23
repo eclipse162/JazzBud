@@ -25,22 +25,74 @@ Partition {% endblock %} {% block content %}
 
 <div class="editContainer">
   <table class="artistTable">
-    <tr style="display: none">
-      <td><input type="text" placeholder="Enter text" /></td>
+    <tr>
+      <td>
+        <input
+          type="text"
+          placeholder="Search"
+          name="q"
+          hx-get="/artist_search/"
+          hx-trigger="keyup changed delay:500ms"
+          hx-target="#artist-results" />
+      </td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td>
+        <input
+          type="text"
+          placeholder="Search"
+          name="q"
+          hx-get="/artist_search/"
+          hx-trigger="keyup changed delay:500ms"
+          hx-target="artist-results" />
+      </td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td>
+        <input
+          type="text"
+          placeholder="Search"
+          name="q"
+          hx-get="/artist_search/"
+          hx-trigger="keyup changed delay:500ms"
+          hx-target="artist-results" />
+      </td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
-    </tr>
-    <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td>
+        <input
+          type="text"
+          placeholder="Search"
+          name="q"
+          hx-get="/artist_search/"
+          hx-trigger="keyup changed delay:500ms"
+          hx-target="artist-results" />
+      </td>
     </tr>
   </table>
+
+  <form action="{% url 'save_artist' %}" method="POST">
+    {% csrf_token %}
+    <select name="artist_id" id="artist-dropdown">
+      <option value="">Select an artist</option>
+      <!-- Options will be dynamically injected here -->
+    </select>
+    <button type="submit">Save</button>
+  </form>
+
+  <div id="artist-results">
+    <!-- Search results will be injected here -->
+  </div>
+
+  <script>
+    document.addEventListener("htmx:afterSwap", (event) => {
+      if (event.detail.target.id === "artist-results") {
+        const results = event.detail.target.innerHTML;
+        const dropdown = document.getElementById("artist-dropdown");
+        dropdown.innerHTML = results;
+      }
+    });
+  </script>
 
   <table class="editTable">
     <tr id="headers">

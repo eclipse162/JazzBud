@@ -1,0 +1,6 @@
+{% for artist in artists %}
+<option value="{{ artist.artist_id }}">
+  <img src="{{ artist.cover }}" alt="{{ artist.name }}" class="w-12 h-12" />
+  {{ artist.name }}
+</option>
+{% endfor %}
