@@ -37,7 +37,7 @@
           <div class="track-number">
             {{ track.track_number }}
           </div>
-          <a href="{% url 'track_page' 'track' track.artist|custom_slugify track.title|custom_slugify track.spotify_song_id %}">
+          <a href="{% url 'track_page' track.artist|custom_slugify track.title|custom_slugify track.spotify_song_id %}">
               <p class="track-title">{{track.title}}</p>
           </a>
         </div>
