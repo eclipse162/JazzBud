@@ -37,9 +37,10 @@
           <div class="track-number">
             {{ track.track_number }}
           </div>
-          <div class="track-title">
-            {{ track.title }}
-          </div>
+          <a
+              href="{% url 'track_page' track.artist|custom_slugify track.title|custom_slugify track.spotify_song_id %}">
+              <p class="track-title">{{track.title}}</p>
+          </a>
         </div>
         <div class="track-length-container">
           <button class="add-button">+</button>
