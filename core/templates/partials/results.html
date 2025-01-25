@@ -1,16 +1,8 @@
-<div id="artist-results">
-  <ul>
-    {% for artist in artists %}
-    <li>
-      <a
-        href="{% url 'artist_page' artist.name|custom_slugify artist.artist_id %}">
-        <img
-          src="{{ artist.cover }}"
-          alt="{{ artist.name }}"
-          class="w-12 h-12" />
-        {{ artist.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+<select>
+  {% for artist in artists %}
+  <option value="{{ artist.artist_id }}">
+    <img src="{{ artist.cover }}" alt="{{ artist.name }}" class="w-12 h-12" />
+    {{ artist.name }}
+  </option>
+  {% endfor %}
+</select>
