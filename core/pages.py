@@ -24,7 +24,7 @@ def populate_artist(artist_id):
 
 def populate_album(album_id):
     print(f"populate_album called with album_id: {album_id}")
-    traceback.print_stack(limit=5)
+    traceback.print_stack(limit=35)
     album_data = retrieve_album_data(album_id)
     track_data = album_data['tracks']['items']
 
