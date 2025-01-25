@@ -1,5 +1,4 @@
 import re, os
-import traceback
 import spotipy
 from db.crud import create_song
 from spotipy.exceptions import SpotifyException
@@ -23,8 +22,6 @@ def populate_artist(artist_id):
     return artist
 
 def populate_album(album_id):
-    print(f"populate_album called with album_id: {album_id}")
-    traceback.print_stack(limit=35)
     album_data = retrieve_album_data(album_id)
     track_data = album_data['tracks']['items']
 
@@ -73,7 +70,6 @@ def retrieve_artist_data(artist_id):
     artist_data = {
         'artist': sp.artist(artist_id),
         'albums': sp.artist_albums(artist_id, album_type='album', limit=4),
-        # 'related': sp.artist_related_artists(artist_id),
         'top_tracks': sp.artist_top_tracks(artist_id, country='US')
     }; return artist_data
 
