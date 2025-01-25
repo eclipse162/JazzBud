@@ -128,6 +128,7 @@ def album_page(request, artist_name, album_title, album_id):
     return response
 
 def track_page(request, artist_name, track_title, track_id):
+    print(f"HELLO HELLO HELLO HELLO: {track_id}")
     track = populate_track(track_id)
     track_formatted = track['title']
     

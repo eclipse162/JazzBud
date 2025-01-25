@@ -1,6 +1,7 @@
 import re, os
 import spotipy
 from db.crud import create_song
+from spotipy.exceptions import SpotifyException
 from spotipy.oauth2 import SpotifyClientCredentials
 from .search import handle_albums, handle_tracks, handle_artists
 from django.shortcuts import render, redirect, get_object_or_404
@@ -31,9 +32,23 @@ def populate_album(album_id):
     return album
 
 def populate_track(track_id):
-    track_data = retrieve_track_data(track_id)
-    track = handle_tracks([track_data])[0]
-    return track
+    try:
+        track_data = retrieve_track_data(track_id)
+        track = handle_tracks([track_data])[0]
+        return track
+    except SpotifyException as e:
+        if e.http_status == 404:
+            # Print the error and handle the case where the track is not found
+            print(f"Track not found: {track_id}")
+            return None
+        else:
+            # Print the error and re-raise the exception for other errors
+            print(f"Spotify API error: {e}")
+            raise
+    except Exception as e:
+        # Print any other unexpected errors
+        print(f"Unexpected error: {e}")
+        raise
 
 def handle_artists(artists):
     lo_artists = []
