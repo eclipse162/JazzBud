@@ -11,13 +11,10 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 def populate_artist(artist_id):
     artist_data = retrieve_artist_data(artist_id)
-    # related_artists = handle_artists(artist_data['related']['artists'])[0:5]
-
     top_tracks = handle_tracks(artist_data['top_tracks']['tracks'][0:5])
     popular_albums = sort_albums(top_tracks, artist_data['albums']['items'])
 
     artist = handle_artists([artist_data['artist']])[0]
-    # artist['related'] = related_artists
     artist['top_tracks'] = top_tracks
     artist['albums'] = handle_albums(popular_albums)
 
@@ -27,13 +24,16 @@ def populate_album(album_id):
     album_data = retrieve_album_data(album_id)
     track_data = album_data['tracks']['items']
 
-    print(f"Album Full: {album_data}")
-
     tracklist = handle_album_tracks(track_data)
     album = handle_albums([album_data])[0]
     album['tracklist'] = tracklist
 
     return album
+
+def populate_track(track_id):
+    track_data = retrieve_track_data(track_id)
+    track = handle_tracks([track_data])[0]
+    return track
 
 def handle_artists(artists):
     lo_artists = []
@@ -44,6 +44,11 @@ def handle_artists(artists):
             'name': artist['name']
         })
     return lo_artists
+
+def retrieve_track_data(track_id):
+    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
+    track_data = sp.track(track_id)
+    return track_data
 
 def retrieve_artist_data(artist_id):
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
