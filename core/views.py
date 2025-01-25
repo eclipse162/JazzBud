@@ -79,7 +79,7 @@ def search(request):
         return render(request, 'core/search.html', {})
     
 def artist_search(request):
-    q = request.GET.get['q']
+    query = request.GET.get['q']
     session_id = request.session.session_key
     print(f"Session ID: {session_id}")
 
@@ -98,7 +98,7 @@ def artist_search(request):
             return redirect('login')
     
     sp = spotipy.Spotify(auth=token.access_token)
-    response = sp.search(q=q, type='artist', limit=3)
+    response = sp.search(q=query, type='artist', limit=3)
     
     if "error" in response:
         return JsonResponse({}, status=204)
