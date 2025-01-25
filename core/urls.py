@@ -9,7 +9,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('search/', views.search, name='search'),
     path('<str:artist_name>/<str:artist_id>', views.artist_page, name='artist_page'),
-    path('<str:artist_name>/<str:album_title>/<str:album_id>', views.album_page, name='album_page'),
+    # path('<str:artist_name>/<str:album_title>/<str:album_id>', views.album_page, name='album_page'),
     path('<str:artist_name>/<str:track_title>/<str:track_id>', views.track_page, name='track_page'),
     path('artist_search/', views.artist_search, name='new_partition'),
 ]
