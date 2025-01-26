@@ -189,9 +189,10 @@
             alt="{{ track.title }}"
             class="w-12 h-12" />
           <div>
-            <a href="/music/{{ track.spotify_song_id }}">
-              <p class="text-base font-medium">{{ track.title }}</p>
-              <p class="text-xs text-gray-400">{{ track.artist }}</p>
+            <a
+              href="{% url 'track_page' track.artist|custom_slugify track.title|custom_slugify track.spotify_song_id %}">
+              <p class="text-base font-medium">{{track.title}}</p>
+              <p class="text-xs text-gray-400">{{track.artist}}</p>
             </a>
           </div>
         </div>

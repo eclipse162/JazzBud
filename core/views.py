@@ -79,7 +79,8 @@ def search(request):
         return render(request, 'core/search.html', {})
     
 def artist_search(request):
-    query = request.GET.get['q']
+    query = request.GET.get('q')
+    print(f"Query: {query}")
     session_id = request.session.session_key
     print(f"Session ID: {session_id}")
 
