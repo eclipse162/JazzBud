@@ -8,7 +8,8 @@ def insert_instruments():
         data = json.load(file)
 
     # Insert instruments
-    for instrument_id, name in data.items():
-        create_instrument(name)
+    with get_db() as db:
+        for instrument_id, name in data.items():
+            create_instrument(db, name)
 
     print("Instruments inserted successfully!")
