@@ -8,6 +8,33 @@
 
 <script src="https://unpkg.com/htmx.org"></script>
 
+<style>
+  .editContainer {
+    position: relative;
+  }
+
+  .dropdown-container {
+    position: absolute;
+    top: 40px; /* Adjust based on your input height */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .dropdown-container select {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 14px;
+  }
+</style>
+
 <div class="track-header">
   <div class="album-cover-container">
     <img src="{{ track.cover }}" alt="{{ track.name }}" class="album-cover" />
@@ -33,9 +60,11 @@
           type="text"
           placeholder="Search"
           name="q"
+          class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results" />
+          hx-target="#artist-results-1" />
+        <div id="artist-results-1" class="dropdown-container"></div>
       </td>
     </tr>
     <tr>
@@ -44,9 +73,11 @@
           type="text"
           placeholder="Search"
           name="q"
+          class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results" />
+          hx-target="#artist-results-2" />
+        <div id="artist-results-2" class="dropdown-container"></div>
       </td>
     </tr>
     <tr>
@@ -55,9 +86,11 @@
           type="text"
           placeholder="Search"
           name="q"
+          class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results" />
+          hx-target="#artist-results-3" />
+        <div id="artist-results-3" class="dropdown-container"></div>
       </td>
     </tr>
     <tr>
@@ -66,16 +99,14 @@
           type="text"
           placeholder="Search"
           name="q"
+          class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results" />
+          hx-target="#artist-results-4" />
+        <div id="artist-results-4" class="dropdown-container"></div>
       </td>
     </tr>
   </table>
-
-  <div id="artist-results">
-    <!-- Search results will be injected here -->
-  </div>
 
   <script>
     document.addEventListener("htmx:afterSwap", (event) => {
@@ -85,43 +116,81 @@
         dropdown.innerHTML = results;
       }
     });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target.closest(".dropdown-item");
+      if (target) {
+        const artistId = target.getAttribute("data-id");
+        const artistName = target.getAttribute("data-name");
+        const containerId = target.closest(".dropdown-container").id;
+
+        const searchInput = document.querySelector(
+          `input[hx-target="#${containerId}"]`
+        );
+        if (searchInput) {
+          searchInput.value = artistName;
+          searchInput.setAttribute("data-artist-id", artistId);
+        }
+      }
+    });
+
+    document.getElementById("saveButton").addEventListener("click", () => {
+      const rows = document.querySelectorAll(".editTable tr");
+      const data = [];
+
+      rows.forEach((row, index) => {
+        const startTime = row.querySelector(".start-time").value;
+        const endTime = row.querySelector(".end-time").value;
+
+        // Match the artist search input for this row
+        const artistSearchInput =
+          document.querySelectorAll(".artist-search")[index];
+        const artistId = artistSearchInput.getAttribute("data-artist-id");
+
+        if (artistId && startTime && endTime) {
+          data.push({
+            artist_id: artistId,
+            start_time: startTime,
+            end_time: endTime,
+          });
+        }
+      });
+
+      fetch("{% url 'save_artist_selection' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: JSON.stringify({ segments: data }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Segments saved successfully!");
+          } else {
+            console.error("Failed to save the segments.");
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
   </script>
 
   <table class="editTable">
-    <tr id="headers">
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
+    <tr>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-    </tr>
-    <tr>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
-      <td><input type="text" placeholder="Enter text" /></td>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
     </tr>
   </table>
 </div>

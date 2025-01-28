@@ -1,8 +1,31 @@
-<select>
+<style>
+  .dropdown-item {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .dropdown-item img {
+    margin-right: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+</style>
+
+<ul>
   {% for artist in artists %}
-  <option value="{{ artist.artist_id }}">
-    <img src="{{ artist.cover }}" alt="{{ artist.name }}" class="w-12 h-12" />
+  <li
+    class="dropdown-item"
+    data-id="{{ artist.artist_id }}"
+    data-name="{{ artist.name }}">
+    <img src="{{ artist.cover }}" alt="{{ artist.name }}" />
     {{ artist.name }}
-  </option>
+  </li>
   {% endfor %}
-</select>
+</ul>

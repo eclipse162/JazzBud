@@ -1,5 +1,6 @@
 import requests
 import logging
+import json
 
 from .pages import *
 from .search import *
@@ -11,7 +12,7 @@ from requests import Request, post
 from db.models import Artist, Album
 from spotify.views import refresh_user
 from rest_framework.views import APIView
-from db.crud import get_token, create_token
+from db.crud import get_token, create_token, create_segment
 from rest_framework.response import Response
 from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
@@ -111,6 +112,40 @@ def artist_search(request):
     print("Artists: ", lo_artists)
 
     return render(request, 'partials/results.html', {'artists': lo_artists})
+
+def save_artist_selection(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        segments = data.get("segments", [])
+        session_id = request.session.session_key
+
+        # Ensure user session exists
+        if session_id is None:
+            return JsonResponse({"error": "Not authenticated"}, status=401)
+
+        with get_db() as db:
+            user = get_session_user(db, session_id)
+            if user is None or not refresh_user(db, session_id):
+                return redirect('login')
+            authenticate_user(request.session, user.user_id)
+
+            user_id = user.user_id
+            token = get_token(db, user_id)
+            if token is None:
+                return redirect('login')
+
+            for segment in segments:
+                artist_id = segment.get("artist_id")
+                start_time = segment.get("start_time")
+                end_time = segment.get("end_time")
+
+                # Save to the database
+                print(f"Saving: Artist {artist_id}, Start {start_time}, End {end_time}")
+                create_segment(db, user.user_id, None, None, start_time, end_time, None)
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
     
 def artist_page(request, artist_name, artist_id):
     artist = populate_artist(artist_id)
