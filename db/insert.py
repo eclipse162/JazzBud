@@ -1,6 +1,6 @@
 import json
 from .crud import create_instrument
-from database import get_db
+from .database import get_db
 
 def insert_instruments():
     # Load JSON data
