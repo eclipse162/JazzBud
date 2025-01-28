@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.utils import timezone
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, User, Song, Segment, Token, Collection, Artist, Album
+from .models import Base, User, Song, Segment, Token, Collection, Artist, Album, Instrument, SegmentArtist
 from .database import get_db
 
 # Create operations
@@ -37,6 +37,12 @@ def create_segment(db, collection_id, user_id, segment_name, start_time, end_tim
     new_segment = Segment(collection_id=collection_id, user_id=user_id, segment_name=segment_name, start_time=start_time, end_time=end_time, segment_description=segment_description)
     db.add(new_segment)
     return new_segment
+
+def create_instrument(db, name):
+    new_instrument = Instrument(name=name)
+    db.add(new_instrument)
+    return new_instrument
+
 
 def create_token(db, user_id, access_token, refresh_token, expires_in, token_type):
     if user_id == None:

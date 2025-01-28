@@ -113,28 +113,3 @@ class Instrument(Base):
 
     instrument_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False, unique=True, index=True)
-
-# def generate_unique_slug(mapper, connection, target):
-#     if isinstance(target, Artist) and not target.slug:
-#         base_slug = slugify(target.name)
-#         slug = base_slug
-#         counter = 1
-#         while connection.execute(f"SELECT 1 FROM artists WHERE slug='{slug}'").fetchone():
-#             slug = f"{base_slug}-{counter}"
-#             counter += 1
-#         target.slug = slug
-
-#     if isinstance(target, Album) and not target.slug:
-#         base_slug = slugify(target.title)
-#         slug = base_slug
-#         counter = 1
-#         while connection.execute(f"SELECT 1 FROM albums WHERE slug='{slug}' AND artist_id='{target.artist_id}'").fetchone():
-#             slug = f"{base_slug}-{counter}"
-#             counter += 1
-#         target.slug = slug
-
-# event.listen(Artist, 'before_insert', generate_unique_slug)
-# event.listen(Album, 'before_insert', generate_unique_slug)
-
-# event.listen(Artist, 'before_update', generate_unique_slug)
-# event.listen(Album, 'before_update', generate_unique_slug)

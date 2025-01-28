@@ -18,6 +18,7 @@ from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from db.insert import insert_instruments
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -33,6 +34,8 @@ def login(request):
     return render(request, 'core/login.html')
 
 def search(request):
+    insert_instruments()
+    
     if request.method == "POST":
         query = request.POST['query']
         session_id = request.session.session_key
@@ -173,6 +176,3 @@ def track_page(request, artist_name, track_title, track_id):
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
-
-def new_partition_page(request):
-    return render(request, 'core/new_partition.html')
