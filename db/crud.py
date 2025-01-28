@@ -9,9 +9,9 @@ from .database import get_db
 
 # Create operations
 def create_user(db, spotify_user_id, username, display_name=None,session_id = None, is_authenticated=False, token=None):
-        new_user = User(spotify_user_id=spotify_user_id, username=username, display_name=display_name, session_id=session_id, is_authenticated=is_authenticated, token=token)
-        db.add(new_user)
-        return new_user
+    new_user = User(spotify_user_id=spotify_user_id, username=username, display_name=display_name, session_id=session_id, is_authenticated=is_authenticated, token=token)
+    db.add(new_user)
+    return new_user
 
 def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, cover, release_year, track_length):
     new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)

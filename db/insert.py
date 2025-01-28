@@ -7,10 +7,8 @@ def insert_instruments():
     with open("db/instruments.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
-    db = get_db()
-
     # Insert instruments
     for instrument_id, name in data.items():
-        create_instrument(db, name)
+        create_instrument(name)
 
     print("Instruments inserted successfully!")
