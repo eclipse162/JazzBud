@@ -35,58 +35,84 @@ class Artist(Base):
     __tablename__ = 'artists'
 
     artist_id = Column(Integer, primary_key=True, autoincrement=True)
-    sp_artist_id = Column(String(255))
-    name = Column(String(100), nullable=False)
+    sp_artist_id = Column(String(255), unique=True)
+    name = Column(String(100), nullable=False, index=True)
     cover = Column(String(255))
+
     albums = relationship("Album", back_populates="artist")
     songs = relationship("Song", back_populates="artist")
+    segment_artists = relationship("SegmentArtist", back_populates="artist")
 
 class Album(Base):
     __tablename__ = 'albums'
 
     album_id = Column(Integer, primary_key=True, autoincrement=True)
-    sp_album_id = Column(String(255))
-    name = Column(String(255), nullable=False)
-    artist = relationship("Artist", back_populates="albums")
-    artist_id = Column(Integer, ForeignKey('artists.artist_id'), nullable=False)
+    sp_album_id = Column(String(255), unique=True)
+    name = Column(String(255), nullable=False, index=True)
+    artist_id = Column(Integer, ForeignKey('artists.artist_id', ondelete='CASCADE'), nullable=False)
     cover = Column(String(255))
+
+    artist = relationship("Artist", back_populates="albums")
     songs = relationship("Song", back_populates="album")
+
 class Song(Base):
     __tablename__ = 'songs'
-    
+
     song_id = Column(Integer, primary_key=True, autoincrement=True)
-    sp_song_id = Column(String(255))
-    title = Column(String(255), nullable=False)
-    artist_id = Column(Integer, ForeignKey('artists.artist_id'), nullable=False)
-    album_id = Column(Integer, ForeignKey('albums.album_id'), nullable=False)
-    artist = relationship("Artist", back_populates="songs")
-    album = relationship("Album", back_populates="songs")
+    sp_song_id = Column(String(255), unique=True)
+    title = Column(String(255), nullable=False, index=True)
+    artist_id = Column(Integer, ForeignKey('artists.artist_id', ondelete='CASCADE'), nullable=False)
+    album_id = Column(Integer, ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
     cover = Column(String(255))
     release_year = Column(Integer)
     track_length = Column(Integer)
+
+    artist = relationship("Artist", back_populates="songs")
+    album = relationship("Album", back_populates="songs")
     collections = relationship("Collection", back_populates="song")
 
 class Collection(Base):
     __tablename__ = 'collections'
+
     collection_id = Column(Integer, primary_key=True, autoincrement=True)
-    song_id = Column(Integer, ForeignKey('songs.song_id'), nullable=False)
-    collection_name = Column(String(50))
+    song_id = Column(Integer, ForeignKey('songs.song_id', ondelete='CASCADE'), nullable=False)
+    collection_name = Column(String(50), nullable=False)
     collection_description = Column(Text)
+
     song = relationship("Song", back_populates="collections")
     segments = relationship("Segment", back_populates="collection")
 
 class Segment(Base):
     __tablename__ = 'segments'
-    
+
     segment_id = Column(Integer, primary_key=True, autoincrement=True)
-    collection_id = Column(Integer, ForeignKey('collections.collection_id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
-    segment_name = Column(String(50))
-    start_time = Column(Integer)
-    end_time = Column(Integer)
+    collection_id = Column(Integer, ForeignKey('collections.collection_id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
+    segment_name = Column(String(50), nullable=False, index=True)
+    start_time = Column(Integer, nullable=False)  # Start time in seconds
+    end_time = Column(Integer, nullable=False)    # End time in seconds
     segment_description = Column(Text)
+
     collection = relationship("Collection", back_populates="segments")
     user = relationship("User", back_populates="segments")
+    segment_artists = relationship("SegmentArtist", back_populates="segment")
+
+class SegmentArtist(Base):
+    __tablename__ = 'segment_artists'
+
+    segment_id = Column(Integer, ForeignKey('segments.segment_id', ondelete='CASCADE'), primary_key=True)
+    artist_id = Column(Integer, ForeignKey('artists.artist_id', ondelete='CASCADE'), primary_key=True)
+    instrument_id = Column(Integer, ForeignKey('instruments.instrument_id', ondelete='SET NULL'))
+
+    segment = relationship("Segment", back_populates="segment_artists")
+    artist = relationship("Artist", back_populates="segment_artists")
+    instrument = relationship("Instrument")
+
+class Instrument(Base):
+    __tablename__ = 'instruments'
+
+    instrument_id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False, unique=True, index=True)
 
 # def generate_unique_slug(mapper, connection, target):
 #     if isinstance(target, Artist) and not target.slug:
