@@ -17,6 +17,7 @@ class User(Base):
 
     token = relationship("Token", uselist=False, back_populates="user")
     segments = relationship("Segment", back_populates="user")
+    collections = relationship("Collection", back_populates="user")
 
 class Token(Base):
     __tablename__ = 'tokens'
@@ -76,10 +77,12 @@ class Collection(Base):
 
     collection_id = Column(Integer, primary_key=True, autoincrement=True)
     song_id = Column(Integer, ForeignKey('songs.song_id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
     collection_name = Column(String(50), nullable=False)
     collection_description = Column(Text)
 
     song = relationship("Song", back_populates="collections")
+    user = relationship("User", back_populates="collections")
     segments = relationship("Segment", back_populates="collection")
 
 class Segment(Base):
