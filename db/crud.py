@@ -41,6 +41,7 @@ def create_segment(db, collection_id, user_id, segment_name, start_time, end_tim
 def create_instrument(db, name):
     new_instrument = Instrument(name=name)
     db.add(new_instrument)
+    db.commit()
     return new_instrument
 
 
