@@ -10,6 +10,7 @@ def insert_instruments():
     # Insert instruments
     with get_db() as db:
         for instrument_id, name in data.items():
+            print(name)
             create_instrument(db, name)
 
-    print("Instruments inserted successfully!")
+        print("Instruments inserted successfully!")
