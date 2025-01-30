@@ -37,6 +37,20 @@
     padding: 8px;
     font-size: 14px;
   }
+
+  .save-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .save-button:hover {
+    background-color: #45a049;
+  }
 </style>
 
 <div class="track-header">
@@ -116,6 +130,34 @@
     </tr>
   </table>
 
+  <form action="{% url 'save_artist' %}" method="POST">
+    {% csrf_token %}
+    <select name="artist_id" id="artist-dropdown">
+      <option value="">Select an artist</option>
+      <!-- Options will be dynamically injected here -->
+    </select>
+    <button type="submit" class="save-button">Save</button>
+  </form>
+
+  <table class="editTable">
+    <tr>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
+      <td><input type="text" class="end-time" placeholder="End Time" /></td>
+    </tr>
+  </table>
+
   <script>
     document.addEventListener("htmx:afterSwap", (event) => {
       if (event.detail.target.id === "artist-results") {
@@ -189,24 +231,5 @@
         .catch((error) => console.error("Error:", error));
     });
   </script>
-
-  <table class="editTable">
-    <tr>
-      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
-      <td><input type="text" class="end-time" placeholder="End Time" /></td>
-    </tr>
-    <tr>
-      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
-      <td><input type="text" class="end-time" placeholder="End Time" /></td>
-    </tr>
-    <tr>
-      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
-      <td><input type="text" class="end-time" placeholder="End Time" /></td>
-    </tr>
-    <tr>
-      <td><input type="text" class="start-time" placeholder="Start Time" /></td>
-      <td><input type="text" class="end-time" placeholder="End Time" /></td>
-    </tr>
-  </table>
 </div>
 {% endblock %}
