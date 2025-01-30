@@ -60,7 +60,7 @@ class Song(Base):
     __tablename__ = 'songs'
 
     song_id = Column(Integer, primary_key=True, autoincrement=True)
-    sp_song_id = Column(String(255), unique=True)
+    spotify_song_id = Column(String(255), unique=True)
     title = Column(String(255), nullable=False, index=True)
     artist_id = Column(Integer, ForeignKey('artists.artist_id', ondelete='CASCADE'), nullable=False)
     album_id = Column(Integer, ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
