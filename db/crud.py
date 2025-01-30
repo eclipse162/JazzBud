@@ -13,8 +13,8 @@ def create_user(db, spotify_user_id, username, display_name=None,session_id = No
     db.add(new_user)
     return new_user
 
-def create_song(db, sp_song_id, title, artist, artist_id, album, album_id, cover, release_year, track_length):
-    new_song = Song(sp_song_id=sp_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)
+def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, cover, release_year, track_length):
+    new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)
     db.add(new_song)
     db.commit()
     return new_song
@@ -84,8 +84,8 @@ def get_session_user(db, session_id):
 def get_song_by_song_id(db, song_id):
     return db.query(Song).filter(Song.song_id == song_id).first()
 
-def get_spotify_song(db, sp_song_id):
-    return db.query(Song).filter(Song.sp_song_id == sp_song_id).first()
+def get_spotify_song(db, spotify_song_id):
+    return db.query(Song).filter(Song.spotify_song_id == spotify_song_id).first()
 
 def get_collection(db, collection_id):
     return db.query(Collection).filter(Collection.collection_id == collection_id).first()
@@ -133,11 +133,11 @@ def update_user(db, user_id, spotify_user_id=None, username=None, display_name=N
             user.token = token
     return user
 
-def update_song(db, song_id, sp_song_id=None, title=None, artist=None, album=None, genre=None, release_year=None, track_length=None):
+def update_song(db, song_id, spotify_song_id=None, title=None, artist=None, album=None, genre=None, release_year=None, track_length=None):
     song = get_song_by_song_id(db, song_id)
     if song:
-        if sp_song_id:
-            song.sp_song_id = sp_song_id
+        if spotify_song_id:
+            song.spotify_song_id = spotify_song_id
         if title:
             song.title = title
         if artist:
