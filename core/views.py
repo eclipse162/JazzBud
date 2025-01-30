@@ -12,7 +12,7 @@ from requests import Request, post
 from db.models import Artist, Album
 from spotify.views import refresh_user
 from rest_framework.views import APIView
-from db.crud import get_token, create_token, create_segment
+from db.crud import get_token, create_collection, create_segment, get_spotify_song, create_song
 from rest_framework.response import Response
 from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
@@ -138,10 +138,14 @@ def save_artist_selection(request):
                 artist_id = segment.get("artist_id")
                 start_time = segment.get("start_time")
                 end_time = segment.get("end_time")
+                spotify_song_id = segment.get("spotify_song_id")
 
+                song = get_spotify_song(spotify_song_id)
+                collection = create_collection(db, song.song_id, None, None)
+                    
                 # Save to the database
                 print(f"Saving: Artist {artist_id}, Start {start_time}, End {end_time}")
-                create_segment(db, user.user_id, None, None, start_time, end_time, None)
+                create_segment(db, collection.collection_id, user.user_id, start_time, end_time, None, None)
 
         return JsonResponse({"success": True})
 
@@ -168,7 +172,11 @@ def album_page(request, artist_name, album_title, album_id):
 def track_page(request, artist_name, track_title, track_id):
     track = populate_track(track_id)
     track_formatted = track['title']
-    
+
+    if get_spotify_song(track['spotify_song_id']) is None:
+        with get_db() as db:
+            create_song(db, track['spotify_song_id'], track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
+
     html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'

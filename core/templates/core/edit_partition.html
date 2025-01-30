@@ -150,6 +150,10 @@
   </table>
 
   <button id="saveButton" class="save-button">Save All Segments</button>
+  <div
+    type="hidden"
+    class="spotify-song-id"
+    value="{{ track.spotify_song_id }}"></div>
 </div>
 
 <script>
@@ -175,15 +179,11 @@
       if (searchInput) {
         searchInput.value = artistName;
         searchInput.setAttribute("data-artist-id", artistId);
+        sear;
         document.getElementById(containerId).classList.add("hidden");
       }
     }
   });
-
-  function showDropdown(input) {
-    const containerId = input.getAttribute("hx-target").substring(1);
-    document.getElementById(containerId).classList.remove("hidden");
-  }
 
   document.getElementById("saveButton").addEventListener("click", () => {
     const rows = document.querySelectorAll(".editTable tr");
@@ -197,12 +197,14 @@
       const artistSearchInput =
         document.querySelectorAll(".artist-search")[index];
       const artistId = artistSearchInput.getAttribute("data-artist-id");
+      const songId = row.querySelector(".spotify-song-id").value;
 
       if (artistId && startTime && endTime) {
         data.push({
           artist_id: artistId,
           start_time: startTime,
           end_time: endTime,
+          spotify_song_id: songId,
         });
       }
     });

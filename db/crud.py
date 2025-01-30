@@ -16,6 +16,7 @@ def create_user(db, spotify_user_id, username, display_name=None,session_id = No
 def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, cover, release_year, track_length):
     new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)
     db.add(new_song)
+    db.commit()
     return new_song
 
 def create_artist(db, artist_id, name, slug):
@@ -28,12 +29,13 @@ def create_album(db, album_id, name, slug, artist_id, cover):
     db.add(new_album)
     return new_album
 
-def create_collection(db, song_id, collection_name, collection_description):
+def create_collection(db, song_id, collection_name=None, collection_description=None):
     new_collection = Collection(song_id=song_id, collection_name=collection_name, collection_description=collection_description)
     db.add(new_collection)
+    db.commit()
     return new_collection
 
-def create_segment(db, collection_id, user_id, segment_name, start_time, end_time, segment_description):
+def create_segment(db, collection_id, user_id,start_time, end_time, segment_name=None, segment_description=None):
     new_segment = Segment(collection_id=collection_id, user_id=user_id, segment_name=segment_name, start_time=start_time, end_time=end_time, segment_description=segment_description)
     db.add(new_segment)
     db.commit()
@@ -183,7 +185,7 @@ def update_collection(db, collection_id, song_id=None, collection_name=None, col
             collection.collection_description = collection_description
     return collection
 
-def update_segment(segment_id, collection_id=None, user_id=None, segment_name=None, start_time=None, end_time=None, segment_description=None):
+def update_segment(db, segment_id, collection_id=None, user_id=None, segment_name=None, start_time=None, end_time=None, segment_description=None):
     segment = get_segment(db, segment_id)
     if segment:
         if collection_id:
