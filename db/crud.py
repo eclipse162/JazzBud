@@ -36,6 +36,7 @@ def create_collection(db, song_id, collection_name, collection_description):
 def create_segment(db, collection_id, user_id, segment_name, start_time, end_time, segment_description):
     new_segment = Segment(collection_id=collection_id, user_id=user_id, segment_name=segment_name, start_time=start_time, end_time=end_time, segment_description=segment_description)
     db.add(new_segment)
+    db.commit()
     return new_segment
 
 def create_instrument(db, name):

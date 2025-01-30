@@ -15,15 +15,19 @@
 
   .dropdown-container {
     position: absolute;
-    top: 40px; /* Adjust based on your input height */
+    top: 40px;
     left: 0;
     width: 100%;
-    background-color: white;
+    background-color: rgb(72, 70, 70);
     border: 1px solid #ccc;
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
+  }
+
+  .dropdown-container.hidden {
+    display: none;
   }
 
   .dropdown-container select {
@@ -63,7 +67,8 @@
           class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results-1" />
+          hx-target="#artist-results-1"
+          oninput="showDropdown(this)" />
         <div id="artist-results-1" class="dropdown-container"></div>
       </td>
     </tr>
@@ -76,7 +81,8 @@
           class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results-2" />
+          hx-target="#artist-results-2"
+          oninput="showDropdown(this)" />
         <div id="artist-results-2" class="dropdown-container"></div>
       </td>
     </tr>
@@ -89,7 +95,8 @@
           class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results-3" />
+          hx-target="#artist-results-3"
+          oninput="showDropdown(this)" />
         <div id="artist-results-3" class="dropdown-container"></div>
       </td>
     </tr>
@@ -102,7 +109,8 @@
           class="artist-search"
           hx-get="{% url 'artist_search' %}"
           hx-trigger="keyup changed delay:500ms"
-          hx-target="#artist-results-4" />
+          hx-target="#artist-results-4"
+          oninput="showDropdown(this)" />
         <div id="artist-results-4" class="dropdown-container"></div>
       </td>
     </tr>
@@ -114,6 +122,7 @@
         const results = event.detail.target.innerHTML;
         const dropdown = document.getElementById("artist-dropdown");
         dropdown.innerHTML = results;
+        doocument.getElementById("artist-dropdown").classList.remove("hidden");
       }
     });
 
@@ -130,9 +139,15 @@
         if (searchInput) {
           searchInput.value = artistName;
           searchInput.setAttribute("data-artist-id", artistId);
+          document.getElementById(containerId).classList.add("hidden");
         }
       }
     });
+
+    function showDropdown(input) {
+      const containerId = input.getAttribute("hx-target").substring(1);
+      document.getElementById(containerId).classList.remove("hidden");
+    }
 
     document.getElementById("saveButton").addEventListener("click", () => {
       const rows = document.querySelectorAll(".editTable tr");
