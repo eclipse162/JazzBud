@@ -172,8 +172,9 @@ def album_page(request, artist_name, album_title, album_id):
 def track_page(request, artist_name, track_title, track_id):
     track = populate_track(track_id)
     track_formatted = track['title']
+    spotify_song_id = track['spotify_song_id']
 
-    if get_spotify_song(track['spotify_song_id']) is None:
+    if get_spotify_song(spotify_song_id) is None:
         with get_db() as db:
             create_song(db, track['spotify_song_id'], track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
 
