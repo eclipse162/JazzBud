@@ -18,7 +18,6 @@ from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from db.insert import insert_instruments
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
