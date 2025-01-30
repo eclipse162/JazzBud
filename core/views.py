@@ -174,9 +174,9 @@ def track_page(request, artist_name, track_title, track_id):
     track_formatted = track['title']
     spotify_song_id = track['spotify_song_id']
 
-        with get_db() as db:
-            get_spotify_song(db, spotify_song_id) is None:
-            create_song(db, track['spotify_song_id'], track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
+    with get_db() as db:
+        get_spotify_song(db, spotify_song_id) is None:
+        create_song(db, spotify_song_id, track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
 
     html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted}).content
     response = HttpResponse(html_content)
