@@ -150,10 +150,7 @@
   </table>
 
   <button id="saveButton" class="save-button">Save All Segments</button>
-  <div
-    type="hidden"
-    class="spotify-song-id"
-    value="{{ track.spotify_song_id }}"></div>
+  <div type="hidden" class="sp_song_id" value="{{ track.sp_song_id }}"></div>
 </div>
 
 <script>
@@ -197,14 +194,14 @@
       const artistSearchInput =
         document.querySelectorAll(".artist-search")[index];
       const artistId = artistSearchInput.getAttribute("data-artist-id");
-      const songId = row.querySelector(".spotify-song-id").value;
+      const songId = row.querySelector(".sp_song_id").value;
 
       if (artistId && startTime && endTime) {
         data.push({
           artist_id: artistId,
           start_time: startTime,
           end_time: endTime,
-          spotify_song_id: songId,
+          sp_song_id: songId,
         });
       }
     });
