@@ -130,15 +130,6 @@
     </tr>
   </table>
 
-  <form action="{% url 'save_artist' %}" method="POST">
-    {% csrf_token %}
-    <select name="artist_id" id="artist-dropdown">
-      <option value="">Select an artist</option>
-      <!-- Options will be dynamically injected here -->
-    </select>
-    <button type="submit" class="save-button">Save</button>
-  </form>
-
   <table class="editTable">
     <tr>
       <td><input type="text" class="start-time" placeholder="Start Time" /></td>
@@ -158,78 +149,80 @@
     </tr>
   </table>
 
-  <script>
-    document.addEventListener("htmx:afterSwap", (event) => {
-      if (event.detail.target.id === "artist-results") {
-        const results = event.detail.target.innerHTML;
-        const dropdown = document.getElementById("artist-dropdown");
-        dropdown.innerHTML = results;
-        doocument.getElementById("artist-dropdown").classList.remove("hidden");
-      }
-    });
-
-    document.addEventListener("click", (event) => {
-      const target = event.target.closest(".dropdown-item");
-      if (target) {
-        const artistId = target.getAttribute("data-id");
-        const artistName = target.getAttribute("data-name");
-        const containerId = target.closest(".dropdown-container").id;
-
-        const searchInput = document.querySelector(
-          `input[hx-target="#${containerId}"]`
-        );
-        if (searchInput) {
-          searchInput.value = artistName;
-          searchInput.setAttribute("data-artist-id", artistId);
-          document.getElementById(containerId).classList.add("hidden");
-        }
-      }
-    });
-
-    function showDropdown(input) {
-      const containerId = input.getAttribute("hx-target").substring(1);
-      document.getElementById(containerId).classList.remove("hidden");
-    }
-
-    document.getElementById("saveButton").addEventListener("click", () => {
-      const rows = document.querySelectorAll(".editTable tr");
-      const data = [];
-
-      rows.forEach((row, index) => {
-        const startTime = row.querySelector(".start-time").value;
-        const endTime = row.querySelector(".end-time").value;
-
-        // Match the artist search input for this row
-        const artistSearchInput =
-          document.querySelectorAll(".artist-search")[index];
-        const artistId = artistSearchInput.getAttribute("data-artist-id");
-
-        if (artistId && startTime && endTime) {
-          data.push({
-            artist_id: artistId,
-            start_time: startTime,
-            end_time: endTime,
-          });
-        }
-      });
-
-      fetch("{% url 'save_artist_selection' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": "{{ csrf_token }}",
-        },
-        body: JSON.stringify({ segments: data }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Segments saved successfully!");
-          } else {
-            console.error("Failed to save the segments.");
-          }
-        })
-        .catch((error) => console.error("Error:", error));
-    });
-  </script>
+  <button id="saveButton" class="save-button">Save All Segments</button>
 </div>
+
+<script>
+  document.addEventListener("htmx:afterSwap", (event) => {
+    if (event.detail.target.id === "artist-results") {
+      const results = event.detail.target.innerHTML;
+      const dropdown = document.getElementById("artist-dropdown");
+      dropdown.innerHTML = results;
+      doocument.getElementById("artist-dropdown").classList.remove("hidden");
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target.closest(".dropdown-item");
+    if (target) {
+      const artistId = target.getAttribute("data-id");
+      const artistName = target.getAttribute("data-name");
+      const containerId = target.closest(".dropdown-container").id;
+
+      const searchInput = document.querySelector(
+        `input[hx-target="#${containerId}"]`
+      );
+      if (searchInput) {
+        searchInput.value = artistName;
+        searchInput.setAttribute("data-artist-id", artistId);
+        document.getElementById(containerId).classList.add("hidden");
+      }
+    }
+  });
+
+  function showDropdown(input) {
+    const containerId = input.getAttribute("hx-target").substring(1);
+    document.getElementById(containerId).classList.remove("hidden");
+  }
+
+  document.getElementById("saveButton").addEventListener("click", () => {
+    const rows = document.querySelectorAll(".editTable tr");
+    const data = [];
+
+    rows.forEach((row, index) => {
+      const startTime = row.querySelector(".start-time").value;
+      const endTime = row.querySelector(".end-time").value;
+
+      // Match the artist search input for this row
+      const artistSearchInput =
+        document.querySelectorAll(".artist-search")[index];
+      const artistId = artistSearchInput.getAttribute("data-artist-id");
+
+      if (artistId && startTime && endTime) {
+        data.push({
+          artist_id: artistId,
+          start_time: startTime,
+          end_time: endTime,
+        });
+      }
+    });
+
+    fetch("{% url 'save_artist_selection' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      body: JSON.stringify({ segments: data }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Segments saved successfully!");
+        } else {
+          console.error("Failed to save the segments.");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  });
+</script>
 {% endblock %}
