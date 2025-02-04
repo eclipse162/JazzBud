@@ -55,8 +55,7 @@ class Album(Base):
     cover = Column(String(255))
 
     artist = relationship("Artist", back_populates="albums")
-    songs = relationship("Song", back_populates="album")  # Corrected relationship
-    collections = relationship("Collection", back_populates="album")  # Corrected relationship
+    songs = relationship("Song", back_populates="album")
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -70,8 +69,8 @@ class Song(Base):
     track_length = Column(Integer)
 
     artist = relationship("Artist", back_populates="songs")
-    album = relationship("Album", back_populates="songs")  # Corrected relationship
-    collections = relationship("Collection", back_populates="song")  # Corrected relationship
+    album = relationship("Album", back_populates="songs")
+    collections = relationship("Collection", back_populates="song")
 
 class Collection(Base):
     __tablename__ = 'collections'
@@ -84,7 +83,7 @@ class Collection(Base):
 
     song = relationship("Song", back_populates="collections")
     user = relationship("User", back_populates="collections")
-    segments = relationship("Segment", back_populates="collection")  # Corrected relationship
+    segments = relationship("Segment", back_populates="collection")
 
 class Segment(Base):
     __tablename__ = 'segments'
@@ -99,7 +98,7 @@ class Segment(Base):
 
     collection = relationship("Collection", back_populates="segments")
     user = relationship("User", back_populates="segments")
-    segment_artists = relationship("SegmentArtist", back_populates="segment")  # Corrected relationship
+    segment_artists = relationship("SegmentArtist", back_populates="segment")
 
 class SegmentArtist(Base):
     __tablename__ = 'segment_artists'
@@ -110,7 +109,7 @@ class SegmentArtist(Base):
 
     segment = relationship("Segment", back_populates="segment_artists")
     artist = relationship("Artist", back_populates="segment_artists")
-    instrument = relationship("Instrument")  # Corrected relationship
+    instrument = relationship("Instrument")
 
 class Instrument(Base):
     __tablename__ = 'instruments'
