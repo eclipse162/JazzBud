@@ -47,6 +47,8 @@
   justify-content: flex-end; /* Align items to the bottom */
   height: 100%; /* Make the album-info container take the full height of the album cover */
   flex-grow: 1; /* Ensure the album-info container grows to fill the available space */
+  position: absolute;
+  bottom: 0;
 }
 
 .album-title {
@@ -130,7 +132,7 @@
 .track-title {
   font-size: 1rem;
   font-weight: 500;
-  color: #879ed2;
+  color: #b6402b;
   flex-grow: 1;
 }
 
