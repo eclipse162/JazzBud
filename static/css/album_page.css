@@ -139,6 +139,7 @@
   color: #9ca3af;
   transition: color 0.3s ease;
   position: absolute;
+  padding-right: 30px;
 }
 
 .add-button:hover {
