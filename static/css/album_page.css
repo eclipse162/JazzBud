@@ -24,8 +24,8 @@
 @media (min-width: 768px) {
   .album-cover-container {
     margin-bottom: 0;
-    margin-right: 24px;
-    margin-left: 24px;
+    margin-right: 40px;
+    margin-left: 40px;
   }
 }
 
@@ -44,10 +44,12 @@
 .album-info {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* Distribute space between title and artist */
+  height: 100%; /* Make the album-info container take the full height of the album cover */
 }
 
 .album-title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: bold;
   margin-bottom: 8px;
   color: #dbe2ee;
@@ -69,8 +71,8 @@
 }
 
 .album-tracks {
-  padding: 20px;
-  width: 768px;
+  padding: 40px;
+  width: 100%;
 }
 
 .tracks-title {
@@ -127,10 +129,7 @@
   color: #9ca3af;
   transition: color 0.3s ease;
   display: none;
-}
-
-.track-row:hover .add-button {
-  display: inline-block;
+  gap: 15px;
 }
 
 .add-button:hover {
