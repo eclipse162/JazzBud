@@ -5,14 +5,14 @@
 .album-header {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  padding: 5px;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 @media (min-width: 768px) {
   .album-header {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
   }
 }
 
@@ -25,6 +25,7 @@
   .album-cover-container {
     margin-bottom: 0;
     margin-right: 24px;
+    margin-left: 24px;
   }
 }
 
@@ -49,6 +50,7 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 8px;
+  color: #dbe2ee;
 }
 
 .album-artist {
@@ -68,12 +70,14 @@
 
 .album-tracks {
   padding: 20px;
+  width: 768px;
 }
 
 .tracks-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 16px;
+  color: #dbe2ee;
 }
 
 .tracks-list {
@@ -130,7 +134,7 @@
 }
 
 .add-button:hover {
-  color: #bc4200;
+  color: #de5308;
 }
 
 .add-button:focus {

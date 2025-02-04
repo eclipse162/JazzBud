@@ -54,8 +54,8 @@ class Album(Base):
     cover = Column(String(255))
 
     artist = relationship("Artist", back_populates="albums")
-    songs = relationship("Song", back_populates="album")
-    collections = relationship("Collection", back_populates="song")
+    songs = relationship("Song", back_populates="albums")
+    collections = relationship("Collection", back_populates="albums")
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -70,7 +70,7 @@ class Song(Base):
 
     artist = relationship("Artist", back_populates="songs")
     album = relationship("Album", back_populates="songs")
-    collections = relationship("Collection", back_populates="song")
+    collections = relationship("Collection", back_populates="songs")
 
 class Collection(Base):
     __tablename__ = 'collections'
@@ -83,7 +83,7 @@ class Collection(Base):
 
     song = relationship("Song", back_populates="collections")
     user = relationship("User", back_populates="collections")
-    segments = relationship("Segment", back_populates="collection")
+    segments = relationship("Segment", back_populates="collections")
 
 class Segment(Base):
     __tablename__ = 'segments'
@@ -98,7 +98,7 @@ class Segment(Base):
 
     collection = relationship("Collection", back_populates="segments")
     user = relationship("User", back_populates="segments")
-    segment_artists = relationship("SegmentArtist", back_populates="segment")
+    segment_artists = relationship("SegmentArtist", back_populates="segments")
 
 class SegmentArtist(Base):
     __tablename__ = 'segment_artists'
@@ -109,7 +109,7 @@ class SegmentArtist(Base):
 
     segment = relationship("Segment", back_populates="segment_artists")
     artist = relationship("Artist", back_populates="segment_artists")
-    instrument = relationship("Instrument")
+    instrument = relationship("instruments")
 
 class Instrument(Base):
     __tablename__ = 'instruments'
