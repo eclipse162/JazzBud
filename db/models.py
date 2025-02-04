@@ -5,6 +5,7 @@ from django.utils import timezone
 from slugify import slugify
 
 Base = declarative_base()
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -54,8 +55,8 @@ class Album(Base):
     cover = Column(String(255))
 
     artist = relationship("Artist", back_populates="albums")
-    songs = relationship("Song", back_populates="albums")
-    collections = relationship("Collection", back_populates="albums")
+    songs = relationship("Song", back_populates="album")  # Corrected relationship
+    collections = relationship("Collection", back_populates="album")  # Corrected relationship
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -69,8 +70,8 @@ class Song(Base):
     track_length = Column(Integer)
 
     artist = relationship("Artist", back_populates="songs")
-    album = relationship("Album", back_populates="songs")
-    collections = relationship("Collection", back_populates="songs")
+    album = relationship("Album", back_populates="songs")  # Corrected relationship
+    collections = relationship("Collection", back_populates="song")  # Corrected relationship
 
 class Collection(Base):
     __tablename__ = 'collections'
@@ -83,7 +84,7 @@ class Collection(Base):
 
     song = relationship("Song", back_populates="collections")
     user = relationship("User", back_populates="collections")
-    segments = relationship("Segment", back_populates="collections")
+    segments = relationship("Segment", back_populates="collection")  # Corrected relationship
 
 class Segment(Base):
     __tablename__ = 'segments'
@@ -98,7 +99,7 @@ class Segment(Base):
 
     collection = relationship("Collection", back_populates="segments")
     user = relationship("User", back_populates="segments")
-    segment_artists = relationship("SegmentArtist", back_populates="segments")
+    segment_artists = relationship("SegmentArtist", back_populates="segment")  # Corrected relationship
 
 class SegmentArtist(Base):
     __tablename__ = 'segment_artists'
@@ -109,7 +110,7 @@ class SegmentArtist(Base):
 
     segment = relationship("Segment", back_populates="segment_artists")
     artist = relationship("Artist", back_populates="segment_artists")
-    instrument = relationship("instruments")
+    instrument = relationship("Instrument")  # Corrected relationship
 
 class Instrument(Base):
     __tablename__ = 'instruments'
