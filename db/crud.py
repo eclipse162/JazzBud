@@ -13,8 +13,8 @@ def create_user(db, spotify_user_id, username, display_name=None,session_id = No
     db.add(new_user)
     return new_user
 
-def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, cover, release_year, track_length):
-    new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, cover=cover, release_year=release_year, track_length=track_length)
+def create_song(db, spotify_song_id, title, artist, artist_id, album, album_id, release_year, track_length):
+    new_song = Song(spotify_song_id=spotify_song_id, title=title, artist=artist, artist_id=artist_id, album=album, album_id=album_id, release_year=release_year, track_length=track_length)
     db.add(new_song)
     db.commit()
     return new_song

@@ -55,6 +55,7 @@ class Album(Base):
 
     artist = relationship("Artist", back_populates="albums")
     songs = relationship("Song", back_populates="album")
+    collections = relationship("Collection", back_populates="song")
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -64,7 +65,6 @@ class Song(Base):
     title = Column(String(255), nullable=False, index=True)
     artist_id = Column(Integer, ForeignKey('artists.artist_id', ondelete='CASCADE'), nullable=False)
     album_id = Column(Integer, ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
-    cover = Column(String(255))
     release_year = Column(Integer)
     track_length = Column(Integer)
 
