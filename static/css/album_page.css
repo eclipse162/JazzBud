@@ -43,7 +43,7 @@
 }
 
 .album-info {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   justify-content: space-between; /* Distribute space between title and artist */
   height: 100%; /* Make the album-info container take the full height of the album cover */
@@ -54,6 +54,7 @@
   font-weight: bold;
   margin-bottom: 2px;
   color: #dbe2ee;
+  position: relative;
 }
 
 .album-artist {
@@ -62,6 +63,7 @@
   color: #9ca3af;
   margin-bottom: 8px;
   display: inline-block;
+  position: relative;
 }
 
 .artist-image {
@@ -138,8 +140,8 @@
   cursor: pointer;
   color: #9ca3af;
   transition: color 0.3s ease;
-  position: absolute;
-  padding-right: 30px;
+  position: relative;
+  padding-right: 100px;
 }
 
 .add-button:hover {
