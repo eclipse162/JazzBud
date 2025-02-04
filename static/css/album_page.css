@@ -43,9 +43,9 @@
 }
 
 .album-info {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute space between title and artist */
+  justify-content: flex-end; /* Distribute space between title and artist */
   height: 100%; /* Make the album-info container take the full height of the album cover */
 }
 
@@ -58,11 +58,12 @@
 }
 
 .album-artist {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
   margin-top: auto;
   font-size: 1.125rem;
   color: #9ca3af;
   margin-bottom: 8px;
-  display: inline-block;
   position: relative;
 }
 
@@ -70,6 +71,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
+  margin-right: 8px; /* Add a small gap between the image and the artist name */
 }
 
 .artist-link {
@@ -115,6 +117,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative;
+  justify-content: space-between;
 }
 
 .track-number {
@@ -127,6 +131,7 @@
   font-size: 1rem;
   font-weight: 500;
   color: #879ed2;
+  flex-grow: 1;
 }
 
 .track-length-container {
@@ -140,7 +145,7 @@
   cursor: pointer;
   color: #9ca3af;
   transition: color 0.3s ease;
-  position: relative;
+  position: absolute;
   padding-right: 100px;
 }
 
