@@ -4,8 +4,7 @@
 
 .album-header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-end; /* Align items to the bottom */
   margin-bottom: 24px;
 }
 
@@ -45,8 +44,9 @@
 .album-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Distribute space between title and artist */
+  justify-content: flex-end; /* Align items to the bottom */
   height: 100%; /* Make the album-info container take the full height of the album cover */
+  flex-grow: 1; /* Ensure the album-info container grows to fill the available space */
 }
 
 .album-title {
@@ -71,7 +71,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  margin-right: 8px; /* Add a small gap between the image and the artist name */
+  margin-right: 8px;
 }
 
 .artist-link {
