@@ -32,6 +32,7 @@
 .album-cover {
   width: 12rem;
   height: 12rem;
+  border-radius: 5%;
 }
 
 @media (min-width: 768px) {
@@ -51,18 +52,19 @@
 .album-title {
   font-size: 4rem;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   color: #dbe2ee;
 }
 
 .album-artist {
+  margin-top: auto;
   font-size: 1.125rem;
   color: #9ca3af;
   margin-bottom: 8px;
 }
 
 .artist-link {
-  color: inherit;
+  color: #6c8abd;
   text-decoration: none;
 }
 
@@ -71,7 +73,9 @@
 }
 
 .album-tracks {
-  padding: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 20px;
   width: 100%;
 }
 
@@ -122,14 +126,11 @@
 }
 
 .add-button {
-  background: none;
-  border: none;
   font-size: 1.25rem;
   cursor: pointer;
   color: #9ca3af;
   transition: color 0.3s ease;
   display: none;
-  gap: 15px;
 }
 
 .add-button:hover {
