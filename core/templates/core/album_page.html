@@ -15,8 +15,8 @@
       <h1 class="album-title">{{ album.title }}</h1>
       <p class="album-artist">
         <img
-          src="{{ artist.cover }}"
-          alt="{{ artist.name }}"
+          src="{{ artist_image }}"
+          alt="{{ album.artist }}"
           class="artist-cover" />
         <a
           href="{% url 'artist_page' album.artist|custom_slugify album.artist_id %}"

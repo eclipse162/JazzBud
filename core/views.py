@@ -161,24 +161,58 @@ def artist_page(request, artist_name, artist_id):
     return response
 
 def album_page(request, artist_name, album_title, album_id):
+    session_id = request.session.session_key
     album = populate_album(album_id)
     album_formatted = album['title']
+    artist_id = album['artist_id']
+
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
     
-    html_content = render(request, 'core/album_page.html', {'album': album, 'album_title': album_formatted}).content
+    sp = spotipy.Spotify(auth=token.access_token)
+    t_artist = sp.artist(artist_id)
+    artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
+    
+    html_content = render(request, 'core/album_page.html', {'album': album, 'album_title': album_formatted, 'artist_image': artist_image}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
 
 def track_page(request, artist_name, track_title, track_id):
+    session_id = request.session.session_key
     track = populate_track(track_id)
     track_formatted = track['title']
+    artist_id = track['artist_id']
     spotify_song_id = track['spotify_song_id']
+
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+    
+    sp = spotipy.Spotify(auth=token.access_token)
+    t_artist = sp.artist(artist_id)
+    artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
 
     # with get_db() as db:
     #     if get_spotify_song(db, spotify_song_id) is None:
     #         create_song(db, spotify_song_id, track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
 
-    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted}).content
+    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted, 'artist_image': artist_image}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response

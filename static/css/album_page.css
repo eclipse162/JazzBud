@@ -61,9 +61,10 @@
   font-size: 1.125rem;
   color: #9ca3af;
   margin-bottom: 8px;
+  display: inline-block;
 }
 
-.artist-cover {
+.artist-image {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -123,7 +124,7 @@
 .track-title {
   font-size: 1rem;
   font-weight: 500;
-  color: #5772b1;
+  color: #879ed2;
 }
 
 .track-length-container {
