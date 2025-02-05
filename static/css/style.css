@@ -100,7 +100,8 @@ body {
 }
 
 .searchBox {
-  background: #dbcbbd;
+  background: #630d02;
+  border-color: #d8c9bc;
   height: 40px;
   border-radius: 40px;
   padding: 10px;
@@ -124,11 +125,9 @@ body {
 .searchBox:hover .searchButton,
 .searchBox:focus-within .searchButton {
   color: #630d02;
-  border: #dbcbbd;
 }
 
 .searchButton {
-  color: white;
   float: right;
   width: 45px;
   height: 45px;
@@ -146,7 +145,7 @@ body {
   outline: none;
   float: left;
   padding: 0;
-  color: white;
+  color: rgb(190, 184, 184);
   font-size: 16px;
   transition: width 0.4s;
   line-height: 40px;

@@ -8,23 +8,28 @@
 
 <main class="album-page">
   <div class="album-header">
-    <div class="album-cover-container">
-      <img src="{{ album.cover }}" alt="{{ album.name }}" class="album-cover" />
-    </div>
-    <div class="album-info">
-      <h1 class="album-title">{{ album.title }}</h1>
-      <p class="album-artist">
+    <div class="album-content">
+      <div class="album-cover-container">
         <img
-          src="{{ artist_image }}"
-          alt="{{ album.artist }}"
-          class="artist-image" />
-        <a
-          href="{% url 'artist_page' album.artist|custom_slugify album.artist_id %}"
-          class="artist-link">
-          {{ album.artist }}
-        </a>
-        &middot; {{ album.release_year }}
-      </p>
+          src="{{ album.cover }}"
+          alt="{{ album.name }}"
+          class="album-cover" />
+      </div>
+      <div class="album-info">
+        <h1 class="album-title">{{ album.title }}</h1>
+        <p class="album-artist">
+          <img
+            src="{{ artist_image }}"
+            alt="{{ album.artist }}"
+            class="artist-image" />
+          <a
+            href="{% url 'artist_page' album.artist|custom_slugify album.artist_id %}"
+            class="artist-link">
+            {{ album.artist }}
+          </a>
+          &middot; {{ album.release_year }}
+        </p>
+      </div>
     </div>
   </div>
 

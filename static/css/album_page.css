@@ -5,7 +5,12 @@
 .album-header {
   display: flex;
   margin-bottom: 24px;
-  align-items: stretch; /* Ensure children take full height */
+  align-items: flex-start; /* Ensure children take full height */
+}
+
+.album-content {
+  display: flex;
+  align-items: flex-end;
 }
 
 @media (min-width: 768px) {
@@ -44,9 +49,10 @@
 .album-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Push content to bottom */
-  flex-grow: 1; /* Allows it to fill available space */
+  justify-content: flex-end; /* Push text to bottom */
+  flex-grow: 1; /* Fill available space */
 }
+
 .album-title {
   font-size: 4rem;
   font-weight: bold;
