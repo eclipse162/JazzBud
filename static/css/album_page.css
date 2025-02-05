@@ -6,6 +6,7 @@
   display: flex;
   align-items: flex-end; /* Align items to the bottom */
   margin-bottom: 24px;
+  align-items: stretch; /* Ensure children take full height */
 }
 
 @media (min-width: 768px) {
@@ -44,18 +45,17 @@
 .album-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Align items to the bottom */
-  height: 100%; /* Make the album-info container take the full height of the album cover */
-  flex-grow: 1; /* Ensure the album-info container grows to fill the available space */
-  position: absolute;
-  bottom: 0;
+  justify-content: flex-end;
+  flex-grow: 1; /* Make it expand */
+  height: auto; /* Let it naturally fill */
+  position: relative; /* Fix typo */
 }
 
 .album-title {
   font-size: 4rem;
   font-weight: bold;
   margin-bottom: 2px;
-  color: #dbe2ee;
+  color: #edddcf;
   position: relative;
 }
 
@@ -96,7 +96,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #dbe2ee;
+  color: #ebeedb;
 }
 
 .tracks-list {
@@ -119,8 +119,6 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  position: relative;
-  justify-content: space-between;
 }
 
 .track-number {
@@ -132,14 +130,13 @@
 .track-title {
   font-size: 1rem;
   font-weight: 500;
-  color: #b6402b;
+  color: #edddcf;
   flex-grow: 1;
 }
 
 .track-length-container {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .add-button {
@@ -147,12 +144,12 @@
   cursor: pointer;
   color: #9ca3af;
   transition: color 0.3s ease;
-  position: absolute;
+  position: relative;
   padding-right: 100px;
 }
 
 .add-button:hover {
-  color: #de5308;
+  color: #630d02;
 }
 
 .track-length {
