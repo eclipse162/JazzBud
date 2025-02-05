@@ -77,8 +77,9 @@ body {
 }
 
 .logo_container {
-  display: flex;
-  align-items: center; /* Align items vertically in the center */
+  height: 100%;
+  display: table;
+  float: left;
 }
 
 .logo_container h1 {
@@ -94,12 +95,11 @@ body {
   height: 50%;
   display: table-cell;
   vertical-align: middle;
-  margin-top: 33px;
   margin-left: 80px;
 }
 
 .searchBox {
-  background: #230900;
+  background: #e2dad4;
   height: 40px;
   border-radius: 40px;
   padding: 10px;
@@ -117,13 +117,13 @@ body {
 .searchBox:hover .searchInput,
 .searchBox:focus-within .searchInput {
   width: 240px;
-  border-color: #dbcbbd;
   padding: 0 6px;
 }
 
 .searchBox:hover .searchButton,
 .searchBox:focus-within .searchButton {
-  color: #230900;
+  color: #630d02;
+  border: #e2dad4;
 }
 
 .searchButton {
@@ -131,6 +131,7 @@ body {
   width: 45px;
   height: 45px;
   border-radius: 50%;
+  background: #e2dad4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,7 +144,7 @@ body {
   outline: none;
   float: left;
   padding: 0;
-  color: rgb(190, 184, 184);
+  color: rgb(192, 180, 180);
   font-size: 16px;
   transition: width 0.4s;
   line-height: 40px;
@@ -158,8 +159,7 @@ body {
 }
 
 .navigation {
-  display: flex;
-  align-items: center;
+  float: right;
   height: 100%;
 }
 
@@ -180,7 +180,7 @@ body {
   height: 100%;
   font-family: "Montserrat", "Arial", sans-serif;
   font-weight: 300;
-  color: #dbcbbd;
+  color: #d9762f;
   font-size: 20px;
 }
 
