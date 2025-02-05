@@ -127,9 +127,7 @@ body {
 
 .searchBox:hover .searchButton,
 .searchBox:focus-within .searchButton {
-  color: #230900;
-  border-color: #e2dad4;
-  border-width: 1px;
+  color: #e2dad4;
 }
 
 .searchButton {
@@ -185,7 +183,7 @@ body {
   height: 100%;
   font-family: "Montserrat", "Arial", sans-serif;
   font-weight: 300;
-  color: #fbf1c7;
+  color: #e8e1c6;
   font-size: 20px;
 }
 
@@ -203,7 +201,7 @@ body {
 .home_page_body h1,
 h3,
 p {
-  color: #fbf1c7;
+  color: #edddcf;
 }
 
 #new_partition {
