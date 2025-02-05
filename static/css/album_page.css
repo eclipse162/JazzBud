@@ -4,7 +4,6 @@
 
 .album-header {
   display: flex;
-  align-items: flex-end; /* Align items to the bottom */
   margin-bottom: 24px;
   align-items: stretch; /* Ensure children take full height */
 }
@@ -45,12 +44,9 @@
 .album-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  flex-grow: 1; /* Make it expand */
-  height: auto; /* Let it naturally fill */
-  position: relative; /* Fix typo */
+  justify-content: flex-end; /* Push content to bottom */
+  flex-grow: 1; /* Allows it to fill available space */
 }
-
 .album-title {
   font-size: 4rem;
   font-weight: bold;
@@ -142,9 +138,8 @@
 .add-button {
   font-size: 1.25rem;
   cursor: pointer;
-  color: #9ca3af;
+  color: #dbcbbd;
   transition: color 0.3s ease;
-  position: relative;
   padding-right: 100px;
 }
 
@@ -153,5 +148,5 @@
 }
 
 .track-length {
-  color: #9ca3af;
+  color: #dbcbbd;
 }
