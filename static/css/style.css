@@ -77,9 +77,8 @@ body {
 }
 
 .logo_container {
-  height: 100%;
-  display: table;
-  float: left;
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
 }
 
 .logo_container h1 {
@@ -100,8 +99,7 @@ body {
 }
 
 .searchBox {
-  background: #630d02;
-  border-color: #d8c9bc;
+  background: #230900;
   height: 40px;
   border-radius: 40px;
   padding: 10px;
@@ -119,12 +117,13 @@ body {
 .searchBox:hover .searchInput,
 .searchBox:focus-within .searchInput {
   width: 240px;
+  border-color: #dbcbbd;
   padding: 0 6px;
 }
 
 .searchBox:hover .searchButton,
 .searchBox:focus-within .searchButton {
-  color: #630d02;
+  color: #230900;
 }
 
 .searchButton {
@@ -132,7 +131,6 @@ body {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: #e2dad4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -160,7 +158,8 @@ body {
 }
 
 .navigation {
-  float: right;
+  display: flex;
+  align-items: center;
   height: 100%;
 }
 
