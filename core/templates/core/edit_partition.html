@@ -7,6 +7,8 @@
   href="{% static 'css/album_page.css' %}" />
 
 <script src="https://unpkg.com/htmx.org"></script>
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script src="{% static '/js/partition.js' %}"></script>
 
 <style>
   .editContainer {
@@ -55,6 +57,55 @@
   .track-page {
     padding-top: 20px;
   }
+
+  .player-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1c1c1c;
+    border-radius: 10px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .controls button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #1db954;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .controls button:hover {
+    background-color: #17a74a;
+  }
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .progress-bar {
+    flex-grow: 1;
+    height: 6px;
+    background: #333;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+  }
+  .progress {
+    height: 100%;
+    background: #1db954;
+    border-radius: 3px;
+    width: 0%;
+    position: absolute;
+  }
 </style>
 <main class="track-page">
   <div class="album-header">
@@ -79,6 +130,21 @@
           </a>
           &middot; {{ track.release_year }}
         </p>
+        <div class="player-container">
+          <div class="controls">
+            <button onclick="prevTrack()">⏮</button>
+            <button id="play-pause" onclick="togglePlayPause()">▶️</button>
+            <button onclick="nextTrack()">⏭</button>
+          </div>
+
+          <div class="progress-container">
+            <span id="current-time">0:00</span>
+            <div class="progress-bar" onclick="seekTrack(event)">
+              <div id="progress" class="progress"></div>
+            </div>
+            <span id="duration">0:00</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -174,76 +240,4 @@
     <div type="hidden" class="sp_song_id" value="{{ track.sp_song_id }}"></div>
   </div>
 </main>
-
-<script>
-  document.addEventListener("htmx:afterSwap", (event) => {
-    if (event.detail.target.id === "artist-results") {
-      const results = event.detail.target.innerHTML;
-      const dropdown = document.getElementById("artist-dropdown");
-      dropdown.innerHTML = results;
-      doocument.getElementById("artist-dropdown").classList.remove("hidden");
-    }
-  });
-
-  document.addEventListener("click", (event) => {
-    const target = event.target.closest(".dropdown-item");
-    if (target) {
-      const artistId = target.getAttribute("data-id");
-      const artistName = target.getAttribute("data-name");
-      const containerId = target.closest(".dropdown-container").id;
-
-      const searchInput = document.querySelector(
-        `input[hx-target="#${containerId}"]`
-      );
-      if (searchInput) {
-        searchInput.value = artistName;
-        searchInput.setAttribute("data-artist-id", artistId);
-        sear;
-        document.getElementById(containerId).classList.add("hidden");
-      }
-    }
-  });
-
-  document.getElementById("saveButton").addEventListener("click", () => {
-    const rows = document.querySelectorAll(".editTable tr");
-    const data = [];
-
-    rows.forEach((row, index) => {
-      const startTime = row.querySelector(".start-time").value;
-      const endTime = row.querySelector(".end-time").value;
-
-      // Match the artist search input for this row
-      const artistSearchInput =
-        document.querySelectorAll(".artist-search")[index];
-      const artistId = artistSearchInput.getAttribute("data-artist-id");
-      const songId = row.querySelector(".sp_song_id").value;
-
-      if (artistId && startTime && endTime) {
-        data.push({
-          artist_id: artistId,
-          start_time: startTime,
-          end_time: endTime,
-          sp_song_id: songId,
-        });
-      }
-    });
-
-    fetch("{% url 'save_artist_selection' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": "{{ csrf_token }}",
-      },
-      body: JSON.stringify({ segments: data }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Segments saved successfully!");
-        } else {
-          console.error("Failed to save the segments.");
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  });
-</script>
 {% endblock %}

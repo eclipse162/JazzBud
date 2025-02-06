@@ -89,6 +89,7 @@ body {
   height: 100%;
   display: table-cell;
   vertical-align: middle;
+  left: 40px;
 }
 
 .logo_container div {
@@ -96,7 +97,7 @@ body {
   display: table-cell;
   vertical-align: middle;
   margin-left: 80px;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .searchBox {
@@ -164,6 +165,7 @@ body {
 .navigation {
   float: right;
   height: 100%;
+  right: 40px;
 }
 
 .navigation a {
@@ -183,7 +185,7 @@ body {
   height: 100%;
   font-family: "Montserrat", "Arial", sans-serif;
   font-weight: 300;
-  color: #e8e1c6;
+  color: #f6f1e0;
   font-size: 20px;
 }
 

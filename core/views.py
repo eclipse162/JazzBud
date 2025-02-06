@@ -216,3 +216,62 @@ def track_page(request, artist_name, track_title, track_id):
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
+
+def transfer_playback(request, device_id):
+    session_id = request.session.session_key
+
+    if session_id is None:
+        return redirect('login')
+    
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+
+    sp = spotipy.Spotify(auth=token.access_token)
+    sp.transfer_playback(device_id=device_id, force_play=False)
+
+    return JsonResponse({"success": True})
+
+def playback(request, track_uri, action, position_ms=None):
+    session_id = request.session.session_key
+
+    if session_id is None:
+        return redirect('login')
+    
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+
+    sp = spotipy.Spotify(auth=token.access_token)
+    devices = sp.devices()
+
+    for device in devices['devices']:
+        if device['name'] == 'JBud Player':
+            device_id = device['id']
+
+    if action == 'pause':
+        sp.pause_playback(device_id=device_id)
+    elif action == 'play':
+        sp.start_playback(device_id=device_id, uris=[track_uri])
+    elif action == 'next':
+        sp.next_track(device_id=device_id)
+    elif action == 'prev':
+        sp.previous_track(device_id=device_id)
+    elif action == 'position':
+        sp.seek_track(position_ms, device_id=device_id)
+            
+    return JsonResponse({"success": True})
