@@ -46,7 +46,7 @@ function updateTrackInfo(state) {
 }
 
 function togglePlayPause() {
-  fetch(`/playback/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
+  fetch(`/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
     .then(() => {
       isPlaying = !isPlaying;
     })
@@ -80,7 +80,7 @@ function seekTrack(event) {
   const clickPosition = event.offsetX / progressBar.clientWidth;
   const seekTo = trackDuration * clickPosition;
 
-  fetch(`/playback/null/position/?position_ms=${Math.floor(seekTo)}`)
+  fetch(`/play/${currentTrackUri}/position/?position_ms=${Math.floor(seekTo)}`)
     .then(() => (currentPosition = seekTo))
     .catch((err) => console.error(err));
 }
