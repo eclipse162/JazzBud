@@ -143,7 +143,9 @@
             <div class="progress-bar" onclick="seekTrack(event)">
               <div id="progress" class="progress"></div>
             </div>
-            <span class="duration">{{ track.track_length }}</span>
+            <span class="duration">
+              {{ track.track_length|ms_to_minutes_seconds }}
+            </span>
           </div>
         </div>
       </div>

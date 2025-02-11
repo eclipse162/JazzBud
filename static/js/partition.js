@@ -40,27 +40,15 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 };
 
 function updateTrackInfo(state) {
-  const trackURI = window.songID;
-  if (trackURI !== currentTrackUri) {
-    currentTrackUri = trackURI;
-    currentPosition = 0;
-    trackDuration = state.duration;
-  }
+  const track = state.track_window.current_track;
 
   isPlaying = !state.paused;
+  currentTrackUri = track.uri;
   trackDuration = state.duration;
   currentPosition = state.position;
 
   document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
 }
-
-// function togglePlayPause() {
-//   fetch(`/core/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
-//     .then(() => {
-//       isPlaying = !isPlaying;
-//     })
-//     .catch((err) => console.error(err));
-// }
 
 function startProgressUpdater(state) {
   clearInterval(progressInterval);
@@ -95,6 +83,20 @@ function seekTrack(event) {
     .then(() => (currentPosition = seekTo))
     .catch((err) => console.error(err));
 }
+
+document.getElementById("play-pause").addEventListener("click", () => {
+  const trackURI = window.songID;
+
+  if (!isPlaying) {
+    fetch(`/core/play/${trackURI}/play/`)
+      .then(() => (isPlaying = true))
+      .catch((err) => console.error(err));
+  } else {
+    fetch(`/core/play/${trackURI}/pause/`)
+      .then(() => (isPlaying = false))
+      .catch((err) => console.error(err));
+  }
+});
 
 document.addEventListener("htmx:afterSwap", (event) => {
   if (event.detail.target.id === "artist-results") {
