@@ -60,10 +60,7 @@
 
   .player-container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1c1c1c;
-    border-radius: 10px;
+    padding-top: 20px;
   }
 
   .controls {
@@ -75,14 +72,14 @@
   .controls button {
     padding: 10px 15px;
     font-size: 16px;
-    background-color: #1db954;
+    background-color: #1b2462;
     border: none;
     color: white;
     cursor: pointer;
     border-radius: 5px;
   }
   .controls button:hover {
-    background-color: #17a74a;
+    background-color: #12183b;
   }
   .progress-container {
     display: flex;
@@ -93,16 +90,18 @@
   }
   .progress-bar {
     flex-grow: 1;
-    height: 6px;
-    background: #333;
-    border-radius: 3px;
+    height: 3px;
+    border: 1px;
+    border-color: #d2d2d2;
+    background: #020f20;
+    border-radius: 9px;
     position: relative;
     cursor: pointer;
   }
   .progress {
     height: 100%;
-    background: #1db954;
-    border-radius: 3px;
+    background: #a1a7bc;
+    border-radius: 9px;
     width: 0%;
     position: absolute;
   }
@@ -132,12 +131,7 @@
         </p>
         <div class="player-container">
           <div class="controls">
-            <button onclick="prevTrack()">⏮</button>
             <button id="play-pause" onclick="togglePlayPause()">▶️</button>
-            <button onclick="nextTrack()">⏭</button>
-          </div>
-
-          <div class="progress-container">
             <span id="current-time">0:00</span>
             <div class="progress-bar" onclick="seekTrack(event)">
               <div id="progress" class="progress"></div>
