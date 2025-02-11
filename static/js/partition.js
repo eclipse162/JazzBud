@@ -17,7 +17,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
   player.connect().then((success) => {
     if (success) {
-      console.log("The Web Playback SDK successfully connected to Spotify!");
+      console.log("Web Playback SDK successfully connected");
     }
   });
 
@@ -31,27 +31,36 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     updateTrackInfo(state);
     startProgressUpdater(state);
   });
+
+  document.getElementById("play-pause").addEventListener("click", () => {
+    player.togglePlay().then(() => {
+      console.log("Toggled playback");
+    });
+  });
 };
 
 function updateTrackInfo(state) {
-  const track = state.track_window.current_track;
+  const trackURI = window.songID;
+  if (trackURI !== currentTrackUri) {
+    currentTrackUri = trackURI;
+    currentPosition = 0;
+    trackDuration = state.duration;
+  }
 
   isPlaying = !state.paused;
-  currentTrackUri = track.uri;
   trackDuration = state.duration;
   currentPosition = state.position;
 
-  document.getElementById("duration").innerText = formatTime(trackDuration);
   document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
 }
 
-function togglePlayPause() {
-  fetch(`/core/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
-    .then(() => {
-      isPlaying = !isPlaying;
-    })
-    .catch((err) => console.error(err));
-}
+// function togglePlayPause() {
+//   fetch(`/core/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
+//     .then(() => {
+//       isPlaying = !isPlaying;
+//     })
+//     .catch((err) => console.error(err));
+// }
 
 function startProgressUpdater(state) {
   clearInterval(progressInterval);
@@ -63,7 +72,7 @@ function startProgressUpdater(state) {
       document.getElementById("current-time").innerText =
         formatTime(currentPosition);
       const progressPercent = (currentPosition / trackDuration) * 100;
-      document.getElementById("progress").style.width = progressPercent + "%";
+      document.getElementById("progress").style.left = progressPercent + "%";
     }, 1000);
   }
 }

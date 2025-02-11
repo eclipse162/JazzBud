@@ -8,6 +8,7 @@
 
 <script>
   window.spotifyAccessToken = "{{ access_token }}";
+  window.songID = "{{ track.spotify_song_id }}";
 </script>
 <script src="https://unpkg.com/htmx.org"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
@@ -104,12 +105,16 @@
     position: relative;
     cursor: pointer;
   }
+
   .progress {
-    height: 100%;
+    width: 10px;
+    height: 10px;
     background: #a1a7bc;
-    border-radius: 9px;
-    width: 0%;
+    border-radius: 50%;
     position: absolute;
+    top: -3.5px; /* Center the circle vertically */
+    left: 0;
+    transform: translateX(-50%);
   }
 </style>
 <main class="track-page">
@@ -133,12 +138,12 @@
         </p>
         <div class="player-container">
           <div class="controls">
-            <button id="play-pause" onclick="togglePlayPause()">▶️</button>
+            <button id="play-pause">▶️</button>
             <span id="current-time">0:00</span>
             <div class="progress-bar" onclick="seekTrack(event)">
               <div id="progress" class="progress"></div>
             </div>
-            <span id="duration">0:00</span>
+            <span class="duration">{{ track.track_length }}</span>
           </div>
         </div>
       </div>
