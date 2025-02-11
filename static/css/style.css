@@ -76,10 +76,6 @@ body {
   margin-right: 40px;
 }
 
-.logo_container {
-  float: left;
-}
-
 .logo_container h1 {
   color: #edddcf;
   font-family: "Clutchee", "Arial", sans-serif;
@@ -95,6 +91,12 @@ body {
   vertical-align: middle;
   margin-left: 80px;
   margin-top: 25px;
+}
+
+.logo_container {
+  height: 100%;
+  display: table;
+  float: left;
 }
 
 .searchBox {
