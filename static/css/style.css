@@ -21,6 +21,7 @@ body {
   border-color: #020f20;
   background-color: #020f20;
   height: 97vh;
+  overflow-x: hidden;
 }
 
 @font-face {

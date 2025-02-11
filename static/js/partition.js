@@ -1,4 +1,5 @@
 let deviceId;
+let firstRun = true;
 let isPlaying = false;
 let currentTrackUri = null;
 let currentPosition = 0;
@@ -40,10 +41,15 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 };
 
 function updateTrackInfo(state) {
-  const track = state.track_window.current_track;
+  if (firstRun) {
+    firstRun = false;
+    currentTrackUri = window.songID;
+  } else {
+    currentTrackUri = state.track_window.current_track.uri;
+    currentPosition = 0;
+  }
 
   isPlaying = !state.paused;
-  currentTrackUri = track.uri;
   trackDuration = state.duration;
   currentPosition = state.position;
 
