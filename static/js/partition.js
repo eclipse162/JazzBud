@@ -46,11 +46,12 @@ function updateTrackInfo(state) {
     currentTrackUri = window.songID;
     console.log("Current track URI:", currentTrackUri);
 
-  isPlaying = !state.paused;
-  trackDuration = state.duration;
-  currentPosition = state.position;
+    isPlaying = !state.paused;
+    trackDuration = state.duration;
+    currentPosition = state.position;
 
-  document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
+    document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
+  }
 }
 
 function startProgressUpdater(state) {
