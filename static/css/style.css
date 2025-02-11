@@ -18,8 +18,8 @@ body {
 body {
   border: solid;
   border-width: 10px;
-  border-color: #230900;
-  background-color: #230900;
+  border-color: #020f20;
+  background-color: #020f20;
   height: 97vh;
 }
 
@@ -56,8 +56,8 @@ body {
 }
 
 .homepage_header {
-  background-color: #230900;
-  height: 15%;
+  background-color: #020f20;
+  height: 12%;
   width: 100%;
   display: block;
   border-color: #a5a5a5;
@@ -70,15 +70,13 @@ body {
 
 .inner_header {
   height: 100%;
-  width: 90%;
+  width: 100%;
   display: block;
-  margin: 0 auto;
-  /*background-color: green;*/
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 .logo_container {
-  height: 100%;
-  display: table;
   float: left;
 }
 
@@ -89,11 +87,10 @@ body {
   height: 100%;
   display: table-cell;
   vertical-align: middle;
-  left: 40px;
 }
 
 .logo_container div {
-  height: 50%;
+  height: 35%;
   display: table-cell;
   vertical-align: middle;
   margin-left: 80px;
@@ -101,12 +98,9 @@ body {
 }
 
 .searchBox {
-  background: #230900;
-  height: 40px;
+  background: #020f20;
   border-radius: 40px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
+  padding: 5px;
   position: relative;
   transition: width 0.4s;
   border-color: #e2dad4;
@@ -147,7 +141,7 @@ body {
   background: none;
   outline: none;
   float: left;
-  padding: 0;
+  padding-left: 0;
   color: rgb(172, 158, 158);
   font-size: 16px;
   transition: width 0.4s;
