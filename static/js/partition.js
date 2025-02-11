@@ -23,6 +23,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
   player.addListener("ready", ({ device_id }) => {
     console.log("Device ID:", device_id);
+    deviceId = device_id;
     fetch(`/core/transfer-playback/${device_id}/`);
   });
 
@@ -32,35 +33,24 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     startProgressUpdater(state);
   });
 
-  // document.getElementById("play-pause").addEventListener("click", () => {
-  //   player.togglePlay().then(() => {
-  //     console.log("Toggled playback");
-  //   });
-  // });
-
   document.getElementById("play-pause").addEventListener("click", () => {
-    const trackURI = window.songID;
-    if (!isPlaying && trackURI) {
+    const spotify_song_id = window.songID;
+    currentTrackUri = `spotify:track:${spotify_song_id}`;
+
+    if (!isPlaying && currentTrackUri) {
       player._options.getOAuthToken((access_token) => {
         fetch(
           `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
           {
             method: "PUT",
-            body: JSON.stringify({ uris: [trackURI] }),
+            body: JSON.stringify({ uris: [currentTrackUri] }),
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${access_token}`,
             },
           }
         ).then(() => {
-          player.getCurrentState().then((state) => {
-            if (state) {
-              updateTrackInfo(state);
-              player.togglePlay().then(() => {
-                console.log("Toggled playback!");
-              });
-            }
-          });
+          console.log(`Requested to play: ${currentTrackUri}`);
         });
       });
     } else {
@@ -80,7 +70,6 @@ function updateTrackInfo(state) {
   currentPosition = state.position;
 
   console.log("Current track URI:", currentTrackUri);
-  document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
   document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
 }
 
