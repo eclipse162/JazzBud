@@ -44,10 +44,7 @@ function updateTrackInfo(state) {
   if (firstRun) {
     firstRun = false;
     currentTrackUri = window.songID;
-  } else {
-    currentTrackUri = state.track_window.current_track.uri;
-    currentPosition = 0;
-  }
+    console.log("Current track URI:", currentTrackUri);
 
   isPlaying = !state.paused;
   trackDuration = state.duration;
