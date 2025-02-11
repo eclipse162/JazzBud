@@ -190,8 +190,6 @@ def track_page(request, artist_name, track_title, track_id):
     session_id = request.session.session_key
     track = populate_track(track_id)
     track_formatted = track['title']
-    artist_id = track['artist_id']
-    spotify_song_id = track['spotify_song_id']
 
     with get_db() as db:
         user = get_session_user(db, session_id)
@@ -203,16 +201,10 @@ def track_page(request, artist_name, track_title, track_id):
         token = get_token(db, user_id)
         if token is None:
             return redirect('login')
-    
-    sp = spotipy.Spotify(auth=token.access_token)
-    t_artist = sp.artist(artist_id)
-    artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
+        
+        access_token = token.access_token
 
-    # with get_db() as db:
-    #     if get_spotify_song(db, spotify_song_id) is None:
-    #         create_song(db, spotify_song_id, track['title'], track['artist'], track['artist_id'], track['album'], track['album_id'], track['cover'], track['release_year'], track['track_length'])
-
-    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted, 'artist_image': artist_image}).content
+    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted, 'access_token': access_token}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response

@@ -6,6 +6,9 @@
   type="text/css"
   href="{% static 'css/album_page.css' %}" />
 
+<script>
+  window.spotifyAccessToken = "{{ access_token }}";
+</script>
 <script src="https://unpkg.com/htmx.org"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script src="{% static '/js/partition.js' %}"></script>
@@ -121,10 +124,6 @@
       <div class="album-info">
         <h1 class="album-title">{{ track.title }}</h1>
         <p class="album-artist">
-          <img
-            src="{{ artist_image }}"
-            alt="{{ track.artist }}"
-            class="artist-image" />
           <a
             href="{% url 'artist_page' track.artist|custom_slugify track.artist_id %}"
             class="artist-link">

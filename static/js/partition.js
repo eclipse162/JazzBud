@@ -6,7 +6,7 @@ let trackDuration = 0;
 let progressInterval;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-  const token = "{{ access_token }}"; // pass this from django
+  const token = window.spotifyAccessToken;
   const player = new Spotify.Player({
     name: "JBud Player",
     getOAuthToken: (cb) => {
