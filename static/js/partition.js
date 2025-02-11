@@ -23,7 +23,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
   player.addListener("ready", ({ device_id }) => {
     console.log("Device ID:", device_id);
-    fetch(`/transfer-playback/${device_id}/`);
+    fetch(`/core/transfer-playback/${device_id}/`);
   });
 
   player.addListener("player_state_changed", (state) => {
@@ -46,7 +46,7 @@ function updateTrackInfo(state) {
 }
 
 function togglePlayPause() {
-  fetch(`/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
+  fetch(`/core/play/${currentTrackUri}/${isPlaying ? "pause" : "play"}/`)
     .then(() => {
       isPlaying = !isPlaying;
     })
@@ -80,7 +80,9 @@ function seekTrack(event) {
   const clickPosition = event.offsetX / progressBar.clientWidth;
   const seekTo = trackDuration * clickPosition;
 
-  fetch(`/play/${currentTrackUri}/position/?position_ms=${Math.floor(seekTo)}`)
+  fetch(
+    `/core/play/${currentTrackUri}/position/?position_ms=${Math.floor(seekTo)}`
+  )
     .then(() => (currentPosition = seekTo))
     .catch((err) => console.error(err));
 }
