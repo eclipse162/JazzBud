@@ -305,6 +305,7 @@ p {
 .editContainer {
   padding-top: 2%;
   padding-right: 10%;
+  margin-left: 40px;
   display: flex;
   align-items: grid;
   gap: 50px;

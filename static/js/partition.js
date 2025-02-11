@@ -1,4 +1,5 @@
 let deviceId;
+let firstLoad = true;
 let isPlaying = false;
 let currentTrackUri = null;
 let currentPosition = 0;
@@ -37,7 +38,8 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     const spotify_song_id = window.songID;
     currentTrackUri = `spotify:track:${spotify_song_id}`;
 
-    if (!isPlaying && currentTrackUri) {
+    if (!isPlaying && currentTrackUri && firstLoad) {
+      firstLoad = false;
       player._options.getOAuthToken((access_token) => {
         fetch(
           `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
@@ -107,19 +109,10 @@ function seekTrack(event) {
     .catch((err) => console.error(err));
 }
 
-// document.getElementById("play-pause").addEventListener("click", () => {
-//   const trackURI = window.songID;
-
-//   if (!isPlaying) {
-//     fetch(`/core/play/${trackURI}/play/`)
-//       .then(() => (isPlaying = true))
-//       .catch((err) => console.error(err));
-//   } else {
-//     fetch(`/core/play/${trackURI}/pause/`)
-//       .then(() => (isPlaying = false))
-//       .catch((err) => console.error(err));
-//   }
-// });
+function showDropdown(input) {
+  const containerId = input.getAttribute("hx-target").substring(1);
+  document.getElementById(containerId).classList.remove("hidden");
+}
 
 document.addEventListener("htmx:afterSwap", (event) => {
   if (event.detail.target.id === "artist-results") {
@@ -143,7 +136,6 @@ document.addEventListener("click", (event) => {
     if (searchInput) {
       searchInput.value = artistName;
       searchInput.setAttribute("data-artist-id", artistId);
-      sear;
       document.getElementById(containerId).classList.add("hidden");
     }
   }
