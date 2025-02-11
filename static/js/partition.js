@@ -39,28 +39,30 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   // });
 
   document.getElementById("play-pause").addEventListener("click", () => {
-    if (!isPlaying) {
-      // Start playback with the specified track URI
-      const trackURI = window.songID;
-      if (trackURI) {
-        player._options.getOAuthToken((access_token) => {
-          fetch(
-            `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-            {
-              method: "PUT",
-              body: JSON.stringify({ uris: [trackURI] }),
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${access_token}`,
-              },
+    const trackURI = window.songID;
+    if (!isPlaying && trackURI) {
+      player._options.getOAuthToken((access_token) => {
+        fetch(
+          `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+          {
+            method: "PUT",
+            body: JSON.stringify({ uris: [trackURI] }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        ).then(() => {
+          player.getCurrentState().then((state) => {
+            if (state) {
+              updateTrackInfo(state);
+              player.togglePlay().then(() => {
+                console.log("Toggled playback!");
+              });
             }
-          ).then(() => {
-            player.togglePlay().then(() => {
-              console.log("Toggled playback!");
-            });
           });
         });
-      }
+      });
     } else {
       player.togglePlay().then(() => {
         console.log("Toggled playback!");
@@ -70,7 +72,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 };
 
 function updateTrackInfo(state) {
-  // currentTrackUri = window.songID;
   const track = state.track_window.current_track;
 
   isPlaying = !state.paused;
@@ -79,6 +80,7 @@ function updateTrackInfo(state) {
   currentPosition = state.position;
 
   console.log("Current track URI:", currentTrackUri);
+  document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
   document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
 }
 
