@@ -251,6 +251,8 @@ def playback(request, track_uri, action, position_ms=None):
     sp = spotipy.Spotify(auth=token.access_token)
     devices = sp.devices()
 
+    print(track_uri)
+    
     for device in devices['devices']:
         if device['name'] == 'JBud Player':
             device_id = device['id']

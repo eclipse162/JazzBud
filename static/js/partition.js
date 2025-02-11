@@ -1,5 +1,4 @@
 let deviceId;
-let firstRun = true;
 let isPlaying = false;
 let currentTrackUri = null;
 let currentPosition = 0;
@@ -33,25 +32,54 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     startProgressUpdater(state);
   });
 
+  // document.getElementById("play-pause").addEventListener("click", () => {
+  //   player.togglePlay().then(() => {
+  //     console.log("Toggled playback");
+  //   });
+  // });
+
   document.getElementById("play-pause").addEventListener("click", () => {
-    player.togglePlay().then(() => {
-      console.log("Toggled playback");
-    });
+    if (!isPlaying) {
+      // Start playback with the specified track URI
+      const trackURI = window.songID;
+      if (trackURI) {
+        player._options.getOAuthToken((access_token) => {
+          fetch(
+            `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+            {
+              method: "PUT",
+              body: JSON.stringify({ uris: [trackURI] }),
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          ).then(() => {
+            player.togglePlay().then(() => {
+              console.log("Toggled playback!");
+            });
+          });
+        });
+      }
+    } else {
+      player.togglePlay().then(() => {
+        console.log("Toggled playback!");
+      });
+    }
   });
 };
 
 function updateTrackInfo(state) {
-  if (firstRun) {
-    firstRun = false;
-    currentTrackUri = window.songID;
-    console.log("Current track URI:", currentTrackUri);
+  // currentTrackUri = window.songID;
+  const track = state.track_window.current_track;
 
-    isPlaying = !state.paused;
-    trackDuration = state.duration;
-    currentPosition = state.position;
+  isPlaying = !state.paused;
+  currentTrackUri = track.uri;
+  trackDuration = state.duration;
+  currentPosition = state.position;
 
-    document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
-  }
+  console.log("Current track URI:", currentTrackUri);
+  document.getElementById("play-pause").innerText = isPlaying ? "⏸" : "▶️";
 }
 
 function startProgressUpdater(state) {
@@ -88,19 +116,19 @@ function seekTrack(event) {
     .catch((err) => console.error(err));
 }
 
-document.getElementById("play-pause").addEventListener("click", () => {
-  const trackURI = window.songID;
+// document.getElementById("play-pause").addEventListener("click", () => {
+//   const trackURI = window.songID;
 
-  if (!isPlaying) {
-    fetch(`/core/play/${trackURI}/play/`)
-      .then(() => (isPlaying = true))
-      .catch((err) => console.error(err));
-  } else {
-    fetch(`/core/play/${trackURI}/pause/`)
-      .then(() => (isPlaying = false))
-      .catch((err) => console.error(err));
-  }
-});
+//   if (!isPlaying) {
+//     fetch(`/core/play/${trackURI}/play/`)
+//       .then(() => (isPlaying = true))
+//       .catch((err) => console.error(err));
+//   } else {
+//     fetch(`/core/play/${trackURI}/pause/`)
+//       .then(() => (isPlaying = false))
+//       .catch((err) => console.error(err));
+//   }
+// });
 
 document.addEventListener("htmx:afterSwap", (event) => {
   if (event.detail.target.id === "artist-results") {
