@@ -55,6 +55,7 @@ class Album(Base):
     cover = Column(String(255))
 
     artist = relationship("Artist", back_populates="albums")
+    collections = relationship("Collection", back_populates="album")
     songs = relationship("Song", back_populates="album")
 
 class Song(Base):
@@ -116,3 +117,14 @@ class Instrument(Base):
 
     instrument_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False, unique=True, index=True)
+
+class Section(Base):
+    __tablename__ = 'sections'
+
+    section_id = Column(Integer, primary_key=True, autoincrement=True)
+    collection_id = Column(Integer, ForeignKey('collections.collection_id', ondelete='CASCADE'), nullable=False)
+    section_name = Column(String(50), nullable=False, index=True)
+    start_time = Column(Integer, nullable=False)
+    end_time = Column(Integer, nullable=False)
+
+    collection = relationship("Collection", back_populates="sections")
