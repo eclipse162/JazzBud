@@ -23,8 +23,8 @@
     position: absolute;
     top: 40px;
     left: 0;
-    width: 100%;
-    background-color: rgb(72, 70, 70);
+    width: 300px;
+    background-color: rgb(74, 73, 73);
     border: 1px solid #ccc;
     border-radius: 4px;
     max-height: 200px;
@@ -115,6 +115,58 @@
     top: -3.5px; /* Center the circle vertically */
     left: 0;
     transform: translateX(-50%);
+  }
+
+  /* --------------- EDIT TABLE ----------------- */
+
+  .editContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+  }
+  .artistTable {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .artist-info {
+    width: 200px;
+    display: flex;
+    align-items: center;
+  }
+  .artist-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .waveform {
+    flex-grow: 1;
+    height: 20px;
+    background: #555;
+    position: relative;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .waveform .solo {
+    background: rgb(159, 133, 28);
+    position: absolute;
+    height: 100%;
+  }
+  .artist-search {
+    margin: 10px;
+    padding: 5px;
+    width: 300px;
+  }
+  .dropdown-container {
+    position: absolute;
+    background: white;
+    color: black;
+    width: 300px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    display: none;
   }
 </style>
 <main class="track-page">
@@ -241,5 +293,63 @@
 
     <button id="saveButton" class="save-button">Save All Segments</button>
   </div>
+
+  <script>
+    let artists = [];
+    const data = {};
+
+    function showDropdown(input) {
+      let dropdown = input.nextElementSibling;
+      dropdown.style.display = input.value.length >= 3 ? "block" : "none";
+    }
+
+    function addArtist(name, role, img) {
+      if (artists.some((a) => a.name === name)) return;
+      artists.push({ name, role, img });
+      createWaveform();
+    }
+
+    function createWaveform() {
+      const container = document.getElementById("waveform-container");
+      container.innerHTML = "";
+      artists.forEach((artist) => {
+        data[artist.name] = [];
+        const div = document.createElement("div");
+        div.className = "container";
+
+        const artistDiv = document.createElement("div");
+        artistDiv.className = "artist-info";
+        artistDiv.innerHTML = `<img src="${artist.img}" alt=""> <div>${artist.name}<br><small>${artist.role}</small></div>`;
+
+        const waveform = document.createElement("div");
+        waveform.className = "waveform";
+        waveform.addEventListener("click", function (event) {
+          const rect = waveform.getBoundingClientRect();
+          const start = event.clientX - rect.left;
+          const soloDiv = document.createElement("div");
+          soloDiv.className = "solo";
+          soloDiv.style.left = start + "px";
+          soloDiv.style.width = "50px";
+          soloDiv.addEventListener("click", function (e) {
+            e.stopPropagation();
+            soloDiv.remove();
+            data[artist.name] = data[artist.name].filter(
+              (s) => s.start !== start
+            );
+          });
+          waveform.appendChild(soloDiv);
+          data[artist.name].push({ start, end: start + 50, solo: true });
+        });
+
+        div.appendChild(artistDiv);
+        div.appendChild(waveform);
+        container.appendChild(div);
+      });
+    }
+
+    function saveData() {
+      console.log(JSON.stringify(data, null, 2));
+    }
+  </script>
 </main>
 {% endblock %}

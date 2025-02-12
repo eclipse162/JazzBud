@@ -34,9 +34,9 @@
 }
 
 .album-cover {
-  width: 12rem;
-  height: 12rem;
-  border-radius: 2%;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 3%;
 }
 
 @media (min-width: 768px) {
@@ -54,8 +54,8 @@
 }
 
 .album-title {
-  font-size: 4rem;
-  font-weight: bold;
+  font-size: 4.5rem;
+  font-weight: extra-bold;
   margin-bottom: 2px;
   color: #edddcf;
   position: relative;

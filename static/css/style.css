@@ -18,8 +18,8 @@ body {
 body {
   border: solid;
   border-width: 10px;
-  border-color: #020f20;
-  background-color: #020f20;
+  border-color: #021220;
+  background-color: #021220;
   height: 97vh;
   overflow-x: hidden;
 }
@@ -28,6 +28,8 @@ body {
   font-family: Clutchee;
   src: url("../fonts/clutchee.otf");
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap");
 
 .bg_img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -57,7 +59,7 @@ body {
 }
 
 .homepage_header {
-  background-color: #020f20;
+  background-color: #021220;
   height: 12%;
   width: 100%;
   display: block;
@@ -100,7 +102,7 @@ body {
 }
 
 .searchBox {
-  background: #020f20;
+  background: #021220;
   border-radius: 40px;
   padding: 5px;
   position: relative;
@@ -179,7 +181,7 @@ body {
   display: table-cell;
   vertical-align: middle;
   height: 100%;
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #f6f1e0;
   font-size: 20px;
@@ -209,7 +211,7 @@ p {
 }
 
 #new_partition h1 {
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #edddcf;
   font-size: 30px;
@@ -223,7 +225,7 @@ p {
 }
 
 #partition_info h1 {
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #edddcf;
   font-size: 30px;
@@ -237,7 +239,7 @@ p {
 }
 
 #tracks h1 {
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #fbf1c7;
   font-size: 30px;
@@ -265,7 +267,7 @@ p {
 
 #jazzbud_desc {
   padding-top: 30px;
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #edddcf;
   font-size: 30px;
@@ -274,14 +276,14 @@ p {
 #jazzbud_desc2 {
   padding-top: 200px;
   padding-bottom: 20px;
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #f8f4e5;
   font-size: 25px;
 }
 
 #jazzbud_tagline {
-  font-family: "Montserrat", "Arial", sans-serif;
+  font-family: "Rethink Sans", "Arial", sans-serif;
   font-weight: 300;
   color: #fbf1c7;
   font-size: 60px;
@@ -299,65 +301,6 @@ p {
   width: 100%;
   padding-left: 200px;
   bottom: 0;
-}
-
-/* --------------- EDIT TABLE ----------------- */
-.editContainer {
-  padding-top: 2%;
-  padding-right: 10%;
-  margin-left: 40px;
-  display: flex;
-  align-items: grid;
-  gap: 50px;
-}
-
-.editTable table {
-  border-collapse: collapse;
-  width: 100%;
-  text-align: right;
-}
-
-.editTable #headers {
-  border: none;
-}
-
-.editTable table,
-th,
-td {
-  border: 1px solid white;
-}
-
-.editTable td {
-  padding: 10px;
-  text-align: end;
-}
-
-.editTable input[type="text"] {
-  width: 90%;
-  padding: 5px;
-  text-align: right;
-}
-
-.artistTable table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.artistTable table,
-th,
-td {
-  border: 1px solid white;
-}
-
-.artistTable td {
-  padding: 10px;
-  text-align: end;
-}
-
-.artistTable input[type="text"] {
-  width: 90%;
-  padding: 5px;
-  text-align: right;
 }
 
 /* --------- BUTTONS --------- */
