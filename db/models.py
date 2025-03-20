@@ -84,6 +84,8 @@ class Collection(Base):
     song = relationship("Song", back_populates="collections")
     user = relationship("User", back_populates="collections")
     segments = relationship("Segment", back_populates="collection")
+    sections = relationship("Section", back_populates="collection", cascade="all, delete-orphan")
+
 
 class Segment(Base):
     __tablename__ = 'segments'
