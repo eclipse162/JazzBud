@@ -55,7 +55,6 @@ class Album(Base):
     cover = Column(String(255))
 
     artist = relationship("Artist", back_populates="albums")
-    collections = relationship("Collection", back_populates="album")
     songs = relationship("Song", back_populates="album")
 
 class Song(Base):
