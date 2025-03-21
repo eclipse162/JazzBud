@@ -78,10 +78,8 @@ body {
   margin-right: 40px;
 }
 
-.logo_container h1 {
-  color: #edddcf;
-  font-family: "Clutchee", "Arial", sans-serif;
-  font-size: 80px;
+.logo_container img {
+  size: 80px;
   height: 100%;
   display: table-cell;
   vertical-align: middle;

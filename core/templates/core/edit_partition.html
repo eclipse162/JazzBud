@@ -152,6 +152,11 @@
     function showDropdown(input) {
       let dropdown = input.nextElementSibling;
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
+
+      dropdown.eventListener("click", function (e) {
+        input.value = event.target.textContent;
+        dropdown.style.display = "none";
+      });
     }
 
     function addArtist(name, role, img) {

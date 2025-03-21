@@ -7,13 +7,20 @@
     <meta charset=" utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--<link rel="stylesheet" type="text/css" href="../../../static/css/style.css">-->
-    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,300&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static '/css/style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,300&display=swap"
+      rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 
     <title>{% block title %}{% endblock %} | JazzBud</title>
@@ -23,15 +30,20 @@
     <nav class="homepage_header">
       <div class="inner_header">
         <div class="logo_container">
-          <h1>JazzBud</h1>
-          <form method=POST action="{% url 'search'%}">
+          <a href="{% url 'home' %}">
+            <img src="{% static '/img/logo.png' %}" alt="JazzBud" />
+          </a>
+          <form method="POST" action="{% url 'search'%}">
             <div class="logo_container searchBox">
-              <!--<form method=POST action="./home.html">-->
-                {% csrf_token %}
-              <input class="searchInput" type="text" name="query" placeholder="Search">
-            
+              {% csrf_token %}
+              <input
+                class="searchInput"
+                type="text"
+                name="query"
+                placeholder="Search" />
+
               <button class="searchButton" href="#">
-                <img src="{% static '/img/search.png' %}">
+                <img src="{% static '/img/search.png' %}" />
               </button>
             </div>
           </form>
@@ -47,7 +59,6 @@
 
     {% block content %} {% endblock %}
 
-    
     <script src="{% static '/js/base.js' %}"></script>
   </body>
 </html>
