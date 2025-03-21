@@ -62,7 +62,6 @@ body {
   background-color: #021220;
   height: 12%;
   width: 100%;
-  display: block;
   border-color: #a5a5a5;
   border-width: 1px;
   border-bottom-style: solid;
@@ -73,22 +72,23 @@ body {
 
 .inner_header {
   height: 100%;
-  display: block;
+  display: flex;
   margin-left: 40px;
   margin-right: 40px;
   margin-top: 10px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo_container img {
-  size: 80px;
-  height: 100%;
-  display: table-cell;
+  width: 300px;
+  display: flex;
   vertical-align: middle;
 }
 
 .logo_container div {
   height: 35%;
-  display: table-cell;
+  display: flex;
   vertical-align: middle;
   margin-left: 80px;
   margin-top: 25px;
@@ -96,15 +96,15 @@ body {
 
 .logo_container {
   height: 100%;
-  display: table;
+  display: flex;
   float: left;
+  padding-top: 10px;
 }
 
 .searchBox {
   background: #021220;
   border-radius: 40px;
   padding: 5px;
-  position: relative;
   transition: width 0.4s;
   border-color: #e2dad4;
   border-width: 1px;

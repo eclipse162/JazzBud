@@ -49,13 +49,13 @@
 .album-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Push text to bottom */
-  flex-grow: 1; /* Fill available space */
+  justify-content: flex-end;
+  flex-grow: 1;
 }
 
 .album-title {
   font-size: 4.5rem;
-  font-weight: extra-bold;
+  font-weight: bolder;
   margin-bottom: 2px;
   color: #edddcf;
   position: relative;
@@ -63,7 +63,7 @@
 
 .album-artist {
   display: flex;
-  align-items: center; /* Align items vertically in the center */
+  align-items: center;
   margin-top: auto;
   font-size: 1.125rem;
   color: #9ca3af;

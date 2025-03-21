@@ -115,7 +115,7 @@
       </tr>
     </table>
 
-    <table class="editTable">
+    <!-- <table class="editTable">
       <tr>
         <td>
           <input type="text" class="start-time" placeholder="Start Time" />
@@ -140,7 +140,7 @@
         </td>
         <td><input type="text" class="end-time" placeholder="End Time" /></td>
       </tr>
-    </table>
+    </table> -->
 
     <button id="saveButton" class="save-button">Save All Segments</button>
   </div>
@@ -150,16 +150,16 @@
     const data = {};
 
     function showDropdown(input) {
-      let dropdown = input.nextElementSibling;
+      const dropdownId = input.getAttribute("hx-target");
+      const dropdown = document.querySelector(dropdownId);
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      // Add event listener to dropdown items
       dropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
           const artistItem = event.target.closest(".dropdown-item");
-          const artistID = artistItem.querySelector("data-id");
           const artistName = artistItem.querySelector("data-name");
-          const artistImage = selectedItem.querySelector("img").src;
+          const artistImage = artistItem.querySelector("img").src;
+          const artistID = artistItem.querySelector("data-id");
 
           input.value = artistName;
 
@@ -168,7 +168,7 @@
           artistDisplay.innerHTML = `
         <img src="${artistImage}" alt="${artistName}" class="artist-image" />
         <span class="artist-name">${artistName}</span>
-        <a class="add-instrument-button" onclick="showInstrumentSearch('${artistID}')">Add Instrument</a>
+        <button class="add-instrument-button" onclick="showInstrumentSearch('${artistID}')">Add Instrument</button>
         <input type="hidden" class="artist-id" value="${artistID}" />
       `;
 

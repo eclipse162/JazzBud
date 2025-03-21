@@ -13,7 +13,6 @@
   left: 0;
   width: 300px;
   background-color: rgb(74, 73, 73);
-  border: 1px solid #ccc;
   border-radius: 4px;
   max-height: 200px;
   overflow-y: auto;
