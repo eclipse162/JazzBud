@@ -1,0 +1,151 @@
+.editContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  margin-left: 40px;
+}
+
+.dropdown-container {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 300px;
+  background-color: rgb(74, 73, 73);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-container.hidden {
+  display: none;
+}
+
+.dropdown-container select {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.save-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.track-page {
+  padding-top: 30px;
+}
+
+.player-container {
+  max-width: 1300px;
+  padding-top: 20px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.controls button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #1b2462;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.controls button:hover {
+  background-color: #12183b;
+}
+
+.controls span {
+  color: #d2d2d2;
+}
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.progress-bar {
+  flex-grow: 1;
+  height: 3px;
+  border: 1px solid #d2d2d2;
+  background: #020f20;
+  border-radius: 9px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress {
+  width: 10px;
+  height: 10px;
+  background: #a1a7bc;
+  border-radius: 50%;
+  position: absolute;
+  top: -3.5px; /* Center the circle vertically */
+  left: 0;
+  transform: translateX(-50%);
+}
+
+/* --------------- EDIT TABLE ----------------- */
+
+.editContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 10px;
+}
+.artistTable {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.artist-info {
+  width: 200px;
+  display: flex;
+  align-items: center;
+}
+.artist-info img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.waveform {
+  flex-grow: 1;
+  height: 20px;
+  background: #555;
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.waveform .solo {
+  background: rgb(159, 133, 28);
+  position: absolute;
+  height: 100%;
+}
+.artist-search {
+  margin: 10px;
+  padding: 5px;
+  width: 300px;
+  border: none;
+  border-bottom: 2px solid #c8cce4;
+  background: transparent;
+}

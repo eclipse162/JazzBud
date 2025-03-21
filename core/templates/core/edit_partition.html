@@ -13,162 +13,10 @@
 <script src="https://unpkg.com/htmx.org"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script src="{% static '/js/partition.js' %}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<link rel="stylesheet" href="/core/templates/core/edit_partition.css" />
 
-<style>
-  .editContainer {
-    position: relative;
-  }
-
-  .dropdown-container {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    width: 300px;
-    background-color: rgb(74, 73, 73);
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1000;
-  }
-
-  .dropdown-container.hidden {
-    display: none;
-  }
-
-  .dropdown-container select {
-    width: 100%;
-    border: none;
-    outline: none;
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .save-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .save-button:hover {
-    background-color: #45a049;
-  }
-
-  .track-page {
-    padding-top: 30px;
-  }
-
-  .player-container {
-    max-width: 1300px;
-    padding-top: 20px;
-  }
-
-  .controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-  .controls button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #1b2462;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  .controls button:hover {
-    background-color: #12183b;
-  }
-
-  .controls span {
-    color: #d2d2d2;
-  }
-  .progress-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  .progress-bar {
-    flex-grow: 1;
-    height: 3px;
-    border: 1px solid #d2d2d2;
-    background: #020f20;
-    border-radius: 9px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .progress {
-    width: 10px;
-    height: 10px;
-    background: #a1a7bc;
-    border-radius: 50%;
-    position: absolute;
-    top: -3.5px; /* Center the circle vertically */
-    left: 0;
-    transform: translateX(-50%);
-  }
-
-  /* --------------- EDIT TABLE ----------------- */
-
-  .editContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding: 10px;
-  }
-  .artistTable {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  .artist-info {
-    width: 200px;
-    display: flex;
-    align-items: center;
-  }
-  .artist-info img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  .waveform {
-    flex-grow: 1;
-    height: 20px;
-    background: #555;
-    position: relative;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  .waveform .solo {
-    background: rgb(159, 133, 28);
-    position: absolute;
-    height: 100%;
-  }
-  .artist-search {
-    margin: 10px;
-    padding: 5px;
-    width: 300px;
-  }
-  .dropdown-container {
-    position: absolute;
-    background: white;
-    color: black;
-    width: 300px;
-    max-height: 150px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    display: none;
-  }
-</style>
 <main class="track-page">
   <div class="album-header">
     <div class="album-content">
@@ -310,45 +158,49 @@
     }
 
     function createWaveform() {
-      const container = document.getElementById("waveform-container");
-      container.innerHTML = "";
-      artists.forEach((artist) => {
-        data[artist.name] = [];
-        const div = document.createElement("div");
-        div.className = "container";
+      const svg = d3.select("#timeline");
+      const width = window.innerWidth - 100;
+      const height = 200;
 
-        const artistDiv = document.createElement("div");
-        artistDiv.className = "artist-info";
-        artistDiv.innerHTML = `<img src="${artist.img}" alt=""> <div>${artist.name}<br><small>${artist.role}</small></div>`;
+      const artistData = JSON.parse("{{ track.artist_data|escapejs }}");
 
-        const waveform = document.createElement("div");
-        waveform.className = "waveform";
-        waveform.addEventListener("click", function (event) {
-          const rect = waveform.getBoundingClientRect();
-          const start = event.clientX - rect.left;
-          const soloDiv = document.createElement("div");
-          soloDiv.className = "solo";
-          soloDiv.style.left = start + "px";
-          soloDiv.style.width = "50px";
-          soloDiv.addEventListener("click", function (e) {
-            e.stopPropagation();
-            soloDiv.remove();
-            data[artist.name] = data[artist.name].filter(
-              (s) => s.start !== start
-            );
-          });
-          waveform.appendChild(soloDiv);
-          data[artist.name].push({ start, end: start + 50, solo: true });
-        });
+      function lineGenerator(data) {
+        return d3
+          .line()
+          .curve(d3.curveBasis)
+          .x((d) => d[0])
+          .y((d) => d[1])(data);
+      }
 
-        div.appendChild(artistDiv);
-        div.appendChild(waveform);
-        container.appendChild(div);
+      artistData.forEach((artist) => {
+        let group = svg.append("g");
+
+        let path = group
+          .append("path")
+          .attr("d", lineGenerator(artist.path))
+          .attr("stroke", artist.color)
+          .attr("class", "artist-line")
+          .attr("stroke-width", 4)
+          .attr("fill", "none");
+
+        let circles = group
+          .selectAll(".draggable")
+          .data(artist.path)
+          .enter()
+          .append("circle")
+          .attr("cx", (d) => d[0])
+          .attr("cy", (d) => d[1])
+          .attr("r", 6)
+          .attr("class", "draggable")
+          .call(
+            d3.drag().on("drag", function (event, d) {
+              d[0] = Math.max(50, Math.min(width - 50, event.x));
+              d[1] = Math.max(50, Math.min(height - 50, event.y));
+              d3.select(this).attr("cx", d[0]).attr("cy", d[1]);
+              path.attr("d", lineGenerator(artist.path));
+            })
+          );
       });
-    }
-
-    function saveData() {
-      console.log(JSON.stringify(data, null, 2));
     }
   </script>
 </main>
