@@ -153,16 +153,37 @@
       let dropdown = input.nextElementSibling;
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      dropdown.eventListener("click", function (e) {
-        input.value = event.target.textContent;
-        dropdown.style.display = "none";
-      });
-    }
+      // Add event listener to dropdown items
+      dropdown.addEventListener("click", function (event) {
+        if (event.target && event.target.closest(".dropdown-item")) {
+          const artistItem = event.target.closest(".dropdown-item");
+          const artistID = artistItem.querySelector("data-id");
+          const artistName = artistItem.querySelector("data-name");
+          const artistImage = selectedItem.querySelector("img").src;
 
-    function addArtist(name, role, img) {
-      if (artists.some((a) => a.name === name)) return;
-      artists.push({ name, role, img });
-      createWaveform();
+          input.value = artistName;
+
+          const artistDisplay = document.createElement("div");
+          artistDisplay.classList.add("artist-display");
+          artistDisplay.innerHTML = `
+        <img src="${artistImage}" alt="${artistName}" class="artist-image" />
+        <span class="artist-name">${artistName}</span>
+        <a class="add-instrument-button" onclick="showInstrumentSearch('${artistID}')">Add Instrument</a>
+        <input type="hidden" class="artist-id" value="${artistID}" />
+      `;
+
+          const existingDisplay =
+            input.parentNode.querySelector(".artist-display");
+          if (existingDisplay) {
+            existingDisplay.remove();
+          }
+          input.parentNode.appendChild(artistDisplay);
+
+          dropdown.style.display = "none";
+
+          createWaveform();
+        }
+      });
     }
 
     function createWaveform() {
