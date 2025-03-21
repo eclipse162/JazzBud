@@ -149,3 +149,13 @@
   border-bottom: 2px solid #c8cce4;
   background: transparent;
 }
+
+.artist-line {
+  fill: none;
+  stroke-width: 4;
+  cursor: pointer;
+}
+.draggable {
+  fill: orange;
+  cursor: grab;
+}
