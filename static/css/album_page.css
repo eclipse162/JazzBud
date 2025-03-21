@@ -41,8 +41,8 @@
 
 @media (min-width: 768px) {
   .album-cover {
-    width: 16rem;
-    height: 16rem;
+    width: 300px;
+    height: 300px;
   }
 }
 

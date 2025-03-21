@@ -168,8 +168,10 @@
           artistDisplay.classList.add("artist-display");
           artistDisplay.innerHTML = `
         <img src="${artistImage}" alt="${artistName}" class="artist-image" />
-        <span class="artist-name">${artistName}</span>
-        <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
+        <div class="artist-info">
+          <span class="artist-name">${artistName}</span>
+          <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
+        </div>
         <input type="hidden" class="artist-id" value="${artistId}" />
       `;
 

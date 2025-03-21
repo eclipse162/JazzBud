@@ -50,7 +50,7 @@
 }
 
 .player-container {
-  max-width: 1300px;
+  max-width: 100%;
   padding-top: 20px;
 }
 
@@ -110,7 +110,6 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding: 10px;
 }
 .artistTable {
   width: 100%;
@@ -162,7 +161,7 @@
 .artist-display {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  padding-bottom: 20px;
 }
 
 .artist-display img {
@@ -174,8 +173,14 @@
 
 .artist-display .artist-name {
   font-size: 32px;
-  font-weight: bold;
+  font-weight: 500;
   color: #ebded1;
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .add-instrument-button {
@@ -183,8 +188,9 @@
   margin-top: 10px;
   color: #9da3ae;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .add-instrument-button:hover {
-  background-color: #818691;
+  color: #818691;
 }
