@@ -152,14 +152,15 @@
     function showDropdown(input) {
       const dropdownId = input.getAttribute("hx-target");
       const dropdown = document.querySelector(dropdownId);
+
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
       dropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
           const artistItem = event.target.closest(".dropdown-item");
-          const artistName = artistItem.querySelector("data-name");
+          const artistName = artistItem.dataset.name;
           const artistImage = artistItem.querySelector("img").src;
-          const artistID = artistItem.querySelector("data-id");
+          const artistId = artistItem.dataset.id;
 
           input.value = artistName;
 
@@ -168,8 +169,8 @@
           artistDisplay.innerHTML = `
         <img src="${artistImage}" alt="${artistName}" class="artist-image" />
         <span class="artist-name">${artistName}</span>
-        <button class="add-instrument-button" onclick="showInstrumentSearch('${artistID}')">Add Instrument</button>
-        <input type="hidden" class="artist-id" value="${artistID}" />
+        <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
+        <input type="hidden" class="artist-id" value="${artistId}" />
       `;
 
           const existingDisplay =
@@ -180,6 +181,7 @@
           input.parentNode.appendChild(artistDisplay);
 
           dropdown.style.display = "none";
+          input.style.display = "none";
 
           createWaveform();
         }

@@ -87,11 +87,11 @@ body {
 }
 
 .logo_container div {
-  height: 35%;
+  height: 55px;
   display: flex;
   vertical-align: middle;
   margin-left: 80px;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .logo_container {
