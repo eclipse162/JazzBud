@@ -201,8 +201,8 @@
       const horizontalLine = group
         .append("line")
         .attr("class", "horizontal-line")
-        .attr("x1", xPosition) // Start 50px to the left of the vertical line
-        .attr("x2", xPosition) // End 50px to the right of the vertical line
+        .attr("x1", xPosition - 50) // Start 50px to the left of the vertical line
+        .attr("x2", xPosition + 50) // End 50px to the right of the vertical line
         .attr("y1", yPosition)
         .attr("y2", yPosition)
         .attr("stroke", "#ff0000")

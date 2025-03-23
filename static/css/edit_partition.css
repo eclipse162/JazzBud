@@ -72,18 +72,18 @@
 }
 
 .progress-wrapper {
-  position: relative; /* Set relative positioning for the wrapper */
-  flex-grow: 1; /* Allow the progress-wrapper to take up the remaining space */
+  position: relative;
+  flex-grow: 1;
   display: flex;
   align-items: center;
 }
 
 .progress-container {
-  flex-grow: 1; /* Allow the progress-bar to take up all available space */
+  flex-grow: 1;
 }
 
 .progress-bar {
-  width: 100%; /* Ensure the progress-bar spans the full width */
+  width: 100%;
   height: 3px;
   border: 1px solid #d2d2d2;
   background: #020f20;
@@ -98,19 +98,23 @@
   background: #a1a7bc;
   border-radius: 50%;
   position: absolute;
-  top: -3.5px; /* Center the circle vertically */
+  top: -3.5px;
   left: 0;
   transform: translateX(-50%);
 }
 
+.current-time,
 .duration {
-  position: absolute; /* Position the duration element absolutely */
-  right: -20px; /* Move it outside the album-header */
-  top: 50%; /* Center it vertically relative to the progress-wrapper */
-  transform: translateY(-50%);
   color: #d2d2d2;
   font-size: 14px;
-  white-space: nowrap; /* Prevent the duration from wrapping */
+}
+
+.duration {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
 }
 
 /* --------------- EDIT TABLE ----------------- */
