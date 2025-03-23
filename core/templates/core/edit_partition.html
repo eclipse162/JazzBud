@@ -173,42 +173,30 @@
 
     function createWaveform() {
       const svg = d3.select("#timeline");
-      const width = window.innerWidth - 400;
-      const height = 200;
+      const width = 800; // Width of the timeline
+      const height = 200; // Height of the timeline
 
-      function lineGenerator(data) {
-        return d3
-          .line()
-          .curve(d3.curveBasis)
-          .x((d) => d[0])
-          .y((d) => d[1])(data);
-      }
+      // Default position for the new waveform
+      const xPosition = 50; // Start at the left of the timeline
+      const yPosition = height / 2; // Center vertically
 
-      let group = svg.append("g");
+      // Create a group for the waveform
+      const group = svg.append("g").attr("class", "waveform-group");
 
-      let path = group
-        .append("path")
-        .attr("d", lineGenerator(artist.path))
-        .attr("stroke", artist.color)
-        .attr("class", "artist-line")
-        .attr("stroke-width", 4)
-        .attr("fill", "none");
-
-      let circles = group
-        .selectAll(".draggable")
-        .data(artist.path)
-        .enter()
+      // Add a circle to represent the waveform
+      const circle = group
         .append("circle")
-        .attr("cx", (d) => d[0])
-        .attr("cy", (d) => d[1])
-        .attr("r", 6)
-        .attr("class", "draggable")
+        .attr("class", "waveform")
+        .attr("r", 10)
+        .attr("fill", "#ff0000")
+        .attr("cx", xPosition)
+        .attr("cy", yPosition)
         .call(
           d3.drag().on("drag", function (event, d) {
-            d[0] = Math.max(50, Math.min(width - 50, event.x));
-            d[1] = Math.max(50, Math.min(height - 50, event.y));
-            d3.select(this).attr("cx", d[0]).attr("cy", d[1]);
-            path.attr("d", lineGenerator(artist.path));
+            // Update position during drag
+            const newX = Math.max(0, Math.min(width, event.x)); // Constrain x within bounds
+            const newY = Math.max(0, Math.min(height, event.y)); // Constrain y within bounds
+            d3.select(this).attr("cx", newX).attr("cy", newY);
           })
         );
     }
