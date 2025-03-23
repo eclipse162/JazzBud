@@ -43,12 +43,14 @@
           <div class="controls">
             <button id="play-pause">▶️</button>
             <span id="current-time">0:00</span>
-            <div class="progress-bar" onclick="seekTrack(event)">
-              <div id="progress" class="progress"></div>
+            <div class="progress-container">
+              <div class="progress-bar" onclick="seekTrack(event)">
+                <div id="progress" class="progress"></div>
+              </div>
+              <span class="duration">
+                {{ track.track_length|ms_to_minutes_seconds }}
+              </span>
             </div>
-            <span class="duration">
-              {{ track.track_length|ms_to_minutes_seconds }}
-            </span>
           </div>
         </div>
       </div>
@@ -171,10 +173,8 @@
 
     function createWaveform() {
       const svg = d3.select("#timeline");
-      const width = window.innerWidth - 100;
+      const width = window.innerWidth - 400;
       const height = 200;
-
-      const artistData = JSON.parse("{{ track.artist_data|escapejs }}");
 
       function lineGenerator(data) {
         return d3
@@ -184,35 +184,33 @@
           .y((d) => d[1])(data);
       }
 
-      artistData.forEach((artist) => {
-        let group = svg.append("g");
+      let group = svg.append("g");
 
-        let path = group
-          .append("path")
-          .attr("d", lineGenerator(artist.path))
-          .attr("stroke", artist.color)
-          .attr("class", "artist-line")
-          .attr("stroke-width", 4)
-          .attr("fill", "none");
+      let path = group
+        .append("path")
+        .attr("d", lineGenerator(artist.path))
+        .attr("stroke", artist.color)
+        .attr("class", "artist-line")
+        .attr("stroke-width", 4)
+        .attr("fill", "none");
 
-        let circles = group
-          .selectAll(".draggable")
-          .data(artist.path)
-          .enter()
-          .append("circle")
-          .attr("cx", (d) => d[0])
-          .attr("cy", (d) => d[1])
-          .attr("r", 6)
-          .attr("class", "draggable")
-          .call(
-            d3.drag().on("drag", function (event, d) {
-              d[0] = Math.max(50, Math.min(width - 50, event.x));
-              d[1] = Math.max(50, Math.min(height - 50, event.y));
-              d3.select(this).attr("cx", d[0]).attr("cy", d[1]);
-              path.attr("d", lineGenerator(artist.path));
-            })
-          );
-      });
+      let circles = group
+        .selectAll(".draggable")
+        .data(artist.path)
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => d[0])
+        .attr("cy", (d) => d[1])
+        .attr("r", 6)
+        .attr("class", "draggable")
+        .call(
+          d3.drag().on("drag", function (event, d) {
+            d[0] = Math.max(50, Math.min(width - 50, event.x));
+            d[1] = Math.max(50, Math.min(height - 50, event.y));
+            d3.select(this).attr("cx", d[0]).attr("cy", d[1]);
+            path.attr("d", lineGenerator(artist.path));
+          })
+        );
     }
   </script>
 </main>
