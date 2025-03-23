@@ -5,11 +5,12 @@
   align-items: flex-start;
   justify-content: start;
   margin-left: 40px;
-  gap: 20px;
+  gap: 90px;
 }
 
 .artist-section {
   flex: 1;
+  max-width: 350px;
 }
 
 .waveform-section {
@@ -67,36 +68,22 @@
 .controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
 }
 
-.controls button {
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: #1b2462;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.controls button:hover {
-  background-color: #12183b;
-}
-
-.controls span {
-  color: #d2d2d2;
-}
-.progress-container {
+.progress-wrapper {
+  position: relative; /* Set relative positioning for the wrapper */
+  flex-grow: 1; /* Allow the progress-wrapper to take up the remaining space */
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  font-size: 14px;
-  flex-grow: 1;
 }
+
+.progress-container {
+  flex-grow: 1; /* Allow the progress-bar to take up all available space */
+}
+
 .progress-bar {
-  flex-grow: 1;
+  width: 100%; /* Ensure the progress-bar spans the full width */
   height: 3px;
   border: 1px solid #d2d2d2;
   background: #020f20;
@@ -111,17 +98,19 @@
   background: #a1a7bc;
   border-radius: 50%;
   position: absolute;
-  top: -3.5px;
+  top: -3.5px; /* Center the circle vertically */
   left: 0;
   transform: translateX(-50%);
 }
 
 .duration {
-  .duration {
-    color: #d2d2d2;
-    font-size: 14px;
-    white-space: nowrap; /* Prevent the duration from wrapping */
-  }
+  position: absolute; /* Position the duration element absolutely */
+  right: -20px; /* Move it outside the album-header */
+  top: 50%; /* Center it vertically relative to the progress-wrapper */
+  transform: translateY(-50%);
+  color: #d2d2d2;
+  font-size: 14px;
+  white-space: nowrap; /* Prevent the duration from wrapping */
 }
 
 /* --------------- EDIT TABLE ----------------- */

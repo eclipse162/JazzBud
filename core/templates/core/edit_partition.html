@@ -43,9 +43,11 @@
           <div class="controls">
             <button id="play-pause">▶️</button>
             <span id="current-time">0:00</span>
-            <div class="progress-container">
-              <div class="progress-bar" onclick="seekTrack(event)">
-                <div id="progress" class="progress"></div>
+            <div class="progress-wrapper">
+              <div class="progress-container">
+                <div class="progress-bar" onclick="seekTrack(event)">
+                  <div id="progress" class="progress"></div>
+                </div>
               </div>
               <span class="duration">
                 {{ track.track_length|ms_to_minutes_seconds }}
@@ -177,28 +179,43 @@
       const height = 200; // Height of the timeline
 
       // Default position for the new waveform
-      const xPosition = 50; // Start at the left of the timeline
-      const yPosition = height / 2; // Center vertically
+      const xPosition = 100; // Fixed x-position for the vertical line
+      const yPosition = height / 2; // Default y-position (middle of the timeline)
 
       // Create a group for the waveform
       const group = svg.append("g").attr("class", "waveform-group");
 
-      // Add a circle to represent the waveform
-      const circle = group
-        .append("circle")
-        .attr("class", "waveform")
-        .attr("r", 10)
-        .attr("fill", "#ff0000")
-        .attr("cx", xPosition)
-        .attr("cy", yPosition)
-        .call(
-          d3.drag().on("drag", function (event, d) {
-            // Update position during drag
-            const newX = Math.max(0, Math.min(width, event.x)); // Constrain x within bounds
-            const newY = Math.max(0, Math.min(height, event.y)); // Constrain y within bounds
-            d3.select(this).attr("cx", newX).attr("cy", newY);
-          })
-        );
+      // Add a vertical line for reference
+      const verticalLine = group
+        .append("line")
+        .attr("class", "vertical-line")
+        .attr("x1", xPosition)
+        .attr("x2", xPosition)
+        .attr("y1", 0)
+        .attr("y2", height)
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4,4"); // Dashed line for reference
+
+      // Add a horizontal line to represent the waveform
+      const horizontalLine = group
+        .append("line")
+        .attr("class", "horizontal-line")
+        .attr("x1", xPosition) // Start 50px to the left of the vertical line
+        .attr("x2", xPosition) // End 50px to the right of the vertical line
+        .attr("y1", yPosition)
+        .attr("y2", yPosition)
+        .attr("stroke", "#ff0000")
+        .attr("stroke-width", 3);
+
+      // Add drag behavior to the horizontal line
+      group.call(
+        d3.drag().on("drag", function (event) {
+          // Update the y-position during drag
+          const newY = Math.max(0, Math.min(height, event.y)); // Constrain y within bounds
+          horizontalLine.attr("y1", newY).attr("y2", newY); // Update horizontal line position
+        })
+      );
     }
   </script>
 </main>
