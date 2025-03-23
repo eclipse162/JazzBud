@@ -56,94 +56,73 @@
   </div>
 
   <div class="editContainer">
-    <table class="artistTable">
-      <tr>
-        <td>
-          <input
-            type="text"
-            placeholder="Search"
-            name="q"
-            class="artist-search"
-            hx-get="{% url 'artist_search' %}"
-            hx-trigger="keyup changed delay:500ms"
-            hx-target="#artist-results-1"
-            oninput="showDropdown(this)" />
-          <div id="artist-results-1" class="dropdown-container"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input
-            type="text"
-            placeholder="Search"
-            name="q"
-            class="artist-search"
-            hx-get="{% url 'artist_search' %}"
-            hx-trigger="keyup changed delay:500ms"
-            hx-target="#artist-results-2"
-            oninput="showDropdown(this)" />
-          <div id="artist-results-2" class="dropdown-container"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input
-            type="text"
-            placeholder="Search"
-            name="q"
-            class="artist-search"
-            hx-get="{% url 'artist_search' %}"
-            hx-trigger="keyup changed delay:500ms"
-            hx-target="#artist-results-3"
-            oninput="showDropdown(this)" />
-          <div id="artist-results-3" class="dropdown-container"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input
-            type="text"
-            placeholder="Search"
-            name="q"
-            class="artist-search"
-            hx-get="{% url 'artist_search' %}"
-            hx-trigger="keyup changed delay:500ms"
-            hx-target="#artist-results-4"
-            oninput="showDropdown(this)" />
-          <div id="artist-results-4" class="dropdown-container"></div>
-        </td>
-      </tr>
-    </table>
+    <div class="artist-section">
+      <table class="artistTable">
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="Search"
+              name="q"
+              class="artist-search"
+              hx-get="{% url 'artist_search' %}"
+              hx-trigger="keyup changed delay:500ms"
+              hx-target="#artist-results-1"
+              oninput="showDropdown(this)" />
+            <div id="artist-results-1" class="dropdown-container"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="Search"
+              name="q"
+              class="artist-search"
+              hx-get="{% url 'artist_search' %}"
+              hx-trigger="keyup changed delay:500ms"
+              hx-target="#artist-results-2"
+              oninput="showDropdown(this)" />
+            <div id="artist-results-2" class="dropdown-container"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="Search"
+              name="q"
+              class="artist-search"
+              hx-get="{% url 'artist_search' %}"
+              hx-trigger="keyup changed delay:500ms"
+              hx-target="#artist-results-3"
+              oninput="showDropdown(this)" />
+            <div id="artist-results-3" class="dropdown-container"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="Search"
+              name="q"
+              class="artist-search"
+              hx-get="{% url 'artist_search' %}"
+              hx-trigger="keyup changed delay:500ms"
+              hx-target="#artist-results-4"
+              oninput="showDropdown(this)" />
+            <div id="artist-results-4" class="dropdown-container"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-    <!-- <table class="editTable">
-      <tr>
-        <td>
-          <input type="text" class="start-time" placeholder="Start Time" />
-        </td>
-        <td><input type="text" class="end-time" placeholder="End Time" /></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="text" class="start-time" placeholder="Start Time" />
-        </td>
-        <td><input type="text" class="end-time" placeholder="End Time" /></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="text" class="start-time" placeholder="Start Time" />
-        </td>
-        <td><input type="text" class="end-time" placeholder="End Time" /></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="text" class="start-time" placeholder="Start Time" />
-        </td>
-        <td><input type="text" class="end-time" placeholder="End Time" /></td>
-      </tr>
-    </table> -->
-
-    <button id="saveButton" class="save-button">Save All Segments</button>
+    <div class="waveform-section">
+      <svg id="timeline" width="800" height="200"></svg>
+    </div>
   </div>
+
+  <button id="saveButton" class="save-button">Save All Segments</button>
 
   <script>
     let artists = [];

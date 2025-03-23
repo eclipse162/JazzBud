@@ -2,9 +2,18 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: start;
   margin-left: 40px;
+  gap: 20px;
+}
+
+.artist-section {
+  flex: 1;
+}
+
+.waveform-section {
+  flex: 2;
 }
 
 .dropdown-container {
