@@ -5,7 +5,7 @@
   align-items: flex-start;
   justify-content: start;
   margin-left: 40px;
-  gap: 90px;
+  gap: 11px;
 }
 
 .artist-section {
@@ -61,7 +61,7 @@
 }
 
 .player-container {
-  width: 1250px;
+  width: 100%;
   padding-top: 20px;
 }
 

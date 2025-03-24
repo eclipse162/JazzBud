@@ -11,6 +11,7 @@
 .album-content {
   display: flex;
   align-items: flex-end;
+  width: 93%;
 }
 
 @media (min-width: 768px) {
@@ -64,7 +65,7 @@
 .album-artist {
   display: flex;
   align-items: center;
-  margin-top: auto;
+  margin-top: -15px;
   font-size: 1.125rem;
   color: #9ca3af;
   position: relative;
