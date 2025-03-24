@@ -61,7 +61,7 @@
 }
 
 .player-container {
-  width: 600px;
+  width: 1250px;
   padding-top: 20px;
 }
 
@@ -109,11 +109,7 @@
 }
 
 .duration {
-  position: absolute;
-  right: -40px;
-  top: 50%;
-  transform: translateY(-50%);
-  white-space: nowrap;
+  margin-left: 15px;
   color: #d2d2d2;
   font-size: 14px;
 }
