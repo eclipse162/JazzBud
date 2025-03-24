@@ -61,7 +61,7 @@
 }
 
 .player-container {
-  width: 70%;
+  width: 600px;
   padding-top: 20px;
 }
 
@@ -147,7 +147,7 @@
 .artist-search {
   margin: 10px;
   padding: 5px;
-  width: 300px;
+  width: 290px;
   border: none;
   border-bottom: 2px solid #c8cce4;
   background: transparent;

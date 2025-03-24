@@ -39,23 +39,23 @@
           </a>
           &nbsp;&middot;&nbsp;{{ track.release_year }}
         </p>
-      </div>
-    </div>
-  </div>
 
-  <div class="player-container">
-    <div class="controls">
-      <button id="play-pause">▶️</button>
-      <span id="current-time">0:00</span>
-      <div class="progress-wrapper">
-        <div class="progress-container">
-          <div class="progress-bar" onclick="seekTrack(event)">
-            <div id="progress" class="progress"></div>
+        <div class="player-container">
+          <div class="controls">
+            <button id="play-pause">▶️</button>
+            <span class="current-time">0:00</span>
+            <div class="progress-wrapper">
+              <div class="progress-container">
+                <div class="progress-bar" onclick="seekTrack(event)">
+                  <div id="progress" class="progress"></div>
+                </div>
+              </div>
+              <span class="duration">
+                {{ track.track_length|ms_to_minutes_seconds }}
+              </span>
+            </div>
           </div>
         </div>
-        <span class="duration">
-          {{ track.track_length|ms_to_minutes_seconds }}
-        </span>
       </div>
     </div>
   </div>
@@ -161,11 +161,11 @@
         const group = d3.select(this);
 
         let waveformData = [
-          { x: 0, y: 0 },
-          { x: 20, y: 15 },
+          { x: 0, y: 10 },
+          { x: 20, y: 30 },
           { x: 40, y: -10 },
-          { x: 60, y: 20 },
-          { x: 80, y: 0 },
+          { x: 60, y: 40 },
+          { x: 80, y: 10 },
         ];
 
         const path = group
@@ -182,30 +182,14 @@
             group.attr("transform", `translate(${newX}, ${i * ySpacing + 30})`);
           })
         );
-
-        group
-          .selectAll(".control-point")
-          .data(waveformData)
-          .enter()
-          .append("circle")
-          .attr("class", "control-point")
-          .attr("cx", (d) => xScale(d.x))
-          .attr("cy", (d) => d.y)
-          .attr("r", 6)
-          .attr("fill", d.color)
-          .call(
-            d3.drag().on("drag", function (event, d) {
-              d.y = Math.max(-30, Math.min(30, event.y));
-              d3.select(this).attr("cy", d.y);
-              path.attr("d", lineGenerator);
-            })
-          );
       });
     }
 
     function addArtist(name, color) {
-      artists.push({ name, color });
-      updateWaveforms();
+      if (!artists.some((a) => a.name === name)) {
+        artists.push({ name, color });
+        updateWaveforms();
+      }
     }
 
     function showDropdown(input) {
