@@ -147,7 +147,7 @@
 
     // Function to create a new segment
     function addSegment() {
-      const startX = 50; // Start position (left side)
+      const startX = 0; // Start position (left side)
       const endX = startX + 200; // Default length (200 pixels)
       segments.push({ start: xScale.invert(startX), end: xScale.invert(endX) });
       updateWaveforms(); // Refresh UI
