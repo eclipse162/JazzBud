@@ -130,81 +130,88 @@
   <button id="saveButton" class="save-button">Save All Segments</button>
 
   <script>
+    // Select the SVG container where the timeline will be drawn
     const svg = d3.select("#timeline");
     const width = 1500;
     const height = 300;
 
+    // Scale to map time values (0-100) to pixel values on the x-axis
     const xScale = d3.scaleLinear().domain([0, 100]).range([0, width]);
-    const ySpacing = 60;
+    const ySpacing = 60; // Space between artist lines
 
+    // Store segments (each segment represents a played section for an artist)
     let segments = [];
     let isDragging = false;
+    let resizing = false;
     let currentSegment = null;
 
-    const lineGenerator = d3
-      .line()
-      .x((d) => xScale(d.x))
-      .y((d) => 0)
-      .curve(d3.curveBasis);
+    // Function to create a new segment
+    function addSegment() {
+      const startX = 50; // Start position (left side)
+      const endX = startX + 200; // Default length (200 pixels)
+      segments.push({ start: xScale.invert(startX), end: xScale.invert(endX) });
+      updateWaveforms(); // Refresh UI
+    }
 
-    svg.on("mousedown", function (event) {
-      const [mouseX] = d3.pointer(event);
-      const timePosition = xScale.invert(mouseX);
-
-      currentSegment = {
-        start: timePosition,
-        end: timePosition,
-        artist: "Unknown",
-      };
-      segments.push(currentSegment);
-      isDragging = true;
-      updateWaveforms();
-    });
-
-    svg.on("mousemove", function (event) {
-      if (!isDragging) return;
-      const [mouseX] = d3.pointer(event);
-      currentSegment.end = xScale.invert(mouseX);
-      updateWaveforms();
-    });
-
-    svg.on("mouseup", function () {
-      isDragging = false;
-      currentSegment = null;
-    });
-
+    // Function to update and redraw all waveforms (segments)
     function updateWaveforms() {
-      svg.selectAll(".waveform-group").remove();
+      svg.selectAll(".waveform-group").remove(); // Clear previous elements
 
+      // Select all existing segments and bind data
       const waveforms = svg
         .selectAll(".waveform-group")
         .data(segments)
         .enter()
         .append("g")
         .attr("class", "waveform-group")
-        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 30})`);
+        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 30})`); // Position each line
 
+      const segmentColour = artists[counter].colour;
+
+      // Append the segment line
       waveforms
         .append("line")
-        .attr("x1", (d) => xScale(d.start))
-        .attr("x2", (d) => xScale(d.end))
+        .attr("x1", (d) => xScale(d.start)) // Start position
+        .attr("x2", (d) => xScale(d.end)) // End position
         .attr("y1", 0)
         .attr("y2", 0)
-        .attr("stroke", "red")
-        .attr("stroke-width", 4)
+        .attr("stroke", segmentColour) // Line color
+        .attr("stroke-width", 6)
+        .attr("stroke-linecap", "round") // Rounded edges
         .call(
-          d3.drag().on("drag", function (event, d) {
-            const delta = xScale.invert(event.dx);
-            d.start += delta;
-            d.end += delta;
-            updateWaveforms();
-          })
+          d3
+            .drag()
+            .on("start", (event, d) => {
+              const [mouseX] = d3.pointer(event);
+              const timePosition = xScale.invert(mouseX);
+              if (Math.abs(timePosition - d.end) < 5) {
+                resizing = true;
+              } else {
+                isDragging = true;
+              }
+              currentSegment = d;
+            })
+            .on("drag", (event, d) => {
+              const delta = xScale.invert(event.dx) - xScale.invert(0); // Convert pixel movement to time
+              if (resizing) {
+                d.end = Math.max(d.start + 5, d.end + delta); // Ensure minimum size
+              } else if (isDragging) {
+                d.start += delta;
+                d.end += delta;
+              }
+              updateWaveforms(); // Refresh UI
+            })
+            .on("end", () => {
+              isDragging = false;
+              resizing = false;
+              currentSegment = null;
+            })
         );
     }
 
-    function addArtist(name, color) {
-      if (!artists.some((a) => a.name === name)) {
-        artists.push({ name, color });
+    function addArtist(name, artistId, colour) {
+      if (!artists.some((a) => a.artistId === artistId)) {
+        artists.push({ name, artistId, colour });
         updateWaveforms();
       }
     }
@@ -245,7 +252,16 @@
           dropdown.style.display = "none";
           input.style.display = "none";
 
-          addArtist(artistName, d3.schemeCategory10[artists.length % 10]);
+          if (counter == 1) {
+            colour = "#2C3336";
+          } else if (counter == 2) {
+            colour = "#6C6B3F";
+          } else if (counter == 3) {
+            colour = "#B3763A";
+          }
+
+          addArtist(artistName, artistId, colour);
+          counter += 1;
         }
       });
     }
