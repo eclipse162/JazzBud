@@ -212,7 +212,7 @@
     function addArtist(name, artistId, colour) {
       if (!artists.some((a) => a.artistId === artistId)) {
         artists.push({ name, artistId, colour });
-        updateWaveforms();
+        addSegment();
       }
     }
 
