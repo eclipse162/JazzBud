@@ -39,22 +39,23 @@
           </a>
           &nbsp;&middot;&nbsp;{{ track.release_year }}
         </p>
-        <div class="player-container">
-          <div class="controls">
-            <button id="play-pause">▶️</button>
-            <span id="current-time">0:00</span>
-            <div class="progress-wrapper">
-              <div class="progress-container">
-                <div class="progress-bar" onclick="seekTrack(event)">
-                  <div id="progress" class="progress"></div>
-                </div>
-              </div>
-              <span class="duration">
-                {{ track.track_length|ms_to_minutes_seconds }}
-              </span>
-            </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="player-container">
+    <div class="controls">
+      <button id="play-pause">▶️</button>
+      <span id="current-time">0:00</span>
+      <div class="progress-wrapper">
+        <div class="progress-container">
+          <div class="progress-bar" onclick="seekTrack(event)">
+            <div id="progress" class="progress"></div>
           </div>
         </div>
+        <span class="duration">
+          {{ track.track_length|ms_to_minutes_seconds }}
+        </span>
       </div>
     </div>
   </div>
@@ -130,14 +131,14 @@
 
   <script>
     const svg = d3.select("#timeline");
-    const width = 800;
+    const width = 1500;
     const height = 300;
 
     const xScale = d3
       .scaleLinear()
       .domain([0, 100])
       .range([50, width - 50]);
-    const yPositions = [30, 80, 130, 180]; // Fixed y positions for each artist
+    const ySpacing = 60;
 
     const lineGenerator = d3
       .line()
@@ -154,15 +155,15 @@
         .enter()
         .append("g")
         .attr("class", "waveform-group")
-        .attr("transform", (d, i) => `translate(0, ${yPositions[i]})`);
+        .attr("transform", (d, i) => `translate(50, ${i * ySpacing + 30})`);
 
       waveforms.each(function (d, i) {
         const group = d3.select(this);
 
         let waveformData = [
-          { x: 10, y: 0 },
-          { x: 20, y: 10 },
-          { x: 40, y: 0 },
+          { x: 0, y: 0 },
+          { x: 20, y: 15 },
+          { x: 40, y: -10 },
           { x: 60, y: 20 },
           { x: 80, y: 0 },
         ];
@@ -177,11 +178,8 @@
 
         group.call(
           d3.drag().on("drag", function (event) {
-            let newX = Math.max(50, Math.min(width - 50, event.x));
-            group.attr(
-              "transform",
-              `translate(${newX - 50}, ${yPositions[i]})`
-            );
+            let newX = Math.max(0, Math.min(width - 100, event.x));
+            group.attr("transform", `translate(${newX}, ${i * ySpacing + 30})`);
           })
         );
 
@@ -205,13 +203,11 @@
       });
     }
 
-    // Function to add artist and update waveform
     function addArtist(name, color) {
       artists.push({ name, color });
       updateWaveforms();
     }
 
-    // Event listener for dropdown selection
     function showDropdown(input) {
       const dropdownId = input.getAttribute("hx-target");
       const dropdown = document.querySelector(dropdownId);
@@ -253,7 +249,6 @@
       });
     }
 
-    // Initialize with empty artists
     let artists = [];
   </script>
 </main>

@@ -61,7 +61,7 @@
 }
 
 .player-container {
-  max-width: 100%;
+  width: 70%;
   padding-top: 20px;
 }
 
@@ -103,8 +103,7 @@
   transform: translateX(-50%);
 }
 
-.current-time,
-.duration {
+.current-time {
   color: #d2d2d2;
   font-size: 14px;
 }
@@ -115,6 +114,8 @@
   top: 50%;
   transform: translateY(-50%);
   white-space: nowrap;
+  color: #d2d2d2;
+  font-size: 14px;
 }
 
 /* --------------- EDIT TABLE ----------------- */
