@@ -123,7 +123,7 @@
     </div>
 
     <div class="waveform-section">
-      <svg id="timeline" width="800" height="200"></svg>
+      <svg id="timeline"></svg>
     </div>
   </div>
 
@@ -134,55 +134,72 @@
     const width = 1500;
     const height = 300;
 
-    const xScale = d3
-      .scaleLinear()
-      .domain([0, 100])
-      .range([50, width - 50]);
+    const xScale = d3.scaleLinear().domain([0, 100]).range([0, width]);
     const ySpacing = 60;
+
+    let segments = [];
+    let isDragging = false;
+    let currentSegment = null;
 
     const lineGenerator = d3
       .line()
       .x((d) => xScale(d.x))
-      .y((d) => d.y)
+      .y((d) => 0)
       .curve(d3.curveBasis);
+
+    svg.on("mousedown", function (event) {
+      const [mouseX] = d3.pointer(event);
+      const timePosition = xScale.invert(mouseX);
+
+      currentSegment = {
+        start: timePosition,
+        end: timePosition,
+        artist: "Unknown",
+      };
+      segments.push(currentSegment);
+      isDragging = true;
+      updateWaveforms();
+    });
+
+    svg.on("mousemove", function (event) {
+      if (!isDragging) return;
+      const [mouseX] = d3.pointer(event);
+      currentSegment.end = xScale.invert(mouseX);
+      updateWaveforms();
+    });
+
+    svg.on("mouseup", function () {
+      isDragging = false;
+      currentSegment = null;
+    });
 
     function updateWaveforms() {
       svg.selectAll(".waveform-group").remove();
 
       const waveforms = svg
         .selectAll(".waveform-group")
-        .data(artists)
+        .data(segments)
         .enter()
         .append("g")
         .attr("class", "waveform-group")
-        .attr("transform", (d, i) => `translate(50, ${i * ySpacing + 30})`);
+        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 30})`);
 
-      waveforms.each(function (d, i) {
-        const group = d3.select(this);
-
-        let waveformData = [
-          { x: 0, y: 10 },
-          { x: 20, y: 30 },
-          { x: 40, y: -10 },
-          { x: 60, y: 40 },
-          { x: 80, y: 10 },
-        ];
-
-        const path = group
-          .append("path")
-          .datum(waveformData)
-          .attr("d", lineGenerator)
-          .attr("fill", "none")
-          .attr("stroke", d.color)
-          .attr("stroke-width", 4);
-
-        group.call(
-          d3.drag().on("drag", function (event) {
-            let newX = Math.max(0, Math.min(width - 100, event.x));
-            group.attr("transform", `translate(${newX}, ${i * ySpacing + 30})`);
+      waveforms
+        .append("line")
+        .attr("x1", (d) => xScale(d.start))
+        .attr("x2", (d) => xScale(d.end))
+        .attr("y1", 0)
+        .attr("y2", 0)
+        .attr("stroke", "red")
+        .attr("stroke-width", 4)
+        .call(
+          d3.drag().on("drag", function (event, d) {
+            const delta = xScale.invert(event.dx);
+            d.start += delta;
+            d.end += delta;
+            updateWaveforms();
           })
         );
-      });
     }
 
     function addArtist(name, color) {
