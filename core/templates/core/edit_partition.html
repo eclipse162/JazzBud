@@ -129,9 +129,89 @@
   <button id="saveButton" class="save-button">Save All Segments</button>
 
   <script>
-    let artists = [];
-    const data = {};
+    const svg = d3.select("#timeline");
+    const width = 800;
+    const height = 300;
 
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, 100])
+      .range([50, width - 50]);
+    const yPositions = [30, 80, 130, 180]; // Fixed y positions for each artist
+
+    const lineGenerator = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => d.y)
+      .curve(d3.curveBasis);
+
+    function updateWaveforms() {
+      svg.selectAll(".waveform-group").remove();
+
+      const waveforms = svg
+        .selectAll(".waveform-group")
+        .data(artists)
+        .enter()
+        .append("g")
+        .attr("class", "waveform-group")
+        .attr("transform", (d, i) => `translate(0, ${yPositions[i]})`);
+
+      waveforms.each(function (d, i) {
+        const group = d3.select(this);
+
+        let waveformData = [
+          { x: 10, y: 0 },
+          { x: 20, y: 10 },
+          { x: 40, y: 0 },
+          { x: 60, y: 20 },
+          { x: 80, y: 0 },
+        ];
+
+        const path = group
+          .append("path")
+          .datum(waveformData)
+          .attr("d", lineGenerator)
+          .attr("fill", "none")
+          .attr("stroke", d.color)
+          .attr("stroke-width", 4);
+
+        group.call(
+          d3.drag().on("drag", function (event) {
+            let newX = Math.max(50, Math.min(width - 50, event.x));
+            group.attr(
+              "transform",
+              `translate(${newX - 50}, ${yPositions[i]})`
+            );
+          })
+        );
+
+        group
+          .selectAll(".control-point")
+          .data(waveformData)
+          .enter()
+          .append("circle")
+          .attr("class", "control-point")
+          .attr("cx", (d) => xScale(d.x))
+          .attr("cy", (d) => d.y)
+          .attr("r", 6)
+          .attr("fill", d.color)
+          .call(
+            d3.drag().on("drag", function (event, d) {
+              d.y = Math.max(-30, Math.min(30, event.y));
+              d3.select(this).attr("cy", d.y);
+              path.attr("d", lineGenerator);
+            })
+          );
+      });
+    }
+
+    // Function to add artist and update waveform
+    function addArtist(name, color) {
+      artists.push({ name, color });
+      updateWaveforms();
+    }
+
+    // Event listener for dropdown selection
     function showDropdown(input) {
       const dropdownId = input.getAttribute("hx-target");
       const dropdown = document.querySelector(dropdownId);
@@ -168,55 +248,13 @@
           dropdown.style.display = "none";
           input.style.display = "none";
 
-          createWaveform();
+          addArtist(artistName, d3.schemeCategory10[artists.length % 10]);
         }
       });
     }
 
-    function createWaveform() {
-      const svg = d3.select("#timeline");
-      const width = 800; // Width of the timeline
-      const height = 200; // Height of the timeline
-
-      // Default position for the new waveform
-      const xPosition = 100; // Fixed x-position for the vertical line
-      const yPosition = height / 2; // Default y-position (middle of the timeline)
-
-      // Create a group for the waveform
-      const group = svg.append("g").attr("class", "waveform-group");
-
-      // Add a vertical line for reference
-      const verticalLine = group
-        .append("line")
-        .attr("class", "vertical-line")
-        .attr("x1", xPosition)
-        .attr("x2", xPosition)
-        .attr("y1", 0)
-        .attr("y2", height)
-        .attr("stroke", "#ccc")
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", "4,4"); // Dashed line for reference
-
-      // Add a horizontal line to represent the waveform
-      const horizontalLine = group
-        .append("line")
-        .attr("class", "horizontal-line")
-        .attr("x1", xPosition - 50) // Start 50px to the left of the vertical line
-        .attr("x2", xPosition + 50) // End 50px to the right of the vertical line
-        .attr("y1", yPosition)
-        .attr("y2", yPosition)
-        .attr("stroke", "#ff0000")
-        .attr("stroke-width", 3);
-
-      // Add drag behavior to the horizontal line
-      group.call(
-        d3.drag().on("drag", function (event) {
-          // Update the y-position during drag
-          const newY = Math.max(0, Math.min(height, event.y)); // Constrain y within bounds
-          horizontalLine.attr("y1", newY).attr("y2", newY); // Update horizontal line position
-        })
-      );
-    }
+    // Initialize with empty artists
+    let artists = [];
   </script>
 </main>
 {% endblock %}
