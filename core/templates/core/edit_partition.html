@@ -124,34 +124,40 @@
     </div>
 
     <div class="waveform-section">
-      <svg id="timeline" width="1500" height="300"></svg>
+      <svg id="timeline"></svg>
     </div>
   </div>
 
   <button id="saveButton" class="save-button">Save All Segments</button>
 
   <script>
-    // Select the SVG container where the timeline will be drawn
     const svg = d3.select("#timeline");
+    const songDuration = window.trackLength;
+    const timelineWidth = getTimelineWidth();
 
-    const timelineWidth = 1500; // Keep timeline width constant
-    let songDuration = window.trackLength;
+    let counter = 0;
+    let segments = [];
+    let ySpacing = 60;
+    let resizing = false;
+    let colour = "#D2BF8C";
+    let isDragging = false;
+    let pendingStart = null;
+    let currentSegment = null;
+
     let timeScale = d3
       .scaleLinear()
       .domain([0, timelineWidth])
       .range([0, songDuration]);
 
-    // Scale to map time values (0-100) to pixel values on the x-axis
-    const xScale = d3.scaleLinear().domain([0, 100]).range([0, width]);
-    const ySpacing = 60; // Space between artist lines
+    function getTimelineWidth() {
+      return document.getElementById("timeline").getBoundingClientRect().width;
+    }
 
-    // Store segments (each segment represents a played section for an artist)
-    let segments = [];
-    let colour = "#D2BF8C";
-    let isDragging = false;
-    let resizing = false;
-    let currentSegment = null;
-    let pendingStart = null; // Store first click position for manual segment creation
+    window.addEventListener("resize", () => {
+      timelineWidth = getTimelineWidth();
+      timeScale.range([0, timelineWidth]);
+      updateWaveforms();
+    });
 
     // Function to create a greyed-out baseline when an artist is selected
     function addBaseline() {
@@ -266,13 +272,13 @@
           const artistDisplay = document.createElement("div");
           artistDisplay.classList.add("artist-display");
           artistDisplay.innerHTML = `
-        <img src="${artistImage}" alt="${artistName}" class="artist-image" />
-        <div class="artist-info">
-          <span class="artist-name">${artistName}</span>
-          <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
-        </div>
-        <input type="hidden" class="artist-id" value="${artistId}" />
-      `;
+            <img src="${artistImage}" alt="${artistName}" class="artist-image" />
+            <div class="artist-info">
+              <span class="artist-name">${artistName}</span>
+              <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
+            </div>
+            <input type="hidden" class="artist-id" value="${artistId}" />
+          `;
 
           const existingDisplay =
             input.parentNode.querySelector(".artist-display");
