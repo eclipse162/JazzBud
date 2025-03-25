@@ -151,7 +151,7 @@
       .range([0, songDuration]);
 
     svg.on("mousedown", function (event) {
-      const [mouseX] = d3.pointer(event);
+      const [mouseX, mouseY] = d3.pointer(event);
 
       const artistIndex = Math.floor((mouseY - 40) / ySpacing);
       const currentArtistId = artists[artistIndex].artistId;
