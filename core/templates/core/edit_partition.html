@@ -150,6 +150,57 @@
       .domain([0, timelineWidth])
       .range([0, songDuration]);
 
+    svg.on("mousedown", function (event) {
+      const [mouseX] = d3.pointer(event);
+
+      const artistIndex = Math.floor((mouseY - 40) / ySpacing);
+      const currentArtistId = artists[artistIndex].artistId;
+
+      if (!currentArtistId) {
+        console.log("No artist found for this position.");
+        return; // Exit if no artist is found
+      }
+
+      pendingStart = timeScale.invert(mouseX); // Store the start time
+
+      svg.on("mousemove", function (event) {
+        const [currentX] = d3.pointer(event);
+        const currentEnd = timeScale.invert(currentX);
+
+        svg.selectAll(".temp-segment").remove();
+        svg
+          .append("line")
+          .attr("class", "temp-segment")
+          .attr("x1", timeScale(pendingStart))
+          .attr("x2", timeScale(currentEnd))
+          .attr("y1", artistIndex * ySpacing + 40)
+          .attr("y1", artistIndex * ySpacing + 40)
+          .attr("stroke", "#212121")
+          .attr("stroke-width", 10)
+          .attr("stroke-linecap", "round");
+      });
+
+      svg.on("mouseup", function (event) {
+        const [mouseX] = d3.pointer(event);
+        const endTime = timeScale.invert(mouseX);
+
+        // Add the new segment
+        if (pendingStart !== null && Math.abs(endTime - pendingStart) > 0.5) {
+          segments.push({
+            start: Math.max(0, pendingStart),
+            end: Math.min(songDuration, endTime),
+            artistId: currentArtistId, // Ensure the segment is associated with the correct artist
+          });
+          updateWaveforms();
+        }
+
+        // Clear temporary segment and reset listeners
+        svg.selectAll(".temp-segment").remove();
+        pendingStart = null;
+        svg.on("mousemove", null).on("mouseup", null);
+      });
+    });
+
     function getTimelineWidth() {
       return document.getElementById("timeline").getBoundingClientRect().width;
     }
@@ -203,10 +254,10 @@
           } else if (counter == 3) {
             colour = "#B3763A";
           }
-
-          addArtist(artistName, artistId, colour);
-          counter += 1;
         }
+
+        addArtist(artistName, artistId, colour);
+        counter += 1;
       });
     }
 
@@ -221,9 +272,9 @@
     // Function to create a greyed-out baseline when an artist is selected
     function addBaseline(index) {
       timelineWidth = getTimelineWidth();
+      const baseId = artists[index].artistId;
       svg
         .append("line")
-        .attr("class", "baseline")
         .attr("x1", 0)
         .attr("x2", timelineWidth)
         .attr("y1", index * ySpacing + 40)
@@ -233,21 +284,11 @@
         .attr("stroke-linecap", "round");
     }
 
-    // Function to add a new segment
-    function addSegment(startX, endX) {
-      const startTime = timeScale(startX); // Convert from pixel to time
-      const endTime = timeScale(endX);
-
-      segments.push({ start: startTime, end: endTime });
-      updateWaveforms();
-    }
-
     // Function to update and redraw all segments
     function updateWaveforms() {
-      // Bind data to waveform groups
       const waveforms = svg
         .selectAll(".waveform-group")
-        .data(segments, (d, i) => i); // Use index as a unique key
+        .data(segments, (d, i) => i);
 
       // Enter: Add new waveform groups
       const newWaveforms = waveforms
@@ -329,45 +370,6 @@
       // Exit: Remove waveform groups that are no longer in the data
       waveforms.exit().remove();
     }
-
-    // Handle user clicks to manually define segments
-    svg.on("mousedown", function (event) {
-      const [mouseX] = d3.pointer(event);
-      pendingStart = timeScale.invert(mouseX); // Store the start time
-
-      svg.on("mousemove", function (event) {
-        const [currentX] = d3.pointer(event);
-        const currentEnd = timeScale.invert(currentX);
-
-        // Temporarily show the segment being created
-        svg.selectAll(".temp-segment").remove();
-        svg
-          .append("line")
-          .attr("class", "temp-segment")
-          .attr("x1", timeScale(pendingStart))
-          .attr("x2", timeScale(currentEnd))
-          .attr("y1", 40)
-          .attr("y2", 40)
-          .attr("stroke", "#aaa")
-          .attr("stroke-width", 10)
-          .attr("stroke-linecap", "round");
-      });
-
-      svg.on("mouseup", function (event) {
-        const [mouseX] = d3.pointer(event);
-        const endTime = timeScale.invert(mouseX);
-
-        // Add the new segment
-        if (pendingStart !== null && Math.abs(endTime - pendingStart) > 0.5) {
-          addSegment(timeScale(pendingStart), timeScale(endTime));
-        }
-
-        // Clear temporary segment and reset listeners
-        svg.selectAll(".temp-segment").remove();
-        pendingStart = null;
-        svg.on("mousemove", null).on("mouseup", null);
-      });
-    });
   </script>
 </main>
 {% endblock %}
