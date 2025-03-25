@@ -97,6 +97,7 @@ class Segment(Base):
     start_time = Column(Integer, nullable=False)  # Start time in seconds
     end_time = Column(Integer, nullable=False)    # End time in seconds
     segment_description = Column(Text)
+    lead = Column(Boolean, default=False)
 
     collection = relationship("Collection", back_populates="segments")
     user = relationship("User", back_populates="segments")
@@ -118,6 +119,7 @@ class Instrument(Base):
 
     instrument_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False, unique=True, index=True)
+    colour = Column(String(255), nullable=False, unique=True, index=True)
 
 class Section(Base):
     __tablename__ = 'sections'
