@@ -136,8 +136,9 @@
     const timelineWidth = getTimelineWidth();
 
     let counter = 0;
+    let artists = [];
     let segments = [];
-    let ySpacing = 60;
+    let ySpacing = 80;
     let resizing = false;
     let colour = "#D2BF8C";
     let isDragging = false;
@@ -158,99 +159,6 @@
       timeScale.range([0, timelineWidth]);
       updateWaveforms();
     });
-
-    // Function to create a greyed-out baseline when an artist is selected
-    function addBaseline() {
-      svg
-        .append("line")
-        .attr("class", "baseline")
-        .attr("x1", 0)
-        .attr("x2", timelineWidth)
-        .attr("y1", 30)
-        .attr("y2", 30)
-        .attr("stroke", "#ccc")
-        .attr("stroke-width", 8)
-        .attr("stroke-linecap", "round");
-    }
-
-    // Function to add a new segment
-    function addSegment(startX, endX) {
-      const startTime = timeScale(startX); // Convert from pixel to time
-      const endTime = timeScale(endX);
-
-      segments.push({ start: startTime, end: endTime });
-      updateWaveforms();
-    }
-
-    // Function to update and redraw all segments
-    function updateWaveforms() {
-      svg.selectAll(".waveform-group").remove(); // Clear previous elements
-
-      const waveforms = svg
-        .selectAll(".waveform-group")
-        .data(segments)
-        .enter()
-        .append("g")
-        .attr("class", "waveform-group")
-        .attr("transform", "translate(0, 30)");
-
-      waveforms
-        .append("line")
-        .attr("x1", (d) => timeScale.invert(d.start)) // Convert time to pixels
-        .attr("x2", (d) => timeScale.invert(d.end))
-        .attr("y1", 0)
-        .attr("y2", 0)
-        .attr("stroke", "red")
-        .attr("stroke-width", 6)
-        .attr("stroke-linecap", "round")
-        .call(
-          d3
-            .drag()
-            .on("start", (event, d) => {
-              const [mouseX] = d3.pointer(event);
-              const timePosition = timeScale(mouseX);
-              if (Math.abs(timePosition - d.end) < 2) {
-                resizing = true;
-              } else {
-                isDragging = true;
-              }
-              currentSegment = d;
-            })
-            .on("drag", (event, d) => {
-              const delta = timeScale(event.dx) - timeScale(0); // Convert pixel movement to time
-              if (resizing) {
-                d.end = Math.max(d.start + 0.5, d.end + delta); // Ensure min duration
-              } else if (isDragging) {
-                d.start += delta;
-                d.end += delta;
-              }
-              updateWaveforms();
-            })
-            .on("end", () => {
-              isDragging = false;
-              resizing = false;
-              currentSegment = null;
-            })
-        );
-    }
-
-    // Handle user clicks to manually define segments
-    svg.on("click", function (event) {
-      const [mouseX] = d3.pointer(event);
-      if (pendingStart === null) {
-        pendingStart = timeScale(mouseX); // First click: store start time
-      } else {
-        addSegment(timeScale.invert(pendingStart), timeScale.invert(mouseX)); // Convert pixels to time
-        pendingStart = null;
-      }
-    });
-
-    function addArtist(name, artistId, colour) {
-      if (!artists.some((a) => a.artistId === artistId)) {
-        artists.push({ name, artistId, colour });
-        addBaseline();
-      }
-    }
 
     function showDropdown(input) {
       const dropdownId = input.getAttribute("hx-target");
@@ -302,7 +210,164 @@
       });
     }
 
-    let artists = [];
+    function addArtist(name, artistId, colour) {
+      if (!artists.some((a) => a.artistId === artistId)) {
+        const index = artists.length;
+        artists.push({ name, artistId, colour });
+        addBaseline(index);
+      }
+    }
+
+    // Function to create a greyed-out baseline when an artist is selected
+    function addBaseline(index) {
+      timelineWidth = getTimelineWidth();
+      svg
+        .append("line")
+        .attr("class", "baseline")
+        .attr("x1", 0)
+        .attr("x2", timelineWidth)
+        .attr("y1", index * ySpacing + 40)
+        .attr("y2", index * ySpacing + 40)
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", 12)
+        .attr("stroke-linecap", "round");
+    }
+
+    // Function to add a new segment
+    function addSegment(startX, endX) {
+      const startTime = timeScale(startX); // Convert from pixel to time
+      const endTime = timeScale(endX);
+
+      segments.push({ start: startTime, end: endTime });
+      updateWaveforms();
+    }
+
+    // Function to update and redraw all segments
+    function updateWaveforms() {
+      // Bind data to waveform groups
+      const waveforms = svg
+        .selectAll(".waveform-group")
+        .data(segments, (d, i) => i); // Use index as a unique key
+
+      // Enter: Add new waveform groups
+      const newWaveforms = waveforms
+        .enter()
+        .append("g")
+        .attr("class", "waveform-group")
+        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 40})`); // Position each waveform group
+
+      // Add the main line (segment)
+      newWaveforms
+        .append("line")
+        .attr("class", "segment-line")
+        .attr("x1", (d) => timeScale(d.start)) // Convert time to pixels
+        .attr("x2", (d) => timeScale(d.end))
+        .attr("y1", 0)
+        .attr("y2", 0)
+        .attr("stroke", colour)
+        .attr("stroke-width", 10)
+        .attr("stroke-linecap", "round");
+
+      // Add draggable handles for resizing (left and right ends)
+      newWaveforms
+        .append("circle")
+        .attr("class", "resize-handle start-handle")
+        .attr("cx", (d) => timeScale(d.start)) // Position at the start of the segment
+        .attr("cy", 0)
+        .attr("r", 6)
+        .attr("fill", "#fff")
+        .attr("stroke", colour)
+        .attr("stroke-width", 2)
+        .call(
+          d3.drag().on("drag", (event, d) => {
+            // Update the start time of the segment
+            const newStart = timeScale.invert(event.x);
+            d.start = Math.min(d.end - 0.5, newStart); // Ensure start < end
+            updateWaveforms(); // Redraw the waveforms
+          })
+        );
+
+      newWaveforms
+        .append("circle")
+        .attr("class", "resize-handle end-handle")
+        .attr("cx", (d) => timeScale(d.end)) // Position at the end of the segment
+        .attr("cy", 0)
+        .attr("r", 6)
+        .attr("fill", "#fff")
+        .attr("stroke", colour)
+        .attr("stroke-width", 2)
+        .call(
+          d3.drag().on("drag", (event, d) => {
+            // Update the end time of the segment
+            const newEnd = timeScale.invert(event.x);
+            d.end = Math.max(d.start + 0.5, newEnd); // Ensure end > start
+            updateWaveforms(); // Redraw the waveforms
+          })
+        );
+
+      // Add drag behavior to move the entire segment
+      newWaveforms.call(
+        d3.drag().on("drag", (event, d) => {
+          // Calculate the time delta based on the drag distance
+          const delta = timeScale.invert(event.dx) - timeScale(0);
+          d.start += delta;
+          d.end += delta;
+          updateWaveforms(); // Redraw the waveforms
+        })
+      );
+
+      // Update: Update existing waveform groups
+      waveforms
+        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 40})`) // Update position
+        .select(".segment-line")
+        .attr("x1", (d) => timeScale(d.start)) // Update start position
+        .attr("x2", (d) => timeScale(d.end)); // Update end position
+
+      waveforms.select(".start-handle").attr("cx", (d) => timeScale(d.start)); // Update start handle
+      waveforms.select(".end-handle").attr("cx", (d) => timeScale(d.end)); // Update end handle
+
+      // Exit: Remove waveform groups that are no longer in the data
+      waveforms.exit().remove();
+    }
+
+    // Handle user clicks to manually define segments
+    svg.on("mousedown", function (event) {
+      const [mouseX] = d3.pointer(event);
+      pendingStart = timeScale.invert(mouseX); // Store the start time
+
+      svg.on("mousemove", function (event) {
+        const [currentX] = d3.pointer(event);
+        const currentEnd = timeScale.invert(currentX);
+
+        // Temporarily show the segment being created
+        svg.selectAll(".temp-segment").remove();
+        svg
+          .append("line")
+          .attr("class", "temp-segment")
+          .attr("x1", timeScale(pendingStart))
+          .attr("x2", timeScale(currentEnd))
+          .attr("y1", 40)
+          .attr("y2", 40)
+          .attr("stroke", "#aaa")
+          .attr("stroke-width", 10)
+          .attr("stroke-linecap", "round");
+      });
+
+      svg.on("mouseup", function (event) {
+        const [mouseX] = d3.pointer(event);
+        const endTime = timeScale.invert(mouseX);
+
+        // Add the new segment
+        if (pendingStart !== null && Math.abs(endTime - pendingStart) > 0.5) {
+          addSegment(timeScale(pendingStart), timeScale(endTime));
+        }
+
+        // Clear temporary segment and reset listeners
+        svg.selectAll(".temp-segment").remove();
+        pendingStart = null;
+        svg.on("mousemove", null).on("mouseup", null);
+      });
+    });
   </script>
 </main>
 {% endblock %}
