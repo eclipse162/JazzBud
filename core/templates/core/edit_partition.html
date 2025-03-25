@@ -123,7 +123,7 @@
     </div>
 
     <div class="waveform-section">
-      <svg id="timeline"></svg>
+      <svg id="timeline" width="1500" height="300"></svg>
     </div>
   </div>
 
@@ -137,7 +137,7 @@
     let colour = "D2BF8C";
 
     const xScale = d3.scaleLinear().domain([0, 100]).range([0, width]);
-    const ySpacing = 60;
+    const ySpacing = 90;
 
     const lineGenerator = d3
       .line()
@@ -178,16 +178,17 @@
               .y((d) => d.y) // Keep y values constant
           )
           .attr("fill", "none")
-          .attr("stroke", d.color)
+          .attr("stroke", colour)
           .attr("stroke-width", 4);
 
         group.call(
           d3.drag().on("drag", function (event) {
-            let newX = Math.max(0, Math.min(width - 100, event.x));
-            group.attr("transform", `translate(${newX}, ${i * ySpacing + 30})`);
+            // Calculate new X and Y positions based on the drag event
+            let newX = Math.max(0, Math.min(width - 100, event.x)); // Constrain horizontal movement
+            let newY = Math.max(0, Math.min(height, event.y)); // Constrain vertical movement
 
-            let newY = Math.max(0, Math.min(height, event.y));
-            group.attr("transform", `translate(50, ${newY})`);
+            // Update the position of the group using both X and Y
+            group.attr("transform", `translate(${newX}, ${newY})`);
           })
         );
       });
