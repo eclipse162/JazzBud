@@ -133,7 +133,6 @@
   <script>
     const svg = d3.select("#timeline");
     const songDuration = window.trackLength;
-    const timelineWidth = getTimelineWidth();
 
     let counter = 0;
     let artists = [];
@@ -144,6 +143,7 @@
     let isDragging = false;
     let pendingStart = null;
     let currentSegment = null;
+    let timelineWidth = getTimelineWidth();
 
     let timeScale = d3
       .scaleLinear()
