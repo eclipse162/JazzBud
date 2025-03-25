@@ -4,18 +4,20 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: start;
-  margin-left: 40px;
-  gap: 11px;
+  width: 93%;
 }
 
 .artist-section {
+  margin-left: 40px;
   flex: 1;
   max-width: 350px;
 }
 
 .waveform-section {
+  padding-left: 56px;
   flex: 2;
   width: 100%;
+  display: flex;
 }
 
 .dropdown-container {
@@ -194,4 +196,9 @@
 
 .add-instrument-button:hover {
   color: #818691;
+}
+
+svg#timeline {
+  flex-grow: 1;
+  margin-right: 44px;
 }
