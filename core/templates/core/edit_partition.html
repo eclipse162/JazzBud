@@ -130,83 +130,65 @@
   <button id="saveButton" class="save-button">Save All Segments</button>
 
   <script>
-    // Select the SVG container where the timeline will be drawn
     const svg = d3.select("#timeline");
     const width = 1500;
     const height = 300;
 
-    // Scale to map time values (0-100) to pixel values on the x-axis
     const xScale = d3.scaleLinear().domain([0, 100]).range([0, width]);
-    const ySpacing = 60; // Space between artist lines
+    const ySpacing = 60;
 
-    // Store segments (each segment represents a played section for an artist)
-    let segments = [];
-    let isDragging = false;
-    let resizing = false;
-    let currentSegment = null;
+    const lineGenerator = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => d.y)
+      .curve(d3.curveBasis);
 
-    // Function to create a new segment
-    function addSegment() {
-      const startX = 0; // Start position (left side)
-      const endX = startX + 200; // Default length (200 pixels)
-      segments.push({ start: xScale.invert(startX), end: xScale.invert(endX) });
-      updateWaveforms(); // Refresh UI
-    }
-
-    // Function to update and redraw all waveforms (segments)
     function updateWaveforms() {
-      svg.selectAll(".waveform-group").remove(); // Clear previous elements
+      svg.selectAll(".waveform-group").remove();
 
-      // Select all existing segments and bind data
       const waveforms = svg
         .selectAll(".waveform-group")
-        .data(segments)
+        .data(artists)
         .enter()
         .append("g")
         .attr("class", "waveform-group")
-        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 30})`); // Position each line
+        .attr("transform", (d, i) => `translate(50, ${i * ySpacing + 30})`);
 
-      const segmentColour = artists[counter].colour;
+      waveforms.each(function (d, i) {
+        const group = d3.select(this);
 
-      // Append the segment line
-      waveforms
-        .append("line")
-        .attr("x1", (d) => xScale(d.start)) // Start position
-        .attr("x2", (d) => xScale(d.end)) // End position
-        .attr("y1", 0)
-        .attr("y2", 0)
-        .attr("stroke", segmentColour) // Line color
-        .attr("stroke-width", 6)
-        .attr("stroke-linecap", "round") // Rounded edges
-        .call(
-          d3
-            .drag()
-            .on("start", (event, d) => {
-              const [mouseX] = d3.pointer(event);
-              const timePosition = xScale.invert(mouseX);
-              if (Math.abs(timePosition - d.end) < 5) {
-                resizing = true;
-              } else {
-                isDragging = true;
-              }
-              currentSegment = d;
-            })
-            .on("drag", (event, d) => {
-              const delta = xScale.invert(event.dx) - xScale.invert(0); // Convert pixel movement to time
-              if (resizing) {
-                d.end = Math.max(d.start + 5, d.end + delta); // Ensure minimum size
-              } else if (isDragging) {
-                d.start += delta;
-                d.end += delta;
-              }
-              updateWaveforms(); // Refresh UI
-            })
-            .on("end", () => {
-              isDragging = false;
-              resizing = false;
-              currentSegment = null;
-            })
+        let waveformData = [
+          { x: 0, y: 20 }, // Start point
+          { x: 20, y: 20 }, // Flat line
+          { x: 40, y: 20 },
+          { x: 60, y: 20 },
+          { x: 80, y: 20 }, // End point
+        ];
+
+        const path = group
+          .append("path")
+          .datum(waveformData)
+          .attr(
+            "d",
+            d3
+              .line()
+              .x((d) => xScale(d.x)) // Map x values
+              .y((d) => d.y) // Keep y values constant
+          )
+          .attr("fill", "none")
+          .attr("stroke", d.color)
+          .attr("stroke-width", 4);
+
+        group.call(
+          d3.drag().on("drag", function (event) {
+            let newX = Math.max(0, Math.min(width - 100, event.x));
+            group.attr("transform", `translate(${newX}, ${i * ySpacing + 30})`);
+
+            let newY = Math.max(0, Math.min(height, event.y));
+            group.attr("transform", `translate(50, ${newY})`);
+          })
         );
+      });
     }
 
     function addArtist(name, artistId, colour) {
