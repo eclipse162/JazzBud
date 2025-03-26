@@ -156,10 +156,20 @@
       const artistIndex = Math.floor((mouseY - 40) / ySpacing);
       const currentArtistId = artists[artistIndex].artistId;
 
-      if (!currentArtistId) {
+      // Validate the artist index
+      if (artistIndex < 0 || artistIndex >= artists.length) {
+        console.log("Invalid artist index:", artistIndex);
+        return; // Exit if the artist index is invalid
+      }
+
+      const currentArtist = artists[artistIndex]; // Get the artist object
+      if (!currentArtist) {
         console.log("No artist found for this position.");
         return; // Exit if no artist is found
       }
+
+      const currentArtistId = currentArtist.artistId; // Get the artistId
+      console.log("Current Artist ID:", currentArtistId);
 
       pendingStart = timeScale.invert(mouseX); // Store the start time
 
@@ -212,6 +222,11 @@
     });
 
     function showDropdown(input) {
+      const artistId = null;
+      const artistItem = null;
+      const artistName = null;
+      const artistImage = null;
+
       const dropdownId = input.getAttribute("hx-target");
       const dropdown = document.querySelector(dropdownId);
 
