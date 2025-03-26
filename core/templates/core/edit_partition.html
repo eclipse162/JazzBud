@@ -154,7 +154,6 @@
       const [mouseX, mouseY] = d3.pointer(event);
 
       const artistIndex = Math.floor((mouseY - 40) / ySpacing);
-      const currentArtistId = artists[artistIndex].artistId;
 
       // Validate the artist index
       if (artistIndex < 0 || artistIndex >= artists.length) {
