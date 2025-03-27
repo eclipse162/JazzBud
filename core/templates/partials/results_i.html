@@ -1,0 +1,29 @@
+<style>
+  .dropdown-item {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #ebded1;
+  }
+
+  .dropdown-item:hover {
+    background-color: #2e2c2c;
+  }
+
+  .data_name {
+    color: rgb(202, 212, 209);
+  }
+</style>
+
+<ul>
+  {% for instrument in instruments %}
+  <li
+    class="dropdown-item"
+    data-name="{{ instrument.name }}"
+    data-id="{{ instrument.instrument_id }}"
+    data-colour="{{ instrument.instrument_id }}">
+    {{ instruments.name }}
+  </li>
+  {% endfor %}
+</ul>

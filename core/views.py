@@ -9,7 +9,7 @@ from slugify import slugify
 from django.db.models import Q
 from rest_framework import status
 from requests import Request, post
-from db.models import Artist, Album
+from db.models import Artist, Album, Instrument
 from spotify.views import refresh_user
 from rest_framework.views import APIView
 from db.crud import get_token, create_collection, create_segment, get_spotify_song, create_song
@@ -33,8 +33,6 @@ def login(request):
     return render(request, 'core/login.html')
 
 def search(request):
-    add_instruments()
-
     if request.method == "POST":
         query = request.POST['query']
         session_id = request.session.session_key
@@ -114,6 +112,34 @@ def artist_search(request):
     print("Artists: ", lo_artists)
 
     return render(request, 'partials/results.html', {'artists': lo_artists})
+
+def instrument_search(request):
+    query = request.GET.get('q', '').strip()
+    instrument_results = []
+    
+    session_id = request.session.session_key
+    if session_id is None:
+        return redirect('login')
+    
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        instruments = db.query(Instrument).filter(Instrument.name.ilike(f"%{query}%")).all()
+
+        for instrument in instruments:
+            instrument_results = [
+                {
+                    "id": instrument.instrument_id,
+                    "name": instrument.name,
+                    "colour": instrument.colour
+                }
+            ]
+
+    return JsonResponse({"Instruments": instrument_results})
+
 
 def save_artist_selection(request):
     if request.method == "POST":

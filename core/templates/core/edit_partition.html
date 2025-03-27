@@ -72,7 +72,7 @@
               name="q"
               class="artist-search"
               hx-get="{% url 'artist_search' %}"
-              hx-trigger="keyup changed delay:500ms"
+              hx-trigger="keyup changed delay:200ms"
               hx-target="#artist-results-1"
               oninput="showDropdown(this)" />
             <div id="artist-results-1" class="dropdown-container"></div>
@@ -86,7 +86,7 @@
               name="q"
               class="artist-search"
               hx-get="{% url 'artist_search' %}"
-              hx-trigger="keyup changed delay:500ms"
+              hx-trigger="keyup changed delay:200ms"
               hx-target="#artist-results-2"
               oninput="showDropdown(this)" />
             <div id="artist-results-2" class="dropdown-container"></div>
@@ -100,7 +100,7 @@
               name="q"
               class="artist-search"
               hx-get="{% url 'artist_search' %}"
-              hx-trigger="keyup changed delay:500ms"
+              hx-trigger="keyup changed delay:200ms"
               hx-target="#artist-results-3"
               oninput="showDropdown(this)" />
             <div id="artist-results-3" class="dropdown-container"></div>
@@ -114,7 +114,7 @@
               name="q"
               class="artist-search"
               hx-get="{% url 'artist_search' %}"
-              hx-trigger="keyup changed delay:500ms"
+              hx-trigger="keyup changed delay:200ms"
               hx-target="#artist-results-4"
               oninput="showDropdown(this)" />
             <div id="artist-results-4" class="dropdown-container"></div>
@@ -243,7 +243,18 @@
             <img src="${artistImage}" alt="${artistName}" class="artist-image" />
             <div class="artist-info">
               <span class="artist-name">${artistName}</span>
-              <button class="add-instrument-button" onclick="showInstrumentSearch('${artistId}')">Add Instrument</button>
+              <button class="add-instrument-button" onclick="toggleInstrumentInput(this)">Add Instrument</button>
+              <input
+              type="text"
+              placeholder="Add Instrument"
+              name="q"
+              style="display: none"
+              class="instrument-search"
+              hx-get="{% url 'instrument_search' %}"
+              hx-trigger="keyup changed delay:200ms"
+              hx-target="#instrument-results-1"
+              oninput="showDropdownInst(this, ${artistId})" />
+            <div id="artist-results-1" class="dropdown-container"></div>
             </div>
             <input type="hidden" class="artist-id" value="${artistId}" />
           `;
@@ -257,31 +268,100 @@
 
           dropdown.style.display = "none";
           input.style.display = "none";
-
-          if (artists.length == 1) {
-            colour = "#2C3336";
-          } else if (artists.length == 2) {
-            colour = "#6C6B3F";
-          } else if (artists.length == 3) {
-            colour = "#B3763A";
-          }
         }
 
-        addArtist(artistName, artistId, colour);
+        addArtist(artistName, artistId, null);
       });
     }
 
-    function addArtist(name, artistId, colour) {
+    function toggleInstrumentInput(button) {
+      const inputField = button.nextElementSibling;
+
+      button.style.display = "none";
+      inputField.style.display = "block";
+      inputField.focus();
+    }
+
+    function showDropdownInst(input, artistId) {
+      let instrumentId = null;
+      let instrumentItem = null;
+      let instrumentName = null;
+      let instrumentColour = null;
+
+      const dropdownId = input.getAttribute("hx-target");
+      const dropdown = document.querySelector(dropdownId);
+
+      dropdown.style.display = input.value.length >= 3 ? "block" : "none";
+
+      dropdown.addEventListener("click", function (event) {
+        if (event.target && event.target.closest(".dropdown-item")) {
+          instrumentItem = event.target.closest(".dropdown-item");
+          instrumentId = instrumentItem.dataset.id;
+          instrumentName = instrumentItem.dataset.name;
+          instrumentColour = instrumentItem.dataset.colour;
+
+          input.value = instrumentName;
+
+          const instrumentDisplay = document.createElement("div");
+          instrumentDisplay.classList.add("instrument-display");
+          instrumentDisplay.innerHTML = `
+            <div class="instrument-info">
+              <span class="instrument-name">${instrumentName}</span>
+              <div id="instrument-results-1" class="dropdown-container"></div>
+            </div>
+            <input type="hidden" class="instrument-id" value="${instrumentId}" />
+            <input type="hidden" class="instrument-id" value="${instrumentColour}" />
+          `;
+
+          const existingDisplay = input.parentNode.querySelector(
+            ".instrument-display"
+          );
+          if (existingDisplay) {
+            existingDisplay.remove();
+          }
+          input.parentNode.appendChild(instrumentDisplay);
+
+          dropdown.style.display = "none";
+          input.style.display = "none";
+        }
+        const instrument = {
+          instrumentId,
+          instrumentName,
+          instrumentColour,
+        };
+
+        updateArtist(artistId, instrument);
+      });
+    }
+
+    function addArtist(name, artistId, instrument) {
       const index = artists.length;
-      artists.push({ name, artistId, colour });
+      artists.push({ name, artistId });
       addBaseline(index);
       console.log("Artists:", artists);
+    }
+
+    function updateArtist(artistId, instrument) {
+      const artistIndex = artists.findIndex(
+        (artist) => artist.artistId === artistId
+      );
+
+      if (artistIndex !== -1) {
+        artists[artistIndex] = {
+          ...artists[artistIndex],
+          instrument,
+        };
+
+        console.log("Updated Artists:", artists);
+      } else {
+        console.error(`Artist with ID ${artistId} not found.`);
+      }
     }
 
     // Function to create a greyed-out baseline when an artist is selected
     function addBaseline(index) {
       timelineWidth = getTimelineWidth();
-      const baseId = artists[index].artistId;
+
       svg
         .append("line")
         .attr("x1", 5)
@@ -371,18 +451,18 @@
         })
       );
 
-      // Update: Update existing waveform groups
-      waveforms
-        .attr(
-          "transform",
-          (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
-        ) // Update position
-        .select(".segment-line")
-        .attr("x1", (d) => timeScale(d.start)) // Update start position
-        .attr("x2", (d) => timeScale(d.end)); // Update end position
+      // // Update: Update existing waveform groups
+      // waveforms
+      //   .attr(
+      //     "transform",
+      //     (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
+      //   ) // Update position
+      //   .select(".segment-line")
+      //   .attr("x1", (d) => timeScale(d.start)) // Update start position
+      //   .attr("x2", (d) => timeScale(d.end)); // Update end position
 
-      waveforms.select(".start-handle").attr("cx", (d) => timeScale(d.start)); // Update start handle
-      waveforms.select(".end-handle").attr("cx", (d) => timeScale(d.end)); // Update end handle
+      // waveforms.select(".start-handle").attr("cx", (d) => timeScale(d.start)); // Update start handle
+      // waveforms.select(".end-handle").attr("cx", (d) => timeScale(d.end)); // Update end handle
 
       // Exit: Remove waveform groups that are no longer in the data
       waveforms.exit().remove();

@@ -198,6 +198,23 @@
   color: #818691;
 }
 
+.instrument-name {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ebded1;
+}
+
+.instrument-search {
+  margin-top: -8px;
+  color: #9da3ae;
+  cursor: text;
+  font-weight: 500;
+}
+
+.instrument-search:hover {
+  color: #818691;
+}
+
 svg#timeline {
   flex-grow: 1;
   margin-right: 44px;
