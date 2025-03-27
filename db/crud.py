@@ -65,13 +65,12 @@ def create_artist(db, sp_artist_id: str, name: str, cover: str):
     db.refresh(artist)
     return artist
 
-<<<<<<< HEAD
 def create_instrument(db, name, colour):
     new_instrument = Instrument(name=name, colour=colour)
     db.add(new_instrument)
     db.commit()  # Commit the transaction to save the instrument in the database
     return new_instrument
-=======
+
 def get_artist(db, artist_id: int):
     return db.query(Artist).filter(Artist.artist_id == artist_id).first()
 
@@ -90,7 +89,6 @@ def create_album(db, sp_album_id: str, name: str, artist_id: int, cover: str):
     db.commit()
     db.refresh(album)
     return album
->>>>>>> origin/Everett
 
 def get_album(db, album_id: int):
     return db.query(Album).filter(Album.album_id == album_id).first()
