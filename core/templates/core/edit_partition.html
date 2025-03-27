@@ -134,7 +134,6 @@
     const svg = d3.select("#timeline");
     const songDuration = window.trackLength;
 
-    let counter = 0;
     let artists = [];
     let segments = [];
     let ySpacing = 80;
@@ -183,7 +182,7 @@
           .attr("x1", timeScale(pendingStart))
           .attr("x2", timeScale(currentEnd))
           .attr("y1", artistIndex * ySpacing + 40)
-          .attr("y1", artistIndex * ySpacing + 40)
+          .attr("y2", artistIndex * ySpacing + 40)
           .attr("stroke", "#212121")
           .attr("stroke-width", 10)
           .attr("stroke-linecap", "round");
@@ -221,10 +220,10 @@
     });
 
     function showDropdown(input) {
-      const artistId = null;
-      const artistItem = null;
-      const artistName = null;
-      const artistImage = null;
+      let artistId = null;
+      let artistItem = null;
+      let artistName = null;
+      let artistImage = null;
 
       const dropdownId = input.getAttribute("hx-target");
       const dropdown = document.querySelector(dropdownId);
@@ -233,10 +232,10 @@
 
       dropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
-          const artistItem = event.target.closest(".dropdown-item");
-          const artistName = artistItem.dataset.name;
-          const artistImage = artistItem.querySelector("img").src;
-          const artistId = artistItem.dataset.id;
+          artistItem = event.target.closest(".dropdown-item");
+          artistName = artistItem.dataset.name;
+          artistImage = artistItem.querySelector("img").src;
+          artistId = artistItem.dataset.id;
 
           input.value = artistName;
 
@@ -261,17 +260,16 @@
           dropdown.style.display = "none";
           input.style.display = "none";
 
-          if (counter == 1) {
+          if (artists.length == 1) {
             colour = "#2C3336";
-          } else if (counter == 2) {
+          } else if (artists.length == 2) {
             colour = "#6C6B3F";
-          } else if (counter == 3) {
+          } else if (artists.length == 3) {
             colour = "#B3763A";
           }
         }
 
         addArtist(artistName, artistId, colour);
-        counter += 1;
       });
     }
 
@@ -289,8 +287,8 @@
       const baseId = artists[index].artistId;
       svg
         .append("line")
-        .attr("x1", 0)
-        .attr("x2", timelineWidth)
+        .attr("x1", 5)
+        .attr("x2", timelineWidth - 5)
         .attr("y1", index * ySpacing + 40)
         .attr("y2", index * ySpacing + 40)
         .attr("stroke", "#ccc")
@@ -315,8 +313,8 @@
       newWaveforms
         .append("line")
         .attr("class", "segment-line")
-        .attr("x1", (d) => timeScale(d.start)) // Convert time to pixels
-        .attr("x2", (d) => timeScale(d.end))
+        .attr("x1", (d) => timeScale(d.start) + 5) // Convert time to pixels
+        .attr("x2", (d) => timeScale(d.end) - 5)
         .attr("y1", 0)
         .attr("y2", 0)
         .attr("stroke", colour)
