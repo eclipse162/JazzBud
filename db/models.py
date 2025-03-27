@@ -119,7 +119,7 @@ class Instrument(Base):
 
     instrument_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False, unique=True, index=True)
-    colour = Column(String(255), nullable=False, unique=True, index=True)
+    colour = Column(String(255), nullable=False, index=True)
 
 class Section(Base):
     __tablename__ = 'sections'
