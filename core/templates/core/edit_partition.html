@@ -362,6 +362,8 @@
     function addBaseline(index) {
       timelineWidth = getTimelineWidth();
 
+      colour = artists[index].colour;
+
       svg
         .append("line")
         .attr("x1", 5)

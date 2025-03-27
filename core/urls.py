@@ -14,6 +14,7 @@ urlpatterns = [
     path('track/<str:artist_name>/<str:track_title>/<str:track_id>', views.track_page, name='track_page'),
 
     path('artist_search/', views.artist_search, name='artist_search'),
+    path('instrument_search/', views.instrument_search, name='instrument_search'),
     path('save_artist_selection/', views.save_artist_selection, name='save_artist_selection'),
     
     path("transfer-playback/<str:device_id>/", views.transfer_playback, name="transfer_playback"),
