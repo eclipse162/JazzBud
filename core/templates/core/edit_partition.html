@@ -152,24 +152,23 @@
     svg.on("mousedown", function (event) {
       const [mouseX, mouseY] = d3.pointer(event);
 
-      const artistIndex = Math.floor((mouseY - 40) / ySpacing);
+      const artistIndex = Math.floor((mouseY - 30) / ySpacing);
 
-      // Validate the artist index
       if (artistIndex < 0 || artistIndex >= artists.length) {
         console.log("Invalid artist index:", artistIndex);
-        return; // Exit if the artist index is invalid
+        return;
       }
 
-      const currentArtist = artists[artistIndex]; // Get the artist object
+      const currentArtist = artists[artistIndex];
       if (!currentArtist) {
         console.log("No artist found for this position.");
-        return; // Exit if no artist is found
+        return;
       }
 
-      const currentArtistId = currentArtist.artistId; // Get the artistId
+      const currentArtistId = currentArtist.artistId;
       console.log("Current Artist ID:", currentArtistId);
 
-      pendingStart = timeScale.invert(mouseX); // Store the start time
+      pendingStart = timeScale.invert(mouseX);
 
       svg.on("mousemove", function (event) {
         const [currentX] = d3.pointer(event);
@@ -181,8 +180,8 @@
           .attr("class", "temp-segment")
           .attr("x1", timeScale(pendingStart))
           .attr("x2", timeScale(currentEnd))
-          .attr("y1", artistIndex * ySpacing + 40)
-          .attr("y2", artistIndex * ySpacing + 40)
+          .attr("y1", artistIndex * ySpacing + 30)
+          .attr("y2", artistIndex * ySpacing + 30)
           .attr("stroke", "#212121")
           .attr("stroke-width", 10)
           .attr("stroke-linecap", "round");
@@ -197,12 +196,11 @@
           segments.push({
             start: Math.max(0, pendingStart),
             end: Math.min(songDuration, endTime),
-            artistId: currentArtistId, // Ensure the segment is associated with the correct artist
+            artistId: currentArtistId,
           });
-          updateWaveforms();
+          updateWaveforms(artistIndex);
         }
 
-        // Clear temporary segment and reset listeners
         svg.selectAll(".temp-segment").remove();
         pendingStart = null;
         svg.on("mousemove", null).on("mouseup", null);
@@ -274,11 +272,10 @@
     }
 
     function addArtist(name, artistId, colour) {
-      if (!artists.some((a) => a.artistId === artistId)) {
-        const index = artists.length;
-        artists.push({ name, artistId, colour });
-        addBaseline(index);
-      }
+      const index = artists.length;
+      artists.push({ name, artistId, colour });
+      addBaseline(index);
+      console.log("Artists:", artists);
     }
 
     // Function to create a greyed-out baseline when an artist is selected
@@ -289,15 +286,17 @@
         .append("line")
         .attr("x1", 5)
         .attr("x2", timelineWidth - 5)
-        .attr("y1", index * ySpacing + 40)
-        .attr("y2", index * ySpacing + 40)
+        .attr("y1", index * ySpacing + 30)
+        .attr("y2", index * ySpacing + 30)
         .attr("stroke", "#ccc")
         .attr("stroke-width", 12)
         .attr("stroke-linecap", "round");
     }
 
     // Function to update and redraw all segments
-    function updateWaveforms() {
+    function updateWaveforms(artistIndex) {
+      colour = artists[artistIndex].colour;
+
       const waveforms = svg
         .selectAll(".waveform-group")
         .data(segments, (d, i) => i);
@@ -307,7 +306,10 @@
         .enter()
         .append("g")
         .attr("class", "waveform-group")
-        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 40})`); // Position each waveform group
+        .attr(
+          "transform",
+          (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
+        ); // Position each waveform group
 
       // Add the main line (segment)
       newWaveforms
@@ -371,7 +373,10 @@
 
       // Update: Update existing waveform groups
       waveforms
-        .attr("transform", (d, i) => `translate(0, ${i * ySpacing + 40})`) // Update position
+        .attr(
+          "transform",
+          (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
+        ) // Update position
         .select(".segment-line")
         .attr("x1", (d) => timeScale(d.start)) // Update start position
         .attr("x2", (d) => timeScale(d.end)); // Update end position

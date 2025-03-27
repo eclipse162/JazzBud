@@ -33,6 +33,8 @@ def login(request):
     return render(request, 'core/login.html')
 
 def search(request):
+    add_instruments()
+
     if request.method == "POST":
         query = request.POST['query']
         session_id = request.session.session_key

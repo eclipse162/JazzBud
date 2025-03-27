@@ -41,10 +41,10 @@ def create_segment(db, collection_id, user_id,start_time, end_time, segment_name
     db.commit()
     return new_segment
 
-def create_instrument(db, name):
-    new_instrument = Instrument(name=name)
+def create_instrument(db, name, colour):
+    new_instrument = Instrument(name=name, colour=colour)
     db.add(new_instrument)
-    db.commit()
+    db.commit()  # Commit the transaction to save the instrument in the database
     return new_instrument
 
 

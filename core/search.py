@@ -1,7 +1,9 @@
 import re, os
+import json
 import spotipy
 import requests
 from db.database import get_db
+from db.crud import create_instrument
 from requests import request, get
 from spotify.views import refresh_user
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -14,6 +16,15 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+
+def add_instruments():
+    with open('core/instruments.json', 'r') as f:
+        instruments = json.load(f)
+
+    with get_db() as db:
+        for name, colour in instruments.items():
+            create_instrument(db, name, colour)
+            print(f"Added {name} to the database")
 
 def handle_tracks(tracks):
     lo_tracks = []
