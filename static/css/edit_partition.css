@@ -209,6 +209,7 @@
   color: #9da3ae;
   cursor: text;
   font-weight: 500;
+  background: transparent;
 }
 
 .instrument-search:hover {

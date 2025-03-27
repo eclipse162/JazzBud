@@ -138,7 +138,8 @@ def instrument_search(request):
                 }
             ]
 
-    return JsonResponse({"Instruments": instrument_results})
+    print("Instruments: ", instrument_results)
+    return render(request, 'partials/results_i.html', {'instruments': instrument_results})
 
 
 def save_artist_selection(request):
