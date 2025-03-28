@@ -252,7 +252,6 @@
             type="text"
             placeholder="Add Instrument"
             name="q"
-            style="display: none"
             class="instrument-search"
             hx-get="{% url 'instrument_search' %}"
             hx-trigger="keyup changed delay:200ms"
@@ -274,7 +273,6 @@
           dropdown.style.display = "none";
           newDropdown.style.display = "none";
 
-          // Call addArtist only when an artist is selected
           addArtist(artistName, artistId, null);
         }
       });
@@ -409,7 +407,7 @@
       newWaveforms
         .append("line")
         .attr("class", "segment-line")
-        .attr("x1", (d) => timeScale(d.start) + 5) // Convert time to pixels
+        .attr("x1", (d) => timeScale(d.start) + 5)
         .attr("x2", (d) => timeScale(d.end) - 5)
         .attr("y1", 0)
         .attr("y2", 0)
@@ -421,7 +419,7 @@
       newWaveforms
         .append("circle")
         .attr("class", "resize-handle start-handle")
-        .attr("cx", (d) => timeScale(d.start)) // Position at the start of the segment
+        .attr("cx", (d) => timeScale(d.start))
         .attr("cy", 0)
         .attr("r", 6)
         .attr("fill", "#fff")
@@ -429,10 +427,9 @@
         .attr("stroke-width", 2)
         .call(
           d3.drag().on("drag", (event, d) => {
-            // Update the start time of the segment
             const newStart = timeScale.invert(event.x);
-            d.start = Math.min(d.end - 0.5, newStart); // Ensure start < end
-            updateWaveforms(); // Redraw the waveforms
+            d.start = Math.min(d.end - 0.5, newStart);
+            updateWaveforms();
           })
         );
 
@@ -457,26 +454,25 @@
       // Add drag behavior to move the entire segment
       newWaveforms.call(
         d3.drag().on("drag", (event, d) => {
-          // Calculate the time delta based on the drag distance
           const delta = timeScale.invert(event.dx) - timeScale(0);
           d.start += delta;
           d.end += delta;
-          updateWaveforms(); // Redraw the waveforms
+          updateWaveforms();
         })
       );
 
-      // // Update: Update existing waveform groups
-      // waveforms
-      //   .attr(
-      //     "transform",
-      //     (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
-      //   ) // Update position
-      //   .select(".segment-line")
-      //   .attr("x1", (d) => timeScale(d.start)) // Update start position
-      //   .attr("x2", (d) => timeScale(d.end)); // Update end position
+      // Update: Update existing waveform groups
+      waveforms
+        .attr(
+          "transform",
+          (d, i) => `translate(0, ${artistIndex * ySpacing + 30})`
+        ) // Update position
+        .select(".segment-line")
+        .attr("x1", (d) => timeScale(d.start)) // Update start position
+        .attr("x2", (d) => timeScale(d.end)); // Update end position
 
-      // waveforms.select(".start-handle").attr("cx", (d) => timeScale(d.start)); // Update start handle
-      // waveforms.select(".end-handle").attr("cx", (d) => timeScale(d.end)); // Update end handle
+      waveforms.select(".start-handle").attr("cx", (d) => timeScale(d.start)); // Update start handle
+      waveforms.select(".end-handle").attr("cx", (d) => timeScale(d.end)); // Update end handle
 
       // Exit: Remove waveform groups that are no longer in the data
       waveforms.exit().remove();
