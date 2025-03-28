@@ -253,8 +253,8 @@
             class="instrument-search"
             hx-get="{% url 'instrument_search' %}"
             hx-trigger="keyup changed delay:200ms"
-            hx-target="#instrument-results-${artistId}"
-            oninput="handleInstrumentInput(this, ${artistId})"
+            hx-target="#instrument-results-{{ artistId }}"  <!-- Fix: Use Django syntax -->
+            oninput="handleInstrumentInput(this, '{{ artistId }}')"  <!-- Fix: Use Django syntax -->
           />
           <div id="#instrument-results-${artistId}" class="dropdown-container-i"></div>
         </div>
