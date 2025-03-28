@@ -228,8 +228,11 @@
 
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      // Add a single click event listener to the dropdown
-      dropdown.addEventListener("click", function (event) {
+      // Remove any existing click event listeners to avoid duplicates
+      const newDropdown = dropdown.cloneNode(true);
+      dropdown.parentNode.replaceChild(newDropdown, dropdown);
+
+      newDropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
           artistItem = event.target.closest(".dropdown-item");
           artistName = artistItem.dataset.name;
@@ -267,8 +270,9 @@
           }
           input.parentNode.appendChild(artistDisplay);
 
-          dropdown.style.display = "none";
           input.style.display = "none";
+          dropdown.style.display = "none";
+          newDropdown.style.display = "none";
 
           // Call addArtist only when an artist is selected
           addArtist(artistName, artistId, null);
@@ -313,7 +317,7 @@
           instrumentDisplay.innerHTML = `
         <div class="instrument-info">
           <span class="instrument-name">${instrumentName}</span>
-          <div id="instrument-results-1" class="dropdown-container-i"></div>
+          <div id="instrument-results" class="dropdown-container-i"></div>
         </div>
         <input type="hidden" class="instrument-id" value="${instrumentId}" />
         <input type="hidden" class="instrument-colour" value="${instrumentColour}" />
@@ -327,8 +331,9 @@
           }
           input.parentNode.appendChild(instrumentDisplay);
 
-          dropdown.style.display = "none";
           input.style.display = "none";
+          dropdown.style.display = "none";
+          newDropdown.style.display = "none";
 
           // Call updateArtist only when an instrument is selected
           const instrument = {
