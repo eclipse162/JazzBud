@@ -469,10 +469,12 @@
       waveforms.exit().remove();
     }
 
-    setTimeout(() => {
-      console.log("Reprocessing HTMX...");
-      htmx.process(document.body);
-    }, 500);
+    document.body.addEventListener("htmx:afterSwap", function () {
+      setTimeout(() => {
+        console.log("Reprocessing HTMX...");
+        htmx.process(document.body);
+      }, 500);
+    });
   </script>
 </body>
 {% endblock %}
