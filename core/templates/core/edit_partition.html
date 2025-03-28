@@ -250,13 +250,15 @@
           <input
             type="text"
             placeholder="Add Instrument"
-            name="q"
             class="instrument-search"
-            <p>{% url 'instrument_search' %}</p>
             hx-get="{% url 'instrument_search' %}"
             hx-trigger="keyup changed delay:200ms"
-            hx-target="#instrument-results"
-            oninput="showDropdownInst(this, ${artistId})" />
+            hx-target="#instrument-results-{{ artistId }}"
+            hx-indicator=".htmx-indicator"
+            hx-on::before-request="console.log('HTMX is making a request!')"
+            hx-on::after-request="console.log('HTMX request finished!')"
+            oninput="console.log('Input event triggered for artist', {{ artistId }}); showDropdownInst(this, {{ artistId }})"
+            />
           <div id="instrument-results" class="dropdown-container-i"></div>
         </div>
         <input type="hidden" class="artist-id" value="${artistId}" />
@@ -274,6 +276,8 @@
           newDropdown.style.display = "none";
 
           addArtist(artistName, artistId, null);
+
+          console.log(document.querySelector("#instrument-results"));
 
           document.body.addEventListener("htmx:configRequest", (event) => {
             console.log("HTMX Request Config:", event.detail);
