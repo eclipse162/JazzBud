@@ -252,9 +252,9 @@
               class="instrument-search"
               hx-get="{% url 'instrument_search' %}"
               hx-trigger="keyup changed delay:200ms"
-              hx-target="#instrument-results-1"
+              hx-target="#instrument-results"
               oninput="showDropdownInst(this, ${artistId})" />
-            <div id="artist-results-1" class="dropdown-container"></div>
+            <div id="instrument-results" class="dropdown-container"></div>
             </div>
             <input type="hidden" class="artist-id" value="${artistId}" />
           `;
@@ -269,9 +269,8 @@
           dropdown.style.display = "none";
           input.style.display = "none";
         }
-
-        addArtist(artistName, artistId, null);
       });
+      addArtist(artistName, artistId, null);
     }
 
     function toggleInstrumentInput(button) {
@@ -294,8 +293,8 @@
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
       dropdown.addEventListener("click", function (event) {
-        if (event.target && event.target.closest(".dropdown-item")) {
-          instrumentItem = event.target.closest(".dropdown-item");
+        if (event.target && event.target.closest(".dropdown-item-i")) {
+          instrumentItem = event.target.closest(".dropdown-item-i");
           instrumentId = instrumentItem.dataset.id;
           instrumentName = instrumentItem.dataset.name;
           instrumentColour = instrumentItem.dataset.colour;
@@ -329,9 +328,8 @@
           instrumentName,
           instrumentColour,
         };
-
-        updateArtist(artistId, instrument);
       });
+      updateArtist(artistId, instrument);
     }
 
     function addArtist(name, artistId, instrument) {

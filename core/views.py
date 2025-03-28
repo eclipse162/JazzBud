@@ -36,7 +36,6 @@ def search(request):
     if request.method == "POST":
         query = request.POST['query']
         session_id = request.session.session_key
-        print(f"Session ID: {session_id}")
 
         if session_id is None:
             return redirect('login')
@@ -83,7 +82,6 @@ def artist_search(request):
     query = request.GET.get('q')
     print(f"Query: {query}")
     session_id = request.session.session_key
-    print(f"Session ID: {session_id}")
 
     if session_id is None:
         return redirect('login')
@@ -115,6 +113,7 @@ def artist_search(request):
 
 def instrument_search(request):
     query = request.GET.get('q', '').strip()
+    print(f"Query: {query}")
     instrument_results = []
     
     session_id = request.session.session_key
@@ -280,7 +279,6 @@ def playback(request, track_uri, action, position_ms=None):
     sp = spotipy.Spotify(auth=token.access_token)
     devices = sp.devices()
 
-    print(track_uri)
     
     for device in devices['devices']:
         if device['name'] == 'JBud Player':

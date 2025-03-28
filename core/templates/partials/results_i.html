@@ -19,11 +19,11 @@
 <ul>
   {% for instrument in instruments %}
   <li
-    class="dropdown-item"
+    class="dropdown-item-i"
     data-name="{{ instrument.name }}"
     data-id="{{ instrument.instrument_id }}"
     data-colour="{{ instrument.instrument_id }}">
-    {{ instruments.name }}
+    {{ instrument.name }}
   </li>
   {% endfor %}
 </ul>
