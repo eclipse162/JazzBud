@@ -21,7 +21,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
-<main class="track-page">
+<body class="track-page">
   <div class="album-header">
     <div class="album-content">
       <div class="album-cover-container">
@@ -248,16 +248,13 @@
         <div class="artist-info">
           <span class="artist-name">${artistName}</span>
           <input
-            type="text"
-            placeholder="Add Instrument"
-            class="instrument-search"
-            hx-get="{% url 'instrument_search' %}"
-            hx-trigger="keyup changed delay:200ms"
-            hx-target="#instrument-results-${artistId}"
-            hx-indicator=".htmx-indicator"
-            hx-on::before-request="console.log('HTMX is making a request!')"
-            hx-on::after-request="console.log('HTMX request finished!')"
-            oninput="console.log('Input event triggered for artist', ${artistId}); showDropdownInst(this, ${artistId})"
+              type="text"
+              placeholder="Add Instrument"
+              class="instrument-search"
+              hx-get="{% url 'instrument_search' %}"
+              hx-trigger="keyup changed delay:200ms"
+              hx-target="#instrument-results-${artistId}"
+              oninput="showDropdownInst(this, ${artistId})"
             />
           <div id="#instrument-results-${artistId}" class="dropdown-container-i"></div>
         </div>
@@ -276,26 +273,6 @@
           newDropdown.style.display = "none";
 
           addArtist(artistName, artistId, null);
-
-          console.log(
-            document.querySelector("#instrument-results-{{ artistId }}")
-          );
-
-          document.body.addEventListener("htmx:configRequest", (event) => {
-            console.log("HTMX Request Config:", event.detail);
-          });
-
-          document.body.addEventListener("htmx:beforeRequest", (event) => {
-            console.log("HTMX Before Request:", event.detail);
-          });
-
-          document.body.addEventListener("htmx:afterRequest", (event) => {
-            console.log("HTMX After Request:", event.detail);
-          });
-
-          document.body.addEventListener("htmx:responseError", (event) => {
-            console.error("HTMX Response Error:", event.detail);
-          });
         }
       });
     }
@@ -491,6 +468,11 @@
       // Exit: Remove waveform groups that are no longer in the data
       waveforms.exit().remove();
     }
+
+    setTimeout(() => {
+      console.log("Reprocessing HTMX...");
+      htmx.process(document.body);
+    }, 500);
   </script>
-</main>
+</body>
 {% endblock %}
