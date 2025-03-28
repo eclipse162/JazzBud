@@ -254,7 +254,7 @@
               hx-trigger="keyup changed delay:200ms"
               hx-target="#instrument-results"
               oninput="showDropdownInst(this, ${artistId})" />
-            <div id="instrument-results" class="dropdown-container"></div>
+            <div id="instrument-results" class="dropdown-container-i"></div>
             </div>
             <input type="hidden" class="artist-id" value="${artistId}" />
           `;
@@ -306,7 +306,7 @@
           instrumentDisplay.innerHTML = `
             <div class="instrument-info">
               <span class="instrument-name">${instrumentName}</span>
-              <div id="instrument-results-1" class="dropdown-container"></div>
+              <div id="instrument-results-1" class="dropdown-container-i"></div>
             </div>
             <input type="hidden" class="instrument-id" value="${instrumentId}" />
             <input type="hidden" class="instrument-id" value="${instrumentColour}" />
