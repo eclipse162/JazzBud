@@ -252,6 +252,7 @@
             placeholder="Add Instrument"
             name="q"
             class="instrument-search"
+            <p>{% url 'instrument_search' %}</p>
             hx-get="{% url 'instrument_search' %}"
             hx-trigger="keyup changed delay:200ms"
             hx-target="#instrument-results"
@@ -273,6 +274,22 @@
           newDropdown.style.display = "none";
 
           addArtist(artistName, artistId, null);
+
+          document.body.addEventListener("htmx:configRequest", (event) => {
+            console.log("HTMX Request Config:", event.detail);
+          });
+
+          document.body.addEventListener("htmx:beforeRequest", (event) => {
+            console.log("HTMX Before Request:", event.detail);
+          });
+
+          document.body.addEventListener("htmx:afterRequest", (event) => {
+            console.log("HTMX After Request:", event.detail);
+          });
+
+          document.body.addEventListener("htmx:responseError", (event) => {
+            console.error("HTMX Response Error:", event.detail);
+          });
         }
       });
     }

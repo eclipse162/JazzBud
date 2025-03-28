@@ -129,13 +129,13 @@ def instrument_search(request):
         instruments = db.query(Instrument).filter(Instrument.name.ilike(f"%{query}%")).all()
 
         for instrument in instruments:
-            instrument_results = [
+            instrument_results.append(
                 {
                     "id": instrument.instrument_id,
                     "name": instrument.name,
                     "colour": instrument.colour
                 }
-            ]
+            )
 
     print("Instruments: ", instrument_results)
     return render(request, 'partials/results_i.html', {'instruments': instrument_results})
