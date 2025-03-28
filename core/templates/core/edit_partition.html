@@ -228,11 +228,8 @@
 
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      // Remove any existing click event listeners to avoid duplicates
-      const newDropdown = dropdown.cloneNode(true);
-      dropdown.parentNode.replaceChild(newDropdown, dropdown);
-
-      newDropdown.addEventListener("click", function (event) {
+      // Add a single click event listener to the dropdown
+      dropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
           artistItem = event.target.closest(".dropdown-item");
           artistName = artistItem.dataset.name;
