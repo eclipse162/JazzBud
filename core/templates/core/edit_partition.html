@@ -259,7 +259,7 @@
             hx-on::after-request="console.log('HTMX request finished!')"
             oninput="console.log('Input event triggered for artist', {{ artistId }}); showDropdownInst(this, {{ artistId }})"
             />
-          <div id="instrument-results" class="dropdown-container-i"></div>
+          <div id="#instrument-results-{{ artistId }}" class="dropdown-container-i"></div>
         </div>
         <input type="hidden" class="artist-id" value="${artistId}" />
       `;
@@ -277,7 +277,9 @@
 
           addArtist(artistName, artistId, null);
 
-          console.log(document.querySelector("#instrument-results"));
+          console.log(
+            document.querySelector("#instrument-results-{{ artistId }}")
+          );
 
           document.body.addEventListener("htmx:configRequest", (event) => {
             console.log("HTMX Request Config:", event.detail);
