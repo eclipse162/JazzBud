@@ -138,7 +138,7 @@ def instrument_search(request):
             ]
 
     print("Instruments: ", instrument_results)
-    return render(request, 'partials/results_i.html', {'instruments': instrument_results})
+    return render(request, 'core/templates/partials/results.html', {'instruments': instrument_results})
 
 
 def save_artist_selection(request):

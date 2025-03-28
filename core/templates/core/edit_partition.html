@@ -247,7 +247,6 @@
         <img src="${artistImage}" alt="${artistName}" class="artist-image" />
         <div class="artist-info">
           <span class="artist-name">${artistName}</span>
-          <button class="add-instrument-button" onclick="toggleInstrumentInput(this)">Add Instrument</button>
           <input
             type="text"
             placeholder="Add Instrument"
@@ -276,14 +275,6 @@
           addArtist(artistName, artistId, null);
         }
       });
-    }
-
-    function toggleInstrumentInput(button) {
-      const inputField = button.nextElementSibling;
-
-      button.style.display = "none";
-      inputField.style.display = "block";
-      inputField.focus();
     }
 
     function showDropdownInst(input, artistId) {
