@@ -228,7 +228,11 @@
 
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      dropdown.addEventListener("click", function (event) {
+      // Remove any existing click event listeners to avoid duplicates
+      const newDropdown = dropdown.cloneNode(true);
+      dropdown.parentNode.replaceChild(newDropdown, dropdown);
+
+      newDropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item")) {
           artistItem = event.target.closest(".dropdown-item");
           artistName = artistItem.dataset.name;
@@ -240,24 +244,24 @@
           const artistDisplay = document.createElement("div");
           artistDisplay.classList.add("artist-display");
           artistDisplay.innerHTML = `
-            <img src="${artistImage}" alt="${artistName}" class="artist-image" />
-            <div class="artist-info">
-              <span class="artist-name">${artistName}</span>
-              <button class="add-instrument-button" onclick="toggleInstrumentInput(this)">Add Instrument</button>
-              <input
-              type="text"
-              placeholder="Add Instrument"
-              name="q"
-              style="display: none"
-              class="instrument-search"
-              hx-get="{% url 'instrument_search' %}"
-              hx-trigger="keyup changed delay:200ms"
-              hx-target="#instrument-results"
-              oninput="showDropdownInst(this, ${artistId})" />
-            <div id="instrument-results" class="dropdown-container-i"></div>
-            </div>
-            <input type="hidden" class="artist-id" value="${artistId}" />
-          `;
+        <img src="${artistImage}" alt="${artistName}" class="artist-image" />
+        <div class="artist-info">
+          <span class="artist-name">${artistName}</span>
+          <button class="add-instrument-button" onclick="toggleInstrumentInput(this)">Add Instrument</button>
+          <input
+            type="text"
+            placeholder="Add Instrument"
+            name="q"
+            style="display: none"
+            class="instrument-search"
+            hx-get="{% url 'instrument_search' %}"
+            hx-trigger="keyup changed delay:200ms"
+            hx-target="#instrument-results"
+            oninput="showDropdownInst(this, ${artistId})" />
+          <div id="instrument-results" class="dropdown-container-i"></div>
+        </div>
+        <input type="hidden" class="artist-id" value="${artistId}" />
+      `;
 
           const existingDisplay =
             input.parentNode.querySelector(".artist-display");
@@ -268,9 +272,11 @@
 
           dropdown.style.display = "none";
           input.style.display = "none";
+
+          // Call addArtist only when an artist is selected
+          addArtist(artistName, artistId, null);
         }
       });
-      addArtist(artistName, artistId, null);
     }
 
     function toggleInstrumentInput(button) {
@@ -292,7 +298,11 @@
 
       dropdown.style.display = input.value.length >= 3 ? "block" : "none";
 
-      dropdown.addEventListener("click", function (event) {
+      // Remove any existing click event listeners to avoid duplicates
+      const newDropdown = dropdown.cloneNode(true);
+      dropdown.parentNode.replaceChild(newDropdown, dropdown);
+
+      newDropdown.addEventListener("click", function (event) {
         if (event.target && event.target.closest(".dropdown-item-i")) {
           instrumentItem = event.target.closest(".dropdown-item-i");
           instrumentId = instrumentItem.dataset.id;
@@ -304,13 +314,13 @@
           const instrumentDisplay = document.createElement("div");
           instrumentDisplay.classList.add("instrument-display");
           instrumentDisplay.innerHTML = `
-            <div class="instrument-info">
-              <span class="instrument-name">${instrumentName}</span>
-              <div id="instrument-results-1" class="dropdown-container-i"></div>
-            </div>
-            <input type="hidden" class="instrument-id" value="${instrumentId}" />
-            <input type="hidden" class="instrument-id" value="${instrumentColour}" />
-          `;
+        <div class="instrument-info">
+          <span class="instrument-name">${instrumentName}</span>
+          <div id="instrument-results-1" class="dropdown-container-i"></div>
+        </div>
+        <input type="hidden" class="instrument-id" value="${instrumentId}" />
+        <input type="hidden" class="instrument-colour" value="${instrumentColour}" />
+      `;
 
           const existingDisplay = input.parentNode.querySelector(
             ".instrument-display"
@@ -322,14 +332,16 @@
 
           dropdown.style.display = "none";
           input.style.display = "none";
+
+          // Call updateArtist only when an instrument is selected
+          const instrument = {
+            instrumentId,
+            instrumentName,
+            instrumentColour,
+          };
+          updateArtist(artistId, instrument);
         }
-        const instrument = {
-          instrumentId,
-          instrumentName,
-          instrumentColour,
-        };
       });
-      updateArtist(artistId, instrument);
     }
 
     function addArtist(name, artistId, instrument) {
