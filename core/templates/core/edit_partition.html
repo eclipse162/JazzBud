@@ -248,14 +248,14 @@
         <div class="artist-info">
           <span class="artist-name">${artistName}</span>
           <input
-              type="text"
-              placeholder="Add Instrument"
-              class="instrument-search"
-              hx-get="{% url 'instrument_search' %}"
-              hx-trigger="keyup changed delay:200ms"
-              hx-target="#instrument-results-${artistId}"
-              oninput="showDropdownInst(this, ${artistId})"
-            />
+            type="text"
+            placeholder="Add Instrument"
+            class="instrument-search"
+            hx-get="{% url 'instrument_search' %}"
+            hx-trigger="keyup changed delay:200ms"
+            hx-target="#instrument-results-${artistId}"
+            oninput="handleInstrumentInput(this, ${artistId})"
+          />
           <div id="#instrument-results-${artistId}" class="dropdown-container-i"></div>
         </div>
         <input type="hidden" class="artist-id" value="${artistId}" />
@@ -275,6 +275,18 @@
           addArtist(artistName, artistId, null);
         }
       });
+    }
+
+    function forceHTMXRequest(inputElement) {
+      console.log("Forcing HTMX request...");
+      htmx.ajax("GET", inputElement.getAttribute("hx-get"), {
+        target: inputElement.getAttribute("hx-target"),
+      });
+    }
+
+    function handleInstrumentInput(inputElement, artistId) {
+      showDropdownInst(inputElement, artistId);
+      forceHTMXRequest(inputElement);
     }
 
     function showDropdownInst(input, artistId) {
@@ -468,13 +480,6 @@
       // Exit: Remove waveform groups that are no longer in the data
       waveforms.exit().remove();
     }
-
-    document.body.addEventListener("htmx:afterSwap", function () {
-      setTimeout(() => {
-        console.log("Reprocessing HTMX...");
-        htmx.process(document.body);
-      }, 500);
-    });
   </script>
 </body>
 {% endblock %}
