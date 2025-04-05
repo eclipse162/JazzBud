@@ -23,34 +23,45 @@ CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 
-def home(request):
-    return render(request, 'core/index.html')
+class home(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({"message": "Welcome to JazzBud!"})
     
-def about(request):
-    return render(request, 'core/about.html')
+class about(APIView):
+    permission_classes = [AllowAny]
 
-def login(request):
-    return render(request, 'core/login.html')
+    def get(self, request):
+        return Response({"message": "About JazzBud"})
+    
+class login(APIView):
+    permission_classes = [AllowAny]
 
-def search(request):
-    if request.method == "POST":
-        query = request.POST['query']
+    def get(self, request):
+        return Response({"message": "Login to JazzBud"})
+
+class search(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        query = request.GET.get('query', '')
         session_id = request.session.session_key
 
         if session_id is None:
-            return redirect('login')
+            return JsonResponse ({"error": "Not authenticated"}, status=401)
         
         with get_db() as db:
             user = get_session_user(db, session_id)
             if user is None or not refresh_user(db, session_id):
-                return redirect('login')
+                return JsonResponse({"error": "Not authenticated"}, status=401)
             authenticate_user(request.session, user.user_id)
 
             user_id = user.user_id
             token = get_token(db, user_id)
             if token is None:
-                return redirect('login')
-        
+                return JsonResponse({"error": "Not authenticated"}, status=401)
+
         sp = spotipy.Spotify(auth=token.access_token)
         response = sp.search(q=query, type='track,artist,album', limit=5)
 
@@ -69,14 +80,12 @@ def search(request):
         artists = ar_data.get('items', [])
         lo_artists = handle_artists(artists)
 
-        return render(request, 'core/search.html', {
+        return JsonResponse({
             'query': query,
             'tracks': lo_tracks,
             'albums': lo_albums,
             'artists': lo_artists
         })
-    else:
-        return render(request, 'core/search.html', {})
     
 def artist_search(request):
     query = request.GET.get('q')
