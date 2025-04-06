@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/base.css";
 import { isSpotifyAuthenticated, authenticateSpotify } from "../api";
+import Navigation from "../components/navigation";
 
 const Login = () => {
   const handleSpotifyLogin = async (event) => {
@@ -21,9 +22,6 @@ const Login = () => {
 
   return (
     <div>
-      <div className="header">
-        <h1 id="jazzbud_title">JazzBud</h1>
-      </div>
       <div className="bg_img flex">
         <div className="taglines">
           <h1 id="jazzbud_tagline">
@@ -37,10 +35,7 @@ const Login = () => {
             Ready to get started? Register using your Spotify Premium account
             below.
           </h2>
-          <button
-            onClick={handleSpotifyLogin}
-            id="spotify-login-button"
-            className="btn btn-ghost">
+          <button onClick={handleSpotifyLogin} className="btn btn-ghost">
             Log in with Spotify
           </button>
         </div>

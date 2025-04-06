@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { customSlugify } from "../utils.js";
 
 const Navigation = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
+  const querySlug = customSlugify(query);
+
   const handleSearch = async (event) => {
     event.preventDefault();
-    navigate(`/search/?query=${query}`);
+    navigate(`/search/?query=${querySlug}`);
   };
 
   return (
