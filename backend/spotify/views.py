@@ -131,7 +131,7 @@ def auth_callback(request, format=None):
         db.commit()
         db.refresh(user)
         authenticate_user(request.session, user.user_id)
-    return redirect("https://jazzbud-1.onrender.com/core/home")
+    return redirect("https://jazzbud-1.onrender.com/")
 
 def refresh_user(db, session_id):
     user = get_session_user(db, session_id)

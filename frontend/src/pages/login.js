@@ -12,7 +12,7 @@ const Login = () => {
         const authData = await authenticateSpotify();
         window.location.href = authData.url;
       } else {
-        window.location.href = "/core/home";
+        window.location.href = "";
       }
     } catch (error) {
       console.error("Error during Spotify login flow:", error);
