@@ -32,7 +32,7 @@ export const fetchAbout = async () => {
 
 export async function fetchSearch(query) {
   try {
-    const response = await fetch("/search", {
+    const response = await fetch(`${API_BASE_URL}/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -54,7 +54,7 @@ export async function fetchSearch(query) {
 
 export const isSpotifyAuthenticated = async () => {
   try {
-    const response = await fetch("/spotify/is-authenticated", {
+    const response = await fetch(`${API_BASE_URL}/spotify/is-authenticated`, {
       credentials: "include",
       method: "GET",
       headers: {
@@ -70,7 +70,7 @@ export const isSpotifyAuthenticated = async () => {
 
 export const authenticateSpotify = async () => {
   try {
-    const response = await fetch("/spotify/auth", {
+    const response = await fetch(`${API_BASE_URL}//spotify/auth`, {
       credentials: "include",
       method: "GET",
       headers: {
