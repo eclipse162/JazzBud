@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { fetchAboutMessage } from "../api";
+import { fetchAbout } from "../api";
 
 function About() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetchAboutMessage()
+    fetchAbout()
       .then((data) => setMessage(data.message))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);

@@ -46,3 +46,23 @@ export async function fetchSearch(query) {
     return { error: "Failed to fetch search results." };
   }
 }
+
+export const isSpotifyAuthenticated = async () => {
+  try {
+    const response = await fetch("/spotify/is-authenticated");
+    return await response.json();
+  } catch (error) {
+    console.error("Error checking Spotify authentication:", error);
+    throw error;
+  }
+};
+
+export const authenticateSpotify = async () => {
+  try {
+    const response = await fetch("/spotify/auth");
+    return await response.json();
+  } catch (error) {
+    console.error("Error initiating Spotify authentication:", error);
+    throw error;
+  }
+};

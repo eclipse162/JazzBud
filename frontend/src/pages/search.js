@@ -4,7 +4,7 @@ import { fetchSearch } from "../api";
 
 import TrackRow from "../components/trackRow/trackRow.js";
 import AlbumCard from "../components/albumCard/albumCard.js";
-import ArtistCard from "../components/ArtistCard/artistCard";
+import ArtistCard from "../components/artistCard/artistCard";
 
 import "../styles/search.css";
 

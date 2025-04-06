@@ -16,7 +16,7 @@ const Navigation = () => {
         <div className="inner_header">
           <div className="logo_container">
             <a href="/">
-              <img src="/img/logo.svg" alt="JazzBud" />
+              <img src="../../public/img/logo.svg" alt="JazzBud" />
             </a>
 
             {/* Search Form */}
@@ -31,7 +31,7 @@ const Navigation = () => {
                   onChange={(e) => setQuery(e.target.value)} // Update state
                 />
                 <button type="submit" className="searchButton">
-                  <img src="/img/search.png" alt="Search" />
+                  <img src="../../public/img/search.png" alt="Search" />
                 </button>
               </div>
             </form>

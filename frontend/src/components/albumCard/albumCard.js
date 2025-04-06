@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { customSlugify } from "../utils.js";
+import { customSlugify } from "../../utils.js";
 import "./albumCard.css";
 
 const AlbumCard = ({ album }) => {

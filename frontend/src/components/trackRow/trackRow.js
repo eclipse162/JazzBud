@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { customSlugify, msToMinutesSeconds } from "../utils.js";
+import { customSlugify, msToMinutesSeconds } from "../../utils.js";
 import "./trackRow.css";
 
 const trackRow = ({ track }) => {

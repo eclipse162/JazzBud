@@ -1,46 +1,23 @@
-import React, { useEffect } from "react";
-import "../styles/login.css"; // Import your CSS file for styling
-import "../styles/base.css"; // Import your global CSS file
+import React from "react";
+import "../styles/base.css";
+import { isSpotifyAuthenticated, authenticateSpotify } from "../api";
 
 const Login = () => {
-  const authenticateSpotify = (event) => {
-    event.preventDefault(); // Prevent the default action of the link
+  const handleSpotifyLogin = async (event) => {
+    event.preventDefault();
 
-    fetch("/spotify/is-authenticated")
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.status) {
-          fetch("/spotify/auth")
-            .then((response) => response.json())
-            .then((data) => {
-              window.location.href = data.url; // Redirect to Spotify login
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        } else {
-          window.location.href = "/core/home"; // Redirect to the home page
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
-  useEffect(() => {
-    // Attaching event listener to the login button after the component mounts
-    const loginButton = document.getElementById("spotify-login-button");
-    if (loginButton) {
-      loginButton.addEventListener("click", authenticateSpotify);
-    }
-
-    // Cleanup event listener on component unmount
-    return () => {
-      if (loginButton) {
-        loginButton.removeEventListener("click", authenticateSpotify);
+    try {
+      const authStatus = await isSpotifyAuthenticated();
+      if (!authStatus.status) {
+        const authData = await authenticateSpotify();
+        window.location.href = authData.url;
+      } else {
+        window.location.href = "/core/home";
       }
-    };
-  }, []);
+    } catch (error) {
+      console.error("Error during Spotify login flow:", error);
+    }
+  };
 
   return (
     <div>
@@ -60,7 +37,10 @@ const Login = () => {
             Ready to get started? Register using your Spotify Premium account
             below.
           </h2>
-          <button id="spotify-login-button" className="btn btn-ghost">
+          <button
+            onClick={handleSpotifyLogin}
+            id="spotify-login-button"
+            className="btn btn-ghost">
             Log in with Spotify
           </button>
         </div>

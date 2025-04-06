@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { customSlugify } from "../utils.js";
+import { customSlugify } from "../../utils.js";
 import "./artistCard.css";
 
 const ArtistCard = ({ artist }) => {
