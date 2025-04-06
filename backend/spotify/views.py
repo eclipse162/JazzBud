@@ -130,6 +130,7 @@ def auth_callback(request, format=None):
         
         db.commit()
         db.refresh(user)
+        print(f"User: {user}")
         authenticate_user(request.session, user.user_id)
     return redirect("https://jazzbud-1.onrender.com/")
 
@@ -170,8 +171,13 @@ class IsAuthenticated(APIView):
 
 class SpotifyAPI(APIView):
     def populate_user_info(self, request):
+
+        print(f"Session Data: {dict(request.session)}")  # Print session data
+        print(f"Cookies: {request.COOKIES}")
+
         session_id = request.session.session_key
         print(f"Session ID: {session_id}")
+        
         if not session_id:
             return {'error': 'Session not found'}
 

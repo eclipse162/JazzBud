@@ -2,7 +2,7 @@ const API_BASE_URL = "https://jazzbud.onrender.com";
 
 export const fetchHome = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/home/`, {
+    const response = await fetch(`${API_BASE_URL}`, {
       credentials: "include",
     });
     if (!response.ok) {

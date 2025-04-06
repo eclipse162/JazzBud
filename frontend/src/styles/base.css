@@ -107,9 +107,9 @@ body {
   background: #021220;
   border-radius: 40px;
   padding: 5px;
-  transition: width 0.4s;
-  border-color: #e2dad4;
-  border-width: 1px;
+  transition: width 0.4s ease-in-out;
+  border-color: 1px solid #e2dad4;
+  display: flex;
   overflow: hidden;
 }
 
@@ -120,9 +120,10 @@ body {
 
 .searchBox:hover img {
   cursor: pointer;
+  filter: brightness(0.8);
 }
 
-.searchBox:hover .searchInput:hover,
+.searchBox:hover .searchInput,
 .searchBox:focus-within .searchInput {
   width: 240px;
   padding: 0 6px;
