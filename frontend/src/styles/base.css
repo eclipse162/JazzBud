@@ -116,6 +116,9 @@ body {
 .searchBox img {
   width: 50%;
   height: 50%;
+}
+
+.searchBox:hover img {
   cursor: pointer;
 }
 
