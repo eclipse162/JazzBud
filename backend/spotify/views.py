@@ -126,7 +126,7 @@ def auth_callback(request, format=None):
                     expires_in, 
                     token_type)
 
-        update_user(db, user.user_id, token=new_token)
+        update_user(db, user.user_id, {"token": new_token})
         
         db.commit()
         db.refresh(user)
