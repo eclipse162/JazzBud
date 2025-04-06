@@ -116,9 +116,10 @@ body {
 .searchBox img {
   width: 50%;
   height: 50%;
+  cursor: pointer;
 }
 
-.searchBox:hover .searchInput,
+.searchBox:hover .searchInput:hover,
 .searchBox:focus-within .searchInput {
   width: 240px;
   padding: 0 6px;
@@ -140,6 +141,8 @@ body {
   justify-content: center;
   align-items: center;
   transition: 0.4s;
+  border: none;
+  background: none;
 }
 
 .searchInput {
