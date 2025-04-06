@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { fetchHome } from "../api";
 
-function Home() {
-  const [message, setMessage] = useState("");
+const Home = () => {
+  return (
+    <div>
+      <div className="home_page_body" id="edit_partition">
+        <div>
+          <h1>New Partition</h1>
+        </div>
+      </div>
 
-  useEffect(() => {
-    fetchHome()
-      .then((data) => setMessage(data.message))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+      <div class="home_page_body" id="partition_info">
+        <div>
+          <h1>My Saved Partitions</h1>
+        </div>
+      </div>
 
-  return <h1>{message || "Loading..."}</h1>;
-}
+      <div class="home_page_body" id="tracks">
+        <div>
+          <h1>User tracks</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Home;

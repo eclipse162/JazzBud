@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/base.css";
 import { isSpotifyAuthenticated, authenticateSpotify } from "../api";
-import Navigation from "../components/navigation";
 
 const Login = () => {
   const handleSpotifyLogin = async (event) => {
