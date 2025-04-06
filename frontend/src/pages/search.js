@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchSearch } from "../api"; // or wherever your api.js lives
+import { fetchSearch } from "../api";
 
-import TrackRow from "./TrackRow";
-import AlbumCard from "./AlbumCard";
-import ArtistCard from "./ArtistCard";
+import TrackRow from "../components/trackRow/trackRow.js";
+import AlbumCard from "../components/albumCard/albumCard.js";
+import ArtistCard from "../components/ArtistCard/artistCard";
+
+import "../styles/search.css";
 
 const Search = () => {
   const location = useLocation();
@@ -32,9 +34,7 @@ const Search = () => {
     }
   }, [query]);
 
-  const { tracks } = results.tracks;
-  const { albums } = results.albums;
-  const { artists } = results.artists;
+  const { tracks, albums, artists } = results;
 
   return (
     <main className="search-page">
@@ -42,32 +42,38 @@ const Search = () => {
         <h2 className="search-title">Search Results for "{query}"</h2>
       </div>
 
-      {/* Tracks */}
-      <div className="divide-y divide-gray-800">
-        <h3 className="text-xl font-semibold mt-6">Tracks</h3>
-        {tracks && tracks.length > 0 ? (
-          tracks.map((track) => <TrackRow key={track.id} track={track} />)
-        ) : (
-          <p>No tracks found</p>
-        )}
-      </div>
+      {/* Display Tracks */}
 
-      {/* Artists */}
-      <section>
-        <h3>Artists</h3>
-        {results.artists.map((artist) => (
-          <div key={artist.artist_id}>{artist.name}</div>
-        ))}
+      <section className="track-section">
+        <div className="track-list">
+          {tracks && tracks.length > 0 ? (
+            tracks.map((track) => <TrackRow key={track.id} track={track} />)
+          ) : (
+            <p>No tracks found</p>
+          )}
+        </div>
+      </section>
+
+      {/* Display Artists */}
+      <div className="browse-all-title">Artists</div>
+      <section className="browse-all">
+        {artists && artists.length > 0 ? (
+          artists.map((artist) => (
+            <ArtistCard key={artist.id} artist={artist} />
+          ))
+        ) : (
+          <p>No artists found</p>
+        )}
       </section>
 
       {/* Albums */}
-      <section>
-        <h3>Albums</h3>
-        {results.albums.map((album) => (
-          <div key={album.album_id}>
-            {album.title} by {album.artist}
-          </div>
-        ))}
+      <div className="browse-all-title">Albums</div>
+      <section className="browse-all">
+        {albums && albums.length > 0 ? (
+          albums.map((album) => <AlbumCard key={album.id} album={album} />)
+        ) : (
+          <p>No albums found</p>
+        )}
       </section>
     </main>
   );
