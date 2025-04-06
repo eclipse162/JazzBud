@@ -33,7 +33,7 @@ export const fetchAbout = async () => {
 export async function fetchSearch(query) {
   try {
     const response = await fetch(`${API_BASE_URL}/search/`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
