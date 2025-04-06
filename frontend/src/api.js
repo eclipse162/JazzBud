@@ -83,3 +83,27 @@ export const authenticateSpotify = async () => {
     throw error;
   }
 };
+
+export async function fetchSpotifyUserInfo() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/spotify/user_info`, {
+      credentials: "include",
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Spotify user info");
+    }
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("Error fetching user info:", data.error);
+      return null;
+    }
+    return data;
+  } catch (error) {
+    console.error("Error fetching Spotify user info:", error);
+    return null;
+  }
+}

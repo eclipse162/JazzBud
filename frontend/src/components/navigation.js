@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { customSlugify } from "../utils.js";
+import { fetchSpotifyUserInfo } from "../api.js";
 
 const Navigation = () => {
   const [query, setQuery] = useState("");
+  const [displayName, setDisplayName] = useState("Username");
   const navigate = useNavigate();
 
   const querySlug = customSlugify(query);
@@ -12,6 +14,18 @@ const Navigation = () => {
     event.preventDefault();
     navigate(`/search/?query=${querySlug}`);
   };
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await fetchSpotifyUserInfo();
+      if (userInfo?.display_name) {
+        setDisplayName(userInfo.display_name);
+      } else {
+        navigate(`/login`);
+      }
+    };
+    getUserInfo();
+  });
 
   return (
     <div className="page-container">
@@ -52,7 +66,7 @@ const Navigation = () => {
               <li>My Partitions</li>
             </a>
             <a href="/profile">
-              <li>Username</li>
+              <li>{displayName}</li>
             </a>
           </ul>
         </div>
