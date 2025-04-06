@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 #NOTE: If you are running on local file system, ensure your local IP is in ALLOWED_HOSTS
-ALLOWED_HOSTS = ['127.0.0.1','https://jazzbud.onrender.com/', 'http://jazzbud.onrender.com/', 'jazzbud.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1','https://jazzbud.onrender.com/', 'https://jazzbud-1.onrender.com', 'jazzbud.onrender.com']
 
 
 # Application definition
@@ -27,11 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'core'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,6 +63,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'jbud.wsgi.application'
+
+CORS_ALLOWED_ORIGINS = [
+    "https://jazzbud-1.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://jazzbud.onrender.com",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
 
 
 # Database

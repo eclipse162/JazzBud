@@ -11,9 +11,9 @@ urlpatterns = [
     path('about/', about.as_view(), name="about"),
     path('search/', search.as_view(), name='search'),
 
-    path('<str:artist_name>/<str:artist_id>', views.artist_page, name='artist_page'),
-    path('album/<str:artist_name>/<str:album_title>/<str:album_id>', views.album_page, name='album_page'),
-    path('track/<str:artist_name>/<str:track_title>/<str:track_id>', views.track_page, name='track_page'),
+    path('<str:artist_name>/<str:artist_id>', views.artist, name='artist_page'),
+    path('album/<str:artist_name>/<str:album_title>/<str:album_id>', views.album, name='album_page'),
+    path('track/<str:artist_name>/<str:track_title>/<str:track_id>', views.track, name='track_page'),
 
     path('artist_search/', views.artist_search, name='artist_search'),
     path('instrument_search/', views.instrument_search, name='instrument_search'),

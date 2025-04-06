@@ -188,16 +188,16 @@ def save_artist_selection(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
     
-def artist_page(request, artist_name, artist_id):
+def artist(request, artist_name, artist_id):
     artist = populate_artist(artist_id)
     artist_formatted = artist['name']
     
-    html_content = render(request, 'core/artist_page.html', {'artist': artist, 'artist_name': artist_formatted}).content
+    html_content = render(request, 'core/artist.html', {'artist': artist, 'artist_name': artist_formatted}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
 
-def album_page(request, artist_name, album_title, album_id):
+def album(request, artist_name, album_title, album_id):
     session_id = request.session.session_key
     album = populate_album(album_id)
     album_formatted = album['title']
@@ -218,12 +218,12 @@ def album_page(request, artist_name, album_title, album_id):
     t_artist = sp.artist(artist_id)
     artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
     
-    html_content = render(request, 'core/album_page.html', {'album': album, 'album_title': album_formatted, 'artist_image': artist_image}).content
+    html_content = render(request, 'core/album.html', {'album': album, 'album_title': album_formatted, 'artist_image': artist_image}).content
     response = HttpResponse(html_content)
     response['Content-Type'] = 'text/html'
     return response
 
-def track_page(request, artist_name, track_title, track_id):
+def track(request, artist_name, track_title, track_id):
     session_id = request.session.session_key
     track = populate_track(track_id)
     track_formatted = track['title']

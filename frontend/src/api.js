@@ -1,8 +1,10 @@
-const API_BASE_URL = "https://jazzbud.onrender.com";
+const API_BASE_URL = "https://jazzbud-1.onrender.com";
 
 export const fetchHome = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/home/`);
+    const response = await fetch(`${API_BASE_URL}/home/`, {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -15,7 +17,9 @@ export const fetchHome = async () => {
 
 export const fetchAbout = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/about/`);
+    const response = await fetch(`${API_BASE_URL}/about/`, {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -34,6 +38,7 @@ export async function fetchSearch(query) {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({ query }),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -49,7 +54,13 @@ export async function fetchSearch(query) {
 
 export const isSpotifyAuthenticated = async () => {
   try {
-    const response = await fetch("/spotify/is-authenticated");
+    const response = await fetch("/spotify/is-authenticated", {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return await response.json();
   } catch (error) {
     console.error("Error checking Spotify authentication:", error);
@@ -59,7 +70,13 @@ export const isSpotifyAuthenticated = async () => {
 
 export const authenticateSpotify = async () => {
   try {
-    const response = await fetch("/spotify/auth");
+    const response = await fetch("/spotify/auth", {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return await response.json();
   } catch (error) {
     console.error("Error initiating Spotify authentication:", error);
