@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://jazzbud-1.onrender.com";
+const API_BASE_URL = "https://jazzbud.onrender.com";
 
 export const fetchHome = async () => {
   try {
@@ -70,7 +70,7 @@ export const isSpotifyAuthenticated = async () => {
 
 export const authenticateSpotify = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}//spotify/auth`, {
+    const response = await fetch(`${API_BASE_URL}/spotify/auth`, {
       credentials: "include",
       method: "GET",
       headers: {
