@@ -3,6 +3,7 @@ click==8.1.7
 colorama==0.4.6
 dj-database-url==2.1.0
 Django==5.0.2
+django-cors-headers==4.7.0
 gunicorn==21.2.0
 h11==0.14.0
 packaging==24.0
