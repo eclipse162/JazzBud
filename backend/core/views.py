@@ -45,7 +45,7 @@ class search(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        query = request.GET.get('query', '')
+        query = request.POST.get('query', '')
         session_id = request.session.session_key
 
         if session_id is None:
