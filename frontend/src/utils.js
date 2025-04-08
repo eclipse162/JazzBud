@@ -21,3 +21,15 @@ export function customSlugify(value) {
 
   return slugified || value.toLowerCase().replace(/\s+/g, "-");
 }
+
+export function deSlugify(value) {
+  if (!value) return "";
+
+  const deSlugified = value
+    .replace(/-/g, " ")
+    .replace(/_/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return deSlugified || value;
+}

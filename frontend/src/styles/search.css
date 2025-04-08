@@ -1,5 +1,5 @@
 .search-page {
-  padding: 20px;
+  padding: 40px;
   font-size: 18px;
 }
 
@@ -7,39 +7,23 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 16px;
+  color: #edddcf;
 }
 
-.tracks-section,
 .browse-all {
-  margin-top: 20px;
-}
-
-.tracks-section {
   display: flex;
   gap: 20px;
-}
-
-.track-list {
-  margin-top: 16px;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 10px;
+  padding-left: 12px;
 }
 
 .browse-all-title {
   font-size: 24px;
   font-weight: bold;
-  color: #fff;
+  color: #edddcf;
   margin-top: 20px;
   padding-bottom: 10px;
 }
 
-.browse-all {
-  display: grid;
-  gap: 20px;
-  padding: 10px;
-  background-color: #121212;
+.track-list {
+  width: 100%;
 }

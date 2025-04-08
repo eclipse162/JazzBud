@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchSearch } from "../api";
+import { deSlugify } from "../utils.js";
 
 import TrackRow from "../components/trackRow/trackRow.js";
 import AlbumCard from "../components/albumCard/albumCard.js";
@@ -11,7 +12,8 @@ import "../styles/search.css";
 const Search = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get("query");
+  const slugQuery = queryParams.get("query");
+  const query = deSlugify(slugQuery);
 
   const [results, setResults] = useState({
     tracks: [],
@@ -44,7 +46,7 @@ const Search = () => {
 
       {/* Display Tracks */}
 
-      <section className="track-section">
+      <section className="browse-all">
         <div className="track-list">
           {tracks && tracks.length > 0 ? (
             tracks.map((track) => <TrackRow key={track.id} track={track} />)

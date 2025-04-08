@@ -10,7 +10,9 @@ const trackRow = ({ track }) => {
 
   return (
     <div className="track-row">
-      <Link to={`track/${slugifiedArtist}/${slugifiedTitle}/${track.track_id}`}>
+      <Link
+        to={`track/${slugifiedArtist}/${slugifiedTitle}/${track.track_id}`}
+        className="track-clickable">
         <img
           className="track-cover"
           src={track.cover}
