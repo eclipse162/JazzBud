@@ -44,7 +44,7 @@ class login(APIView):
 class search(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
+    def post(self, request):
         query = request.POST.get('query', '')
         session_id = request.session.session_key
 

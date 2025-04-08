@@ -25,7 +25,7 @@ const Navigation = () => {
       }
     };
     getUserInfo();
-  });
+  }, []);
 
   return (
     <div className="page-container">
