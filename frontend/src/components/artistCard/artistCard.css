@@ -1,10 +1,8 @@
 .artist-card {
-  width: 200px;
-  height: 255px;
-  background-color: #130500;
+  flex: 0 0 150px;
+  height: 210px;
   border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  padding: 10px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -15,10 +13,11 @@
 
 .artist-card:hover {
   transform: scale(1.02);
+  background-color: #030f1a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .artist-card img {
-  margin-top: 10px;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -27,16 +26,11 @@
 }
 
 .artist-info {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .artist-name {
   font-size: 18px;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.artist-title {
-  font-size: 13px;
-  color: #b3b3b3;
+  color: #eedecf;
+  margin-bottom: 5px;
 }

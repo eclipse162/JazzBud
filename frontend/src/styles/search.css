@@ -10,10 +10,20 @@
   color: #edddcf;
 }
 
-.browse-all {
+.track-list {
   display: flex;
   gap: 20px;
   padding-left: 12px;
+}
+
+.browse-all {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.browse-all::-webkit-scrollbar {
+  height: 8px;
 }
 
 .browse-all-title {
@@ -21,9 +31,5 @@
   font-weight: bold;
   color: #edddcf;
   margin-top: 20px;
-  padding-bottom: 10px;
-}
-
-.track-list {
-  width: 100%;
+  padding-bottom: 15px;
 }

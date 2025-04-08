@@ -19,7 +19,6 @@ const ArtistCard = ({ artist }) => {
         />
         <div className="artist-info">
           <div className="artist-name">{artist.name}</div>
-          <div className="artist-title">Artist</div>
         </div>
       </Link>
     </div>

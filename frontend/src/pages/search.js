@@ -46,14 +46,12 @@ const Search = () => {
 
       {/* Display Tracks */}
 
-      <section className="browse-all">
-        <div className="track-list">
-          {tracks && tracks.length > 0 ? (
-            tracks.map((track) => <TrackRow key={track.id} track={track} />)
-          ) : (
-            <p>No tracks found</p>
-          )}
-        </div>
+      <section className="track-list">
+        {tracks && tracks.length > 0 ? (
+          tracks.map((track) => <TrackRow key={track.id} track={track} />)
+        ) : (
+          <p>No tracks found</p>
+        )}
       </section>
 
       {/* Display Artists */}

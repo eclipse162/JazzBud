@@ -1,10 +1,8 @@
 .album-card {
-  width: 200px;
-  height: 255px;
-  background-color: #130500;
+  flex: 0 0 150px;
+  height: 210px;
   border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  padding: 10px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -15,28 +13,30 @@
 
 .album-card:hover {
   transform: scale(1.02);
+  background-color: #030f1a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .album-card img {
-  margin-top: 10px;
   width: 150px;
   height: 150px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
   margin-bottom: 8px;
 }
 
 .album-info {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .album-title {
   font-size: 18px;
-  color: #fff;
+  color: #eedecf;
   margin-bottom: 4px;
+  font-weight: bold;
 }
 
 .album-artist {
   font-size: 13px;
-  color: #b3b3b3;
+  color: #9ca3af;
 }
