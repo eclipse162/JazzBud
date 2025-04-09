@@ -5,7 +5,7 @@ import TrackRow from "../components/trackRow/trackRow.js";
 import AlbumCard from "../components/albumCard/albumCard.js";
 import ArtistCard from "../components/artistCard/artistCard";
 
-import styles from "../styles/search.css";
+import styles from "../styles/search.module.css";
 
 const Search = () => {
   const location = useLocation();
