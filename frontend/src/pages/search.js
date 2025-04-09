@@ -5,7 +5,7 @@ import TrackRow from "../components/trackRow/trackRow.js";
 import AlbumCard from "../components/albumCard/albumCard.js";
 import ArtistCard from "../components/artistCard/artistCard";
 
-import "../styles/search.css";
+import styles from "../styles/search.css";
 
 const Search = () => {
   const location = useLocation();
@@ -17,14 +17,14 @@ const Search = () => {
   const { tracks, albums, artists } = results;
 
   return (
-    <main className="search-page">
-      <div className="search-query">
-        <h2 className="search-title">Search Results for "{query}"</h2>
+    <main className={styles.searchPage}>
+      <div className={styles.searchQuery}>
+        <h2 className={styles.searchTitle}>Search Results for "{query}"</h2>
       </div>
 
       {/* Display Tracks */}
 
-      <section className="track-list">
+      <section className={styles.trackList}>
         {tracks && tracks.length > 0 ? (
           tracks.map((track) => <TrackRow key={track.id} track={track} />)
         ) : (
@@ -33,8 +33,8 @@ const Search = () => {
       </section>
 
       {/* Display Artists */}
-      <div className="browse-all-title">Artists</div>
-      <section className="browse-all">
+      <div className={styles.browseAllTitle}>Artists</div>
+      <section className={styles.browseAll}>
         {artists && artists.length > 0 ? (
           artists.map((artist) => (
             <ArtistCard key={artist.id} artist={artist} />
@@ -45,8 +45,8 @@ const Search = () => {
       </section>
 
       {/* Albums */}
-      <div className="browse-all-title">Albums</div>
-      <section className="browse-all">
+      <div className={styles.browseAllTitle}>Albums</div>
+      <section className={styles.browseAll}>
         {albums && albums.length > 0 ? (
           albums.map((album) => <AlbumCard key={album.id} album={album} />)
         ) : (

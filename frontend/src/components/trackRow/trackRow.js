@@ -2,7 +2,7 @@ import React from "react";
 import { fetchTrack } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { customSlugify, msToMinutesSeconds } from "../../utils.js";
-import "./trackRow.module.css";
+import styles from "./trackRow.module.css";
 
 const TrackRow = ({ track }) => {
   const slugifiedTitle = customSlugify(track.title);
@@ -28,22 +28,22 @@ const TrackRow = ({ track }) => {
   };
 
   return (
-    <div className="track-row">
+    <div className={styles.trackRow}>
       <div
-        className="track-clickable"
+        className={styles.trackClickable}
         onClick={(event) => handleTrack(track.track_id, event)}>
         <img
-          className="track-cover"
+          className={styles.trackCover}
           src={track.cover}
           alt={`${track.title} by ${track.artist}`}
         />
-        <div className="track-info">
-          <p className="track-title">{track.title}</p>
-          <p className="track-artist">{track.artist}</p>
+        <div className={styles.trackInfo}>
+          <p className={styles.trackTitle}>{track.title}</p>
+          <p className={styles.trackArtist}>{track.artist}</p>
         </div>
       </div>
 
-      <div className="track-length">
+      <div className={styles.trackLength}>
         <p>{trackLength}</p>
       </div>
     </div>

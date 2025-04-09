@@ -2,7 +2,7 @@ import React from "react";
 import { fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { customSlugify } from "../../utils.js";
-import "./artistCard.module.css";
+import styles from "./artistCard.module.css";
 
 const ArtistCard = ({ artist }) => {
   const slugifiedArtist = customSlugify(artist.name);
@@ -27,7 +27,7 @@ const ArtistCard = ({ artist }) => {
 
   return (
     <div
-      className="artist-card"
+      className={styles.artistCard}
       onClick={(event) => handleArtist(artist.artist_id, event)}>
       <img
         src={artist.cover}
@@ -37,8 +37,8 @@ const ArtistCard = ({ artist }) => {
           e.target.src = "/static/img/zanewins.jpeg";
         }}
       />
-      <div className="artist-info">
-        <div className="artist-name">{artist.name}</div>
+      <div className={styles.artistInfo}>
+        <div className={styles.artistName}>{artist.name}</div>
       </div>
     </div>
   );
