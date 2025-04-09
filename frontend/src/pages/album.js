@@ -1,4 +1,4 @@
-import "../styles/search.css";
+import "../styles/search.module.css";
 import "../styles/album_page.module.css";
 
 import { useLocation } from "react-router-dom";
