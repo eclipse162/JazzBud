@@ -9,6 +9,7 @@
   margin: 0 5px 20px;
   display: inline-block;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .artist-card:hover {

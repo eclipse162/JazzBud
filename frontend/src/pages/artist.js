@@ -1,5 +1,5 @@
 import "../styles/search.css";
-import "../styles/album_page.css";
+import "../styles/album_page.module.css";
 
 import { useLocation } from "react-router-dom";
 import { fetchArtist } from "../api.js";

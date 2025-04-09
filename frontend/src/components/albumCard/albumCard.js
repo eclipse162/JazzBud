@@ -2,7 +2,7 @@ import React from "react";
 import { fetchAlbum } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { customSlugify } from "../../utils.js";
-import "./albumCard.css";
+import "./albumCard.module.css";
 
 const AlbumCard = ({ album }) => {
   const slugifiedArtist = customSlugify(album.artist);
@@ -18,7 +18,7 @@ const AlbumCard = ({ album }) => {
 
     const data = await fetchAlbum(album_id);
     if (data) {
-      navigate(`artist/${slugifiedArtist}/${slugifiedTitle}/${album_id}`, {
+      navigate(`album/${slugifiedArtist}/${slugifiedTitle}/${album_id}`, {
         state: { results: data },
       });
     } else {
