@@ -1,4 +1,4 @@
-.track-row {
+.trackRow {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -7,34 +7,34 @@
   justify-content: space-between;
 }
 
-.track-clickable {
+.trackClickable {
   display: flex;
 }
 
-.track-info {
+.trackInfo {
   margin-left: 10px;
 }
 
-.track-title {
+.trackTitle {
   font-size: 18px;
   color: #edddcf;
   font-weight: 600;
 }
 
-.track-artist {
+.trackArtist {
   font-size: 14px;
   color: #9ca3af;
   font-weight: 450;
 }
 
-.track-length {
+.trackLength {
   font-size: 14px;
   min-width: 50px;
   color: #9ca3af;
   text-align: right;
 }
 
-.track-cover {
+.trackCover {
   width: 40px;
   height: 40px;
   object-fit: cover;

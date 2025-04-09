@@ -1,31 +1,31 @@
-.search-page {
+.searchPage {
   padding: 40px;
   font-size: 18px;
 }
 
-.search-title {
+.searchTitle {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 16px;
   color: #edddcf;
 }
 
-.track-list {
+.trackList {
   display: flex;
   flex-direction: column;
   padding-left: 12px;
 }
 
-.browse-all {
+.browseAll {
   display: flex;
   overflow-x: auto;
 }
 
-.browse-all::-webkit-scrollbar {
+.browseAll::-webkit-scrollbar {
   height: 8px;
 }
 
-.browse-all-title {
+.browseAllTitle {
   font-size: 24px;
   font-weight: bold;
   color: #edddcf;

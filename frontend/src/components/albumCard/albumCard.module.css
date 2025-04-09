@@ -1,4 +1,4 @@
-.album-card {
+.albumCard {
   border-radius: 10px;
   display: inline-block;
   flex: 0 0 150px;
@@ -13,13 +13,13 @@
   cursor: pointer;
 }
 
-.album-card:hover {
+.albumCard:hover {
   transform: scale(1.02);
   background-color: #030f1a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.album-card img {
+.albumCard img {
   width: 150px;
   height: 150px;
   border-radius: 5%;
@@ -27,14 +27,14 @@
   margin-bottom: 8px;
 }
 
-.album-title {
+.albumTitle {
   font-size: 18px;
   color: #eedecf;
   margin-bottom: 4px;
   font-weight: 600;
 }
 
-.album-artist {
+.albumArtist {
   font-size: 13px;
   color: #9ca3af;
 }

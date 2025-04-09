@@ -1,4 +1,4 @@
-.artist-card {
+.artistCard {
   flex: 0 0 150px;
   height: 210px;
   border-radius: 10px;
@@ -12,13 +12,13 @@
   cursor: pointer;
 }
 
-.artist-card:hover {
+.artistCard:hover {
   transform: scale(1.02);
   background-color: #030f1a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.artist-card img {
+.artistCard img {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -26,11 +26,11 @@
   margin-bottom: 8px;
 }
 
-.artist-info {
+.artistInfo {
   margin-top: 5px;
 }
 
-.artist-name {
+.artistName {
   font-size: 18px;
   color: #eedecf;
   margin-bottom: 5px;
