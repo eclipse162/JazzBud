@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchTrack } from "../api.js";
+import { fetchTrack } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { customSlugify, msToMinutesSeconds } from "../../utils.js";
 import "./trackRow.css";

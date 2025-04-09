@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchArtist } from "../api.js";
+import { fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { customSlugify } from "../../utils.js";
 import "./artistCard.css";
