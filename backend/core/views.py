@@ -70,7 +70,7 @@ class search(APIView):
         
         t_data = response.get('tracks', {})
         tracks = t_data.get('items', [])
-        lo_tracks = handle_tracks(tracks[0:6])
+        lo_tracks = handle_tracks(tracks[0:5])
 
         a_data = response.get('albums', {})
         albums = a_data.get('items', [])

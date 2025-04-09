@@ -21,7 +21,7 @@
 .album-card img {
   width: 150px;
   height: 150px;
-  border-radius: 50%;
+  border-radius: 5%;
   object-fit: cover;
   margin-bottom: 8px;
 }
@@ -30,7 +30,7 @@
   font-size: 18px;
   color: #eedecf;
   margin-bottom: 4px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .album-artist {

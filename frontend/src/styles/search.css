@@ -12,7 +12,7 @@
 
 .track-list {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
   padding-left: 12px;
 }
 
@@ -30,5 +30,5 @@
   font-weight: bold;
   color: #edddcf;
   margin-top: 20px;
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }

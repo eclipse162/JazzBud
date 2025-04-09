@@ -6,6 +6,10 @@ import "./artistCard.css";
 const ArtistCard = ({ artist }) => {
   const slugifiedArtist = customSlugify(artist.name);
 
+  if (artist.name.length > 25) {
+    artist.name = artist.name.substring(0, 25) + "...";
+  }
+
   return (
     <div className="artist-card">
       <Link to={`artist/${slugifiedArtist}/${artist.artist_id}`}>
