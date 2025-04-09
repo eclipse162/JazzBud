@@ -5,16 +5,35 @@ from db.database import get_db
 from django.utils import timezone
 from datetime import datetime, timedelta
 from requests import post, get
-from sqlalchemy.orm import session
+from spotify.views import refresh_user
 from db.crud import create_token, get_token, get_session_user, get_user
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from django.shortcuts import render, redirect, get_object_or_404
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 BASE_URL = 'https://api.spotify.com/v1/me/'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
+
+def confirm_authentication(session_id, request):
+    if session_id is None:
+            return redirect('login')
+
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+        
+        return token
+    
+    return redirect('login')
+        
 
 def authenticate_user(session, user_id):
     session['user_id'] = user_id

@@ -24,9 +24,10 @@ urlpatterns = [
     path('about/', about.as_view(), name="about"),
     path('search/', search.as_view(), name='search'),
 
-    path('<str:artist_name>/<str:artist_id>', artist, name='artist_page'),
-    path('album/<str:artist_name>/<str:album_title>/<str:album_id>', album, name='album_page'),
-    path('track/<str:artist_name>/<str:track_title>/<str:track_id>', track, name='track_page'),
+    # Music Pages
+    path('track/', artist.as_view(), name='track'),
+    path('album/', artist.as_view(), name='album'),
+    path('artist/', artist.as_view(), name='artist'),
 
     path('artist_search/', artist_search, name='artist_search'),
     path('instrument_search/', instrument_search, name='instrument_search'),

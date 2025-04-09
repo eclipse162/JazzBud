@@ -48,19 +48,7 @@ class search(APIView):
         query = request.POST.get('query', '')
         session_id = request.session.session_key
 
-        if session_id is None:
-            return JsonResponse ({"error": "Not authenticated"}, status=401)
-        
-        with get_db() as db:
-            user = get_session_user(db, session_id)
-            if user is None or not refresh_user(db, session_id):
-                return JsonResponse({"error": "Not authenticated"}, status=401)
-            authenticate_user(request.session, user.user_id)
-
-            user_id = user.user_id
-            token = get_token(db, user_id)
-            if token is None:
-                return JsonResponse({"error": "Not authenticated"}, status=401)
+        token = confirm_authentication(session_id, request)
 
         sp = spotipy.Spotify(auth=token.access_token)
         response = sp.search(q=query, type='track,artist,album', limit=10)
@@ -92,19 +80,7 @@ def artist_search(request):
     print(f"Query: {query}")
     session_id = request.session.session_key
 
-    if session_id is None:
-        return redirect('login')
-    
-    with get_db() as db:
-        user = get_session_user(db, session_id)
-        if user is None or not refresh_user(db, session_id):
-            return redirect('login')
-        authenticate_user(request.session, user.user_id)
-
-        user_id = user.user_id
-        token = get_token(db, user_id)
-        if token is None:
-            return redirect('login')
+    token = confirm_authentication(session_id, request)
     
     sp = spotipy.Spotify(auth=token.access_token)
     response = sp.search(q=query, type='artist', limit=3)
@@ -188,63 +164,54 @@ def save_artist_selection(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
     
-def artist(request, artist_name, artist_id):
-    artist = populate_artist(artist_id)
-    artist_formatted = artist['name']
-    
-    html_content = render(request, 'core/artist.html', {'artist': artist, 'artist_name': artist_formatted}).content
-    response = HttpResponse(html_content)
-    response['Content-Type'] = 'text/html'
-    return response
 
-def album(request, artist_name, album_title, album_id):
-    session_id = request.session.session_key
-    album = populate_album(album_id)
-    album_formatted = album['title']
-    artist_id = album['artist_id']
+class artist(APIView):
+    permission_classes = [AllowAny]
 
-    with get_db() as db:
-        user = get_session_user(db, session_id)
-        if user is None or not refresh_user(db, session_id):
-            return redirect('login')
-        authenticate_user(request.session, user.user_id)
+    def post(self, request):
+        artist_id = request.POST.get('artistId')
+        session_id = request.session.session_key
 
-        user_id = user.user_id
-        token = get_token(db, user_id)
-        if token is None:
-            return redirect('login')
-    
-    sp = spotipy.Spotify(auth=token.access_token)
-    t_artist = sp.artist(artist_id)
-    artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
-    
-    html_content = render(request, 'core/album.html', {'album': album, 'album_title': album_formatted, 'artist_image': artist_image}).content
-    response = HttpResponse(html_content)
-    response['Content-Type'] = 'text/html'
-    return response
+        confirm_authentication(session_id, request)
+        artist = populate_artist(artist_id)
 
-def track(request, artist_name, track_title, track_id):
-    session_id = request.session.session_key
-    track = populate_track(track_id)
-    track_formatted = track['title']
+        return JsonResponse({
+            "artist": artist
+        })
 
-    with get_db() as db:
-        user = get_session_user(db, session_id)
-        if user is None or not refresh_user(db, session_id):
-            return redirect('login')
-        authenticate_user(request.session, user.user_id)
+class album(APIView):
+    permission_classes = [AllowAny]
 
-        user_id = user.user_id
-        token = get_token(db, user_id)
-        if token is None:
-            return redirect('login')
-        
-        access_token = token.access_token
+    def post(self, request):
+        album_id = request.POST.get('albumId')
+        session_id = request.session.session_key
 
-    html_content = render(request, 'core/edit_partition.html', {'track': track, 'track_title': track_formatted, 'access_token': access_token}).content
-    response = HttpResponse(html_content)
-    response['Content-Type'] = 'text/html'
-    return response
+        token = confirm_authentication(session_id, request)
+        album = populate_album(album_id)
+        artist_id = album['artist_id']
+
+        sp = spotipy.Spotify(auth=token.access_token)
+        t_artist = sp.artist(artist_id)
+        artist_image = t_artist['images'][0]['url'] if len(t_artist['images']) > 0 else None
+
+        return JsonResponse({
+            "album": album,
+            "artist_image": artist_image
+        })
+
+class track(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        track_id = request.POST.get('trackId')
+        session_id = request.session.session_key
+
+        confirm_authentication(session_id, request)
+        track = populate_track(track_id)
+
+        return JsonResponse({
+            "track": track
+        })
 
 def transfer_playback(request, device_id):
     session_id = request.session.session_key

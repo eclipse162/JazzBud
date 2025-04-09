@@ -45,10 +45,76 @@ export async function fetchSearch(query) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    return await response.json(); // Return data to be used in components
+    return await response.json();
   } catch (error) {
     console.error("Error searching songs:", error);
     return { error: "Failed to fetch search results." };
+  }
+}
+
+export async function fetchArtist(artistId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/artist/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ artistId }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error searching artist:", error);
+    return { error: "Failed to fetch artist results." };
+  }
+}
+
+export async function fetchAlbum(albumId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/album/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ albumId }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error searching album:", error);
+    return { error: "Failed to fetch album results." };
+  }
+}
+
+export async function fetchTrack(trackId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/track/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ trackId }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error searching album:", error);
+    return { error: "Failed to fetch album results." };
   }
 }
 

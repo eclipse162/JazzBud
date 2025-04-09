@@ -10,6 +10,9 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import About from "./pages/about";
 import Search from "./pages/search";
+import Artist from "./pages/artist";
+import Album from "./pages/album";
+import Track from "./pages/track";
 import "./styles/base.css";
 
 const AppContent = () => {
@@ -26,6 +29,9 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/artist/:slug/:id" element={<Artist />} />
+        <Route path="/album/:artistslug/:titleslug/:id" element={<Album />} />
+        <Route path="/track/:artistslug/:titleslug/:id" element={<Track />} />
       </Routes>
     </>
   );
