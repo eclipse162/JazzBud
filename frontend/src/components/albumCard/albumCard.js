@@ -18,15 +18,13 @@ const AlbumCard = ({ album }) => {
 
     const data = await fetchAlbum(album_id);
     if (data) {
-      navigate(`album/${slugifiedArtist}/${slugifiedTitle}/${album_id}`, {
+      navigate(`/album/${slugifiedArtist}/${slugifiedTitle}/${album_id}`, {
         state: { results: data },
       });
     } else {
       console.error("No album found");
     }
   };
-
-  console.log(styles);
 
   return (
     <div

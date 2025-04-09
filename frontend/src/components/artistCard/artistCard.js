@@ -17,7 +17,7 @@ const ArtistCard = ({ artist }) => {
 
     const data = await fetchArtist(artist_id);
     if (data) {
-      navigate(`artist/${slugifiedArtist}/${artist_id}`, {
+      navigate(`/artist/${slugifiedArtist}/${artist_id}`, {
         state: { results: data },
       });
     } else {

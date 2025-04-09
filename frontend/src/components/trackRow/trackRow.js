@@ -19,7 +19,7 @@ const TrackRow = ({ track }) => {
 
     const data = await fetchTrack(track_id);
     if (data) {
-      navigate(`track/${slugifiedArtist}/${slugifiedTitle}/${track_id}`, {
+      navigate(`/track/${slugifiedArtist}/${slugifiedTitle}/${track_id}`, {
         state: { results: data },
       });
     } else {
