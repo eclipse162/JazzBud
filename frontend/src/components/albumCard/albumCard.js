@@ -26,6 +26,8 @@ const AlbumCard = ({ album }) => {
     }
   };
 
+  console.log(styles);
+
   return (
     <div
       className={styles.albumCard}
