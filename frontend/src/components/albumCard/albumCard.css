@@ -1,13 +1,14 @@
 .album-card {
-  flex: 0 0 150px;
-  height: 210px;
   border-radius: 10px;
-  padding: 10px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  margin: 0 5px 20px;
   display: inline-block;
+  flex: 0 0 150px;
+  max-height: 250px;
+  height: 250px;
+  margin: 0 5px 20px;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+  text-align: left;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -23,10 +24,6 @@
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 8px;
-}
-
-.album-info {
-  margin-top: 5px;
 }
 
 .album-title {

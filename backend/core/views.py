@@ -63,14 +63,14 @@ class search(APIView):
                 return JsonResponse({"error": "Not authenticated"}, status=401)
 
         sp = spotipy.Spotify(auth=token.access_token)
-        response = sp.search(q=query, type='track,artist,album', limit=5)
+        response = sp.search(q=query, type='track,artist,album', limit=10)
 
         if "error" in response:
             return JsonResponse({}, status=204)
         
         t_data = response.get('tracks', {})
         tracks = t_data.get('items', [])
-        lo_tracks = handle_tracks(tracks)
+        lo_tracks = handle_tracks(tracks[0:6])
 
         a_data = response.get('albums', {})
         albums = a_data.get('items', [])

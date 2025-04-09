@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchSearch } from "../api";
 import { deSlugify } from "../utils.js";
 
 import TrackRow from "../components/trackRow/trackRow.js";
@@ -15,27 +13,7 @@ const Search = () => {
   const slugQuery = queryParams.get("query");
   const query = deSlugify(slugQuery);
 
-  const [results, setResults] = useState({
-    tracks: [],
-    albums: [],
-    artists: [],
-  });
-
-  useEffect(() => {
-    const getSearchResults = async () => {
-      const data = await fetchSearch(query);
-      if (data.tracks) {
-        setResults(data);
-      } else {
-        console.error("No results found");
-      }
-    };
-
-    if (query) {
-      getSearchResults();
-    }
-  }, [query]);
-
+  const { results } = location.state || {};
   const { tracks, albums, artists } = results;
 
   return (

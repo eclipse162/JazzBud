@@ -17,7 +17,6 @@
 }
 
 .browse-all {
-  display: flex;
   gap: 20px;
   overflow-x: auto;
 }

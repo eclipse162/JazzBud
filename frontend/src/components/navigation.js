@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { customSlugify } from "../utils.js";
-import { fetchSpotifyUserInfo } from "../api.js";
+import { fetchSpotifyUserInfo, fetchSearch } from "../api.js";
 
 const Navigation = () => {
   const [query, setQuery] = useState("");
@@ -12,7 +12,15 @@ const Navigation = () => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    navigate(`/search/?query=${querySlug}`);
+
+    const data = await fetchSearch(query);
+    if (data.tracks || data.albums || data.artists) {
+      navigate(`/search/?query=${querySlug}`, {
+        state: { results: data },
+      });
+    } else {
+      console.error("No results found");
+    }
   };
 
   useEffect(() => {
