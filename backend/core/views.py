@@ -10,7 +10,7 @@ from django.db.models import Q
 from rest_framework import status
 from requests import Request, post
 from db.models import Artist, Album, Instrument
-from spotify.views import refresh_user
+from spotify.views import refresh_user, confirm_authentication
 from rest_framework.views import APIView
 from db.crud import get_token, create_collection, create_segment, get_spotify_song, create_song
 from rest_framework.response import Response

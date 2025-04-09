@@ -206,3 +206,22 @@ class SpotifyAPI(APIView):
     def get(self, request):
         user_info = self.populate_user_info(request)
         return JsonResponse(user_info)
+
+def confirm_authentication(session_id, request):
+    if session_id is None:
+            return redirect('login')
+
+    with get_db() as db:
+        user = get_session_user(db, session_id)
+        if user is None or not refresh_user(db, session_id):
+            return redirect('login')
+        authenticate_user(request.session, user.user_id)
+
+        user_id = user.user_id
+        token = get_token(db, user_id)
+        if token is None:
+            return redirect('login')
+        
+        return token
+    
+    return redirect('login')
