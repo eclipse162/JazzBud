@@ -1,4 +1,4 @@
-import styles from "./player.module.css";
+import styles from "./spotifyPlayer.module.css";
 import React, { useEffect, useState, useCallback } from "react";
 
 import { formatTime } from "../../utils.js";
