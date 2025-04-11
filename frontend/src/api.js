@@ -173,3 +173,25 @@ export async function fetchSpotifyUserInfo() {
     return null;
   }
 }
+
+export async function transferPlayback(deviceId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/core/transfer_playback`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ device_id: deviceId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to transfer playback");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error transferring playback:", error);
+    return null;
+  }
+}

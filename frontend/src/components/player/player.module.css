@@ -1,0 +1,53 @@
+.playerContainer {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progressWrapper {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.progressContainer {
+  flex-grow: 1;
+}
+
+.progressBar {
+  width: 100%;
+  height: 3px;
+  border: 1px solid #d2d2d2;
+  background: #020f20;
+  border-radius: 9px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress {
+  width: 10px;
+  height: 10px;
+  background: #a1a7bc;
+  border-radius: 50%;
+  position: absolute;
+  top: -3.5px;
+  left: 0;
+  transform: translateX(-50%);
+}
+
+.currentTime {
+  color: #d2d2d2;
+  font-size: 14px;
+}
+
+.duration {
+  margin-left: 15px;
+  color: #d2d2d2;
+  font-size: 14px;
+}

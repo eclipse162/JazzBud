@@ -1,4 +1,4 @@
-export function msToMinutesSeconds(ms) {
+export function formatTime(ms) {
   try {
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);

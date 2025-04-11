@@ -6,6 +6,8 @@ let currentPosition = 0;
 let trackDuration = 0;
 let progressInterval;
 
+src = "https://sdk.scdn.co/spotify-player.js";
+
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = window.spotifyAccessToken;
   const player = new Spotify.Player({

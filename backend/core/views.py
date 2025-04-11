@@ -196,7 +196,8 @@ class album(APIView):
 
         return JsonResponse({
             "album": album,
-            "artist_image": artist_image
+            "artist_image": artist_image,
+            "token": token.access_token
         })
 
 class track(APIView):

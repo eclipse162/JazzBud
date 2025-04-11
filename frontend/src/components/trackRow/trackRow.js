@@ -1,13 +1,13 @@
 import React from "react";
 import { fetchTrack } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify, msToMinutesSeconds } from "../../utils.js";
+import { customSlugify, formatTime } from "../../utils.js";
 import styles from "./trackRow.module.css";
 
 const TrackRow = ({ track }) => {
   const slugifiedTitle = customSlugify(track.title);
   const slugifiedArtist = customSlugify(track.artist);
-  const trackLength = msToMinutesSeconds(track.track_length);
+  const trackLength = formatTime(track.track_length);
   const navigate = useNavigate();
 
   if (track.title.length > 60) {
