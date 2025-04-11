@@ -1,6 +1,6 @@
 import { fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../utils.js";
+import { customSlugify } from "../../utils.js";
 import SpotifyPlayer from "../components/player/spotifyPlayer.js";
 
 import styles from "../styles/album_page.module.css";
