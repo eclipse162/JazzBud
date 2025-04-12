@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { customSlugify, formatTime } from "../../utils.js";
 import styles from "./trackRow.module.css";
 
-const TrackRow = ({ track }) => {
+const TrackRow = ({ track, forAlbum }) => {
   const slugifiedTitle = customSlugify(track.title);
   const slugifiedArtist = customSlugify(track.artist);
   const trackLength = formatTime(track.track_length);
@@ -32,11 +32,13 @@ const TrackRow = ({ track }) => {
       <div
         className={styles.trackClickable}
         onClick={(event) => handleTrack(track.track_id, event)}>
-        <img
-          className={styles.trackCover}
-          src={track.cover}
-          alt={`${track.title} by ${track.artist}`}
-        />
+        {!forAlbum && (
+          <img
+            className={styles.trackCover}
+            src={track.cover}
+            alt={`${track.title} by ${track.artist}`}
+          />
+        )}
         <div className={styles.trackInfo}>
           <p className={styles.trackTitle}>{track.title}</p>
           <p className={styles.trackArtist}>{track.artist}</p>

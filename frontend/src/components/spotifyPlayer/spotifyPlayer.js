@@ -83,7 +83,7 @@ const SpotifyPlayer = ({ songID, token, artistImage }) => {
   );
 
   useEffect(() => {
-    if (artistImage === null) {
+    if (!artistImage === null) {
       return null;
     }
 

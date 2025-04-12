@@ -21,7 +21,9 @@ const Album = () => {
           paddingLeft: "12px",
         }}>
         {tracks && tracks.length > 0 ? (
-          tracks.map((track) => <TrackRow key={track.id} track={track} />)
+          tracks.map((track) => (
+            <TrackRow key={track.id} track={track} forAlbum={true} />
+          ))
         ) : (
           <p>No tracks found</p>
         )}

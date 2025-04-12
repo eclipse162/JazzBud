@@ -26,7 +26,9 @@ const Search = () => {
 
       <section className={styles.trackList}>
         {tracks && tracks.length > 0 ? (
-          tracks.map((track) => <TrackRow key={track.id} track={track} />)
+          tracks.map((track) => (
+            <TrackRow key={track.id} track={track} forAlbum={false} />
+          ))
         ) : (
           <p>No tracks found</p>
         )}
