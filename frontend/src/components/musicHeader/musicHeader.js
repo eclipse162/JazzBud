@@ -51,11 +51,7 @@ const MusicHeader = ({ music, artistImage, token }) => {
               &nbsp;&middot;&nbsp; {music.release_year}
             </p>
           </div>
-          <SpotifyPlayer
-            songID={music.id}
-            token={token}
-            artistImage={artistImage}
-          />
+          {!artistImage && <SpotifyPlayer songID={music.id} token={token} />}
         </div>
       </div>
     </main>

@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { formatTime } from "../../utils.js";
 import { transferPlayback } from "../../api.js";
 
-const SpotifyPlayer = ({ songID, token, artistImage }) => {
+const SpotifyPlayer = ({ songID, token }) => {
   const [player, setPlayer] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -83,10 +83,6 @@ const SpotifyPlayer = ({ songID, token, artistImage }) => {
   );
 
   useEffect(() => {
-    if (!artistImage === null) {
-      return null;
-    }
-
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
     script.async = true;
@@ -130,7 +126,6 @@ const SpotifyPlayer = ({ songID, token, artistImage }) => {
     };
   }, [
     token,
-    artistImage,
     songID,
     player,
     trackDuration,
