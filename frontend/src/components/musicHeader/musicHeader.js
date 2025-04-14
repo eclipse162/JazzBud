@@ -1,13 +1,13 @@
 import { fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../../utils.js";
+import { slugify } from "../../utils.js";
 import SpotifyPlayer from "../spotifyPlayer/spotifyPlayer.js";
 
 import styles from "./musicHeader.module.css";
 
 const MusicHeader = ({ music, artistImage, token }) => {
   const navigate = useNavigate();
-  const slugifiedArtist = customSlugify(music.artist);
+  const slugifiedArtist = slugify(music.artist);
 
   if (!music) {
     return <div>Request Not Found...</div>;

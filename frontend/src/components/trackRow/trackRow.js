@@ -1,12 +1,12 @@
 import React from "react";
 import { fetchTrack } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify, formatTime } from "../../utils.js";
+import { slugify, formatTime } from "../../utils.js";
 import styles from "./trackRow.module.css";
 
 const TrackRow = ({ track, forAlbum }) => {
-  const slugifiedTitle = customSlugify(track.title);
-  const slugifiedArtist = customSlugify(track.artist);
+  const slugifiedTitle = slugify(track.title);
+  const slugifiedArtist = slugify(track.artist);
   const trackLength = formatTime(track.track_length);
   const navigate = useNavigate();
 

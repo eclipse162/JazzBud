@@ -1,11 +1,11 @@
 import React from "react";
 import { fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../../utils.js";
+import { slugify } from "../../utils.js";
 import styles from "./artistCard.module.css";
 
 const ArtistCard = ({ artist }) => {
-  const slugifiedArtist = customSlugify(artist.name);
+  const slugifiedArtist = slugify(artist.name);
   const navigate = useNavigate();
 
   if (artist.name.length > 25) {

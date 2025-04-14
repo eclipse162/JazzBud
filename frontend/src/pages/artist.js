@@ -4,7 +4,7 @@ import "../styles/album_page.module.css";
 import { useLocation } from "react-router-dom";
 import { fetchArtist } from "../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../utils.js";
+import { slugify } from "../utils.js";
 import TrackRow from "../components/trackRow/trackRow.js";
 
 const Artist = () => {
@@ -14,7 +14,7 @@ const Artist = () => {
   const { results } = location.state || {};
   const { album, artist_image } = results;
   const tracks = album.tracks;
-  const slugifiedArtist = customSlugify(album.artist);
+  const slugifiedArtist = slugify(album.artist);
 
   const handleArtist = async (artist_id, event) => {
     event.preventDefault();

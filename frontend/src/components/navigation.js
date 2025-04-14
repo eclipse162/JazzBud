@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../utils.js";
+import { useNavigate, useLocation } from "react-router-dom";
+import { slugify } from "../utils.js";
 import { fetchSpotifyUserInfo, fetchSearch } from "../api.js";
 
 const Navigation = () => {
   const [query, setQuery] = useState("");
   const [displayName, setDisplayName] = useState("Username");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const querySlug = customSlugify(query);
+  const querySlug = slugify(query);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -29,11 +30,13 @@ const Navigation = () => {
       if (userInfo?.display_name) {
         setDisplayName(userInfo.display_name);
       } else {
-        navigate(`/login`);
+        navigate(`/login`, {
+          state: { from: location.pathname },
+        });
       }
     };
     getUserInfo();
-  }, []);
+  }, [navigate, location]);
 
   return (
     <div className="page-container">

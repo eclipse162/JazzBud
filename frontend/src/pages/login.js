@@ -1,21 +1,19 @@
 import React from "react";
+import { fetchLogin } from "../api";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/base.css";
-import { isSpotifyAuthenticated, authenticateSpotify } from "../api";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = location.state?.from || "/";
+
   const handleSpotifyLogin = async (event) => {
     event.preventDefault();
 
-    try {
-      const authStatus = await isSpotifyAuthenticated();
-      if (!authStatus.status) {
-        const authData = await authenticateSpotify();
-        window.location.href = authData.url;
-      } else {
-        window.location.href = "";
-      }
-    } catch (error) {
-      console.error("Error during Spotify login flow:", error);
+    const authStatus = await fetchLogin();
+    if (authStatus?.status) {
+      navigate(redirectTo);
     }
   };
 

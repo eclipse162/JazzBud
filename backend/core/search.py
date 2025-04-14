@@ -38,7 +38,7 @@ def handle_albums(albums):
         artist_names = [artist['name'] for artist in album['artists']]
         artist_ids = [artist['id'] for artist in album['artists']]
         if 'images' in album and album['images']:
-            cover_url = album['images'][1]['url'] if len(album['images']) > 1 else album['images'][0]['url']
+            cover_url = album['images'][0]['url']
         else:
             cover_url = album['cover']
 

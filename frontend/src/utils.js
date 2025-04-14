@@ -9,7 +9,7 @@ export function formatTime(ms) {
   }
 }
 
-export function customSlugify(value) {
+export function slugify(value) {
   if (!value) return "";
 
   const slugified = value

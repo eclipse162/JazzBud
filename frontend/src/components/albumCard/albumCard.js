@@ -1,12 +1,12 @@
 import React from "react";
 import { fetchAlbum } from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { customSlugify } from "../../utils.js";
+import { slugify } from "../../utils.js";
 import styles from "./albumCard.module.css";
 
 const AlbumCard = ({ album }) => {
-  const slugifiedArtist = customSlugify(album.artist);
-  const slugifiedTitle = customSlugify(album.title);
+  const slugifiedArtist = slugify(album.artist);
+  const slugifiedTitle = slugify(album.title);
   const navigate = useNavigate();
 
   if (album.title.length > 30) {

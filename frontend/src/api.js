@@ -15,6 +15,20 @@ export const fetchHome = async () => {
   }
 };
 
+export const fetchLogin = async () => {
+  try {
+    const authStatus = await isSpotifyAuthenticated();
+    if (!authStatus.status) {
+      const authData = await authenticateSpotify();
+      window.location.href = authData.url;
+    } else {
+      return authStatus;
+    }
+  } catch (error) {
+    console.error("Error during Spotify login flow:", error);
+  }
+};
+
 export const fetchAbout = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/about/`, {

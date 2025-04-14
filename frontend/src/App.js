@@ -21,7 +21,6 @@ const AppContent = () => {
 
   return (
     <>
-      {/* Conditionally render Navigation */}
       {!hideNavigationRoutes.includes(location.pathname) && <Navigation />}{" "}
       {/* ^^ Used to hide navbar on login ^^ */}
       <Routes>
