@@ -12,6 +12,7 @@ const Search = () => {
   const location = useLocation();
   const { query: slugQuery } = useParams();
   const query = deSlugify(slugQuery);
+  console.log("Search query:", query);
 
   const { results } = location.state || {};
 

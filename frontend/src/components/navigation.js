@@ -16,7 +16,7 @@ const Navigation = () => {
 
     const data = await fetchSearch(query);
     if (data.tracks || data.albums || data.artists) {
-      navigate(`/search/?query=${querySlug}`, {
+      navigate(`/search/${querySlug}`, {
         state: { results: data },
       });
     } else {
