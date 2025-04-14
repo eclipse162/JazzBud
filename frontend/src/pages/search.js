@@ -1,7 +1,7 @@
 import { deSlugify } from "../utils.js";
 import { fetchSearch } from "../api.js";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import styles from "../styles/search.module.css";
 import TrackRow from "../components/trackRow/trackRow.js";
@@ -9,8 +9,9 @@ import AlbumCard from "../components/albumCard/albumCard.js";
 import ArtistCard from "../components/artistCard/artistCard";
 
 const Search = () => {
+  const [searchParams] = useSearchParams();
   const location = useLocation();
-  const { query: slugQuery } = useParams();
+  const slugQuery = searchParams.get("query");
   const query = deSlugify(slugQuery);
   console.log("Search query:", query);
 
