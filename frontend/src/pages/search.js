@@ -1,20 +1,50 @@
-import { useLocation } from "react-router-dom";
 import { deSlugify } from "../utils.js";
+import { fetchSearch } from "../api.js";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
+import styles from "../styles/search.module.css";
 import TrackRow from "../components/trackRow/trackRow.js";
 import AlbumCard from "../components/albumCard/albumCard.js";
 import ArtistCard from "../components/artistCard/artistCard";
 
-import styles from "../styles/search.module.css";
-
 const Search = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const slugQuery = queryParams.get("query");
+  const { query: slugQuery } = useParams();
   const query = deSlugify(slugQuery);
 
   const { results } = location.state || {};
-  const { tracks, albums, artists } = results;
+
+  const [searchData, setSearchData] = useState(results || null);
+  const [loading, setLoading] = useState(!results);
+
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      if (!results) {
+        setLoading(true);
+        try {
+          const data = await fetchSearch(query);
+          setSearchData(data);
+        } catch (error) {
+          console.error("Error fetching album data:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchSearchData();
+  }, [query, results]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!searchData) {
+    return <p>Album not found</p>;
+  }
+
+  const { tracks, albums, artists } = searchData;
 
   return (
     <main className={styles.searchPage}>

@@ -22,7 +22,7 @@ def handle_tracks(tracks):
         lo_tracks.append({
             'artist': ', '.join(artist_names),
             'artist_id': ', '.join(artist_ids),
-            'spotify_song_id': track['id'],
+            'track_id': track['id'],
             'title': track['name'],
             'album': track['album']['name'],
             'album_id': track['album']['id'],
