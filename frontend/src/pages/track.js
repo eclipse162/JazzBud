@@ -12,7 +12,7 @@ const Track = () => {
 
   return (
     <main className="page" style={{ padding: "40px" }}>
-      <MusicHeader music={track} token={token} artistImage={artistImage} />
+      <MusicHeader music={track} artistImage={artistImage} token={token} />
     </main>
   );
 };

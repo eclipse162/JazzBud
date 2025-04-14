@@ -1,9 +1,9 @@
 import { fetchArtist } from "../../api.js";
-import { useNavigate } from "react-router-dom";
 import { slugify } from "../../utils.js";
-import SpotifyPlayer from "../spotifyPlayer/spotifyPlayer.js";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./musicHeader.module.css";
+import SpotifyPlayer from "../spotifyPlayer/spotifyPlayer.js";
 
 const MusicHeader = ({ music, artistImage, token }) => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const MusicHeader = ({ music, artistImage, token }) => {
 
     const data = await fetchArtist(artist_id);
     if (data) {
-      navigate(`artist/${slugifiedArtist}/${artist_id}`, {
+      navigate(`/artist/${slugifiedArtist}/${artist_id}`, {
         state: { results: data },
       });
     } else {
@@ -48,7 +48,7 @@ const MusicHeader = ({ music, artistImage, token }) => {
                 onClick={(event) => handleArtist(music.artist_id, event)}>
                 {music.artist}
               </div>
-              &nbsp;&middot;&nbsp; {music.release_year}
+              &nbsp;&middot; {music.release_year}
             </p>
           </div>
           {!artistImage && <SpotifyPlayer songID={music.id} token={token} />}

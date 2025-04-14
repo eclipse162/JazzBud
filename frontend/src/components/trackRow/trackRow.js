@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchTrack } from "../../api.js";
+import { fetchTrack, fetchArtist } from "../../api.js";
 import { useNavigate } from "react-router-dom";
 import { slugify, formatTime } from "../../utils.js";
 import styles from "./trackRow.module.css";
@@ -27,6 +27,19 @@ const TrackRow = ({ track, forAlbum }) => {
     }
   };
 
+  const handleArtist = async (artist_id, event) => {
+    event.preventDefault();
+
+    const data = await fetchArtist(artist_id);
+    if (data) {
+      navigate(`/artist/${slugifiedArtist}/${artist_id}`, {
+        state: { results: data },
+      });
+    } else {
+      console.error("No artist found");
+    }
+  };
+
   return (
     <div className={styles.trackRow}>
       <div
@@ -41,7 +54,11 @@ const TrackRow = ({ track, forAlbum }) => {
         )}
         <div className={styles.trackInfo}>
           <p className={styles.trackTitle}>{track.title}</p>
-          <p className={styles.trackArtist}>{track.artist}</p>
+          <p
+            className={styles.trackArtist}
+            onClick={(event) => handleArtist(track.artist_id, event)}>
+            {track.artist}
+          </p>
         </div>
       </div>
 

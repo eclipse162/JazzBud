@@ -9,6 +9,7 @@
 
 .trackClickable {
   display: flex;
+  cursor: pointer;
 }
 
 .trackInfo {
@@ -25,6 +26,10 @@
   font-size: 14px;
   color: #9ca3af;
   font-weight: 450;
+}
+
+.trackArtist:hover {
+  text-decoration: underline;
 }
 
 .trackLength {

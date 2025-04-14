@@ -18,7 +18,6 @@ const Album = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          paddingLeft: "12px",
         }}>
         {tracks && tracks.length > 0 ? (
           tracks.map((track) => (
