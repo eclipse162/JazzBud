@@ -27,7 +27,7 @@ const MusicHeader = ({ music, artistImage, token }) => {
   };
 
   return (
-    <main className={styles.page} style={{ padding: "40px" }}>
+    <main className={styles.page}>
       <div className={styles.header}>
         <div className={styles.content}>
           <div className={styles.coverContainer}>
