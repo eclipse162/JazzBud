@@ -39,10 +39,8 @@ const AppContent = () => {
 };
 
 const App = () => {
-  console.log("App component rendered");
-
   return (
-    <Router>
+    <Router basename="/">
       <AppContent />
     </Router>
   );
