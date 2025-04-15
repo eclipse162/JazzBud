@@ -39,6 +39,8 @@ const AppContent = () => {
 };
 
 const App = () => {
+  console.log("App component rendered");
+
   return (
     <Router>
       <AppContent />
