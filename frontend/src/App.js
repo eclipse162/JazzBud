@@ -19,6 +19,8 @@ const AppContent = () => {
   const location = useLocation();
   const hideNavigationRoutes = ["/login"];
 
+  console.log("Current location:", location.pathname);
+
   return (
     <>
       {!hideNavigationRoutes.includes(location.pathname) && <Navigation />}{" "}
