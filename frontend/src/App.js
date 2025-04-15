@@ -27,7 +27,7 @@ const AppContent = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
-        <Route path="/search/:query" element={<Search />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/artist/:slug/:id" element={<Artist />} />
         <Route path="/album/:artistslug/:titleslug/:id" element={<Album />} />
         <Route path="/track/:artistslug/:titleslug/:id" element={<Track />} />

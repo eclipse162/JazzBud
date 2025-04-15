@@ -9,22 +9,24 @@ import AlbumCard from "../components/albumCard/albumCard.js";
 import ArtistCard from "../components/artistCard/artistCard";
 
 const Search = () => {
-  const [searchParams] = useSearchParams();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
   const slugQuery = searchParams.get("query");
   const query = deSlugify(slugQuery);
+
   console.log("Search query:", query);
 
   const { results } = location.state || {};
-
-  const [searchData, setSearchData] = useState(results || null);
   const [loading, setLoading] = useState(!results);
+  const [searchData, setSearchData] = useState(results || null);
 
   useEffect(() => {
     const fetchSearchData = async () => {
       if (!results) {
         setLoading(true);
         try {
+          console.log("Fetching search data...");
           const data = await fetchSearch(query);
           setSearchData(data);
         } catch (error) {
