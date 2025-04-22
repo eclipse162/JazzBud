@@ -15,6 +15,7 @@ const ArtistSearch = ({ onArtistSelect, onInstrumentSelect }) => {
   useEffect(() => {
     const fetchSearchData = async () => {
       if (query.length >= 3) {
+        console.log(query);
         try {
           const data = await fetchArtistSearch(query);
           setArtists(data.artists);

@@ -81,6 +81,7 @@ class artist_search(APIView):
     
     def post(self, request):
         query = request.POST.get('q')
+        print(f"Query: {query}")
         session_id = request.session.session_key
 
         token = confirm_authentication(session_id, request)
