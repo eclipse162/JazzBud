@@ -17,6 +17,13 @@ from core.views import (
     playback,
 )
 
+from spotify.views import (
+    AuthURL,
+    auth_callback,
+    SpotifyAPI,
+    IsAuthenticated,
+)
+
 urlpatterns = [
     path('', login.as_view(), name="login"),
     path('home/', home.as_view(), name="home"),
@@ -27,6 +34,12 @@ urlpatterns = [
     path('track/', track.as_view(), name='track'),
     path('album/', album.as_view(), name='album'),
     path('artist/', artist.as_view(), name='artist'),
+
+    # Spotify API
+    path('spotify/auth', AuthURL.as_view(), name='auth'),
+    path('spotify/redirect', auth_callback, name='redirect'),
+    path('spotify/user_info', SpotifyAPI.as_view(), name='user_info'),
+    path('spotify/is-authenticated', IsAuthenticated.as_view(), name='is-authenticated'),
 
     # Component Helpers
     path('artist_search/', artist_search.as_view(), name='artist_search'),
