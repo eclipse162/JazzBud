@@ -99,7 +99,7 @@ class artist_search(APIView):
             'artists': lo_artists
         })
 
-class instrument_search(request):
+class instrument_search(APIView):
 
     def post(self, request):
         query = request.POST.get('q')
