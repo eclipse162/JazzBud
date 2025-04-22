@@ -78,9 +78,10 @@ class search(APIView):
         })
     
 class artist_search(APIView):
+    permission_classes = [AllowAny]
     
     def post(self, request):
-        query = request.POST.get('q')
+        query = request.POST.get('query', '')
         print(f"Query: {query}")
         session_id = request.session.session_key
 
