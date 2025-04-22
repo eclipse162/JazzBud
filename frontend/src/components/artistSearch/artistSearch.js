@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
-import ArtistDropdown from "./artistDropdown/artistDropdown";
-import ArtistDisplay from "./artistDisplay/artistDisplay";
 import { fetchArtistSearch } from "../../api";
+import React, { useState, useEffect } from "react";
 
-const ArtistSearch = ({ onArtistSelect }) => {
+import styles from "./artistSearch.module.css";
+import ArtistDisplay from "./artistDisplay/artistDisplay";
+import ArtistDropdown from "./artistDropdown/artistDropdown";
+
+const ArtistSearch = ({ onArtistSelect, onInstrumentSelect }) => {
   const [query, setQuery] = useState(""); // Search query
   const [artists, setArtists] = useState([]); // List of artists fetched from the API
+  const [selectedInstruments, setSelectedInstruments] = useState(null); // List of instruments an artist plays
   const [dropdownVisible, setDropdownVisible] = useState(false); // Dropdown visibility
   const [selectedArtist, setSelectedArtist] = useState(null); // Selected artist
 
@@ -39,21 +42,31 @@ const ArtistSearch = ({ onArtistSelect }) => {
     onArtistSelect(artist);
   };
 
+  const handleInstrumentSelect = (instruments) => {
+    setSelectedInstruments(instruments);
+    onInstrumentSelect(instruments);
+  };
+
   return (
-    <div className="artist-search-container">
+    <div className={styles.artistSearchContainer}>
       <input
         type="text"
         placeholder="Search"
         value={query}
         onChange={handleInputChange}
-        className="artist-search"
+        className={styles.artistSearch}
       />
 
       {dropdownVisible && (
         <ArtistDropdown artists={artists} onSelect={handleArtistSelect} />
       )}
 
-      {selectedArtist && <ArtistDisplay artist={selectedArtist} />}
+      {selectedArtist && (
+        <ArtistDisplay
+          artist={selectedArtist}
+          onChange={handleInstrumentSelect}
+        />
+      )}
     </div>
   );
 };

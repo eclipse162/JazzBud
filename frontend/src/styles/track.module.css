@@ -1,0 +1,18 @@
+.editContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: start;
+  width: 93%;
+  max-height: 300px;
+  margin-bottom: 40px;
+  overflow-y: auto;
+}
+
+.artist-section {
+  margin-left: 40px;
+  flex: 1;
+  max-width: 350px;
+  height: auto;
+}

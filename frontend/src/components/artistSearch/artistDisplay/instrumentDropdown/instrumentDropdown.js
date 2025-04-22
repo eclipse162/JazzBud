@@ -1,14 +1,15 @@
 import React from "react";
+import styles from "../../artistDisplay/artistDisplay.module.css";
 
 const InstrumentDropdown = ({ instruments, onSelect }) => {
   if (!instruments || instruments.length === 0) return null;
 
   return (
-    <div className="dropdown-container-i">
+    <div className={styles.dropdownContainerI}>
       {instruments.map((instrument) => (
         <div
           key={instrument.id}
-          className="dropdown-item-i"
+          className={styles.dropdownItemI}
           onClick={() => onSelect(instrument)}>
           {instrument.name}
         </div>

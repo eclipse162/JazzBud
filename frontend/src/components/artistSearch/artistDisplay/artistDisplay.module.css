@@ -1,0 +1,88 @@
+.artist-display {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.artist-display img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.artist-display .artist-name {
+  font-size: 32px;
+  font-weight: 500;
+  color: #ebded1;
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.instrument-search-container {
+  margin-top: -8px;
+  color: #9da3ae;
+  cursor: text;
+  font-weight: 500;
+  background: transparent;
+  border-bottom: 2px solid #c8cce4;
+}
+
+.instrument-search-container:hover {
+  color: #818691;
+}
+
+.dropdown-container {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.selected-instruments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #ebded1;
+}
+
+.instrument-chip {
+  display: flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.instrument-chip span {
+  margin-right: 8px;
+}
+
+.remove-instrument {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}

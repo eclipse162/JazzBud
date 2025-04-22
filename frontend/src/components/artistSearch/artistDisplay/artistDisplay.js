@@ -4,7 +4,7 @@ import { fetchInstrumentSearch } from "../../api";
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
 
-const ArtistDisplay = ({ artist }) => {
+const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
   const [query, setQuery] = useState("");
   const [instruments, setInstruments] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -44,6 +44,7 @@ const ArtistDisplay = ({ artist }) => {
     }
     setQuery("");
     setDropdownVisible(false);
+    onInstrumentSelect(selectedInstruments);
   };
 
   const handleRemoveInstrument = (instrumentId) => {
