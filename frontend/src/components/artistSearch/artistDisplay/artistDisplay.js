@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchInstrumentSearch } from "../../api";
+import { fetchInstrumentSearch } from "../../../api";
 
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
