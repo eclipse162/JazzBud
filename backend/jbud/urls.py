@@ -42,9 +42,9 @@ urlpatterns = [
     path('spotify/is-authenticated', IsAuthenticated.as_view(), name='is-authenticated'),
 
     # Component Helpers
-    path('artist_search/', artist_search.as_view(), name='artist_search'),
-    path('instrument_search/', instrument_search.as_view(), name='instrument_search'),
-    path('save_artist_selection/', save_artist_selection, name='save_artist_selection'),
+    path('artist-search/', artist_search.as_view(), name='artist-search'),
+    path('instrument-search/', instrument_search.as_view(), name='instrument-search'),
+    path('save-artist-selection/', save_artist_selection, name='save_artist-selection'),
     
     path("transfer-playback/<str:device_id>/", transfer_playback, name="transfer_playback"),
     path("play/<str:track_uri>/<str:action>/", playback, name="play_song"),
