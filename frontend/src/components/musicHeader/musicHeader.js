@@ -31,18 +31,18 @@ const MusicHeader = ({ music, artistImage, token }) => {
       <div className={styles.header}>
         <div className={styles.content}>
           <div className={styles.coverContainer}>
-            {artistImage && (
-              <img src={music.cover} alt={music.name} class={styles.cover} />
-            )}
+            <img src={music.cover} alt={music.name} class={styles.cover} />
           </div>
           <div className={styles.info}>
             <h1 className={styles.title}>{music.title}</h1>
             <p className={styles.artist}>
-              <img
-                src={artistImage}
-                alt={music.artist}
-                class={styles.artistImage}
-              />
+              {artistImage && (
+                <img
+                  src={artistImage}
+                  alt={music.artist}
+                  class={styles.artistImage}
+                />
+              )}
               <div
                 class={styles.clickable}
                 onClick={(event) => handleArtist(music.artist_id, event)}>
