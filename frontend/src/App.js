@@ -40,7 +40,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <Router basename="/">
+    <Router>
       <AppContent />
     </Router>
   );

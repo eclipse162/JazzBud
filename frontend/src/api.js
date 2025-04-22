@@ -132,6 +132,50 @@ export async function fetchTrack(trackId) {
   }
 }
 
+export async function fetchArtistSearch(query) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/artist-search/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ query }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error searching songs:", error);
+    return { error: "Failed to fetch search results." };
+  }
+}
+
+export async function fetchInstrumentSearch(query) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/instrument-search/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ query }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error searching songs:", error);
+    return { error: "Failed to fetch search results." };
+  }
+}
+
 export const isSpotifyAuthenticated = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/spotify/is-authenticated`, {

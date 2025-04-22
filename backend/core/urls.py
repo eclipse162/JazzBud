@@ -29,8 +29,8 @@ urlpatterns = [
     path('album/', album.as_view(), name='album'),
     path('artist/', artist.as_view(), name='artist'),
 
-    path('artist_search/', artist_search, name='artist_search'),
-    path('instrument_search/', instrument_search, name='instrument_search'),
+    path('artist_search/', artist_search.as_view(), name='artist_search'),
+    path('instrument_search/', instrument_search.as_view(), name='instrument_search'),
     path('save_artist_selection/', save_artist_selection, name='save_artist_selection'),
     
     path("transfer-playback/<str:device_id>/", transfer_playback, name="transfer_playback"),

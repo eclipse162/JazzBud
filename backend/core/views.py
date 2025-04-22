@@ -18,6 +18,8 @@ from rest_framework.permissions import  AllowAny
 from rest_framework.viewsets import GenericViewSet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -75,55 +77,63 @@ class search(APIView):
             'artists': lo_artists
         })
     
-def artist_search(request):
-    query = request.GET.get('q')
-    print(f"Query: {query}")
-    session_id = request.session.session_key
-
-    token = confirm_authentication(session_id, request)
+class artist_search(APIView):
     
-    sp = spotipy.Spotify(auth=token.access_token)
-    response = sp.search(q=query, type='artist', limit=3)
-    
-    if "error" in response:
-        return JsonResponse({}, status=204)
+    def post(self, request):
+        query = request.POST.get('q')
+        session_id = request.session.session_key
 
-    ar_data = response.get('artists', {})
-    artists = ar_data.get('items', [])
-    lo_artists = handle_artists(artists)
+        token = confirm_authentication(session_id, request)
+        
+        sp = spotipy.Spotify(auth=token.access_token)
+        response = sp.search(q=query, type='artist', limit=3)
+        
+        if "error" in response:
+            return JsonResponse({}, status=204)
 
-    print("Artists: ", lo_artists)
+        ar_data = response.get('artists', {})
+        artists = ar_data.get('items', [])
+        lo_artists = handle_artists(artists)
 
-    return render(request, 'partials/results.html', {'artists': lo_artists})
+        return JsonResponse({
+            'artists': lo_artists
+        })
 
-def instrument_search(request):
-    query = request.GET.get('q', '').strip()
-    print(f"Query: {query}")
-    instrument_results = []
-    
-    session_id = request.session.session_key
-    if session_id is None:
-        return redirect('login')
-    
-    with get_db() as db:
-        user = get_session_user(db, session_id)
-        if user is None or not refresh_user(db, session_id):
+class instrument_search(request):
+
+    def post(self, request):
+        query = request.POST.get('q')
+        
+        session_id = request.session.session_key
+        if session_id is None:
             return redirect('login')
-        authenticate_user(request.session, user.user_id)
+        
+        with get_db() as db:
+            user = get_session_user(db, session_id)
+            if user is None or not refresh_user(db, session_id):
+                return redirect('login')
+            authenticate_user(request.session, user.user_id)
 
-        instruments = db.query(Instrument).filter(Instrument.name.ilike(f"%{query}%")).all()
+            try:
+                instruments = db.query(Instrument).filter(
+                    Instrument.name.ilike(f"%{query}%")
+                ).all()
 
-        for instrument in instruments:
-            instrument_results.append(
-                {
-                    "id": instrument.instrument_id,
-                    "name": instrument.name,
-                    "colour": instrument.colour
-                }
-            )
+                instrument_results = [ 
+                    {
+                        "id": instrument.instrument_id, 
+                        "name": instrument.name, 
+                        "colour": instrument.colour
+                    } for instrument in instruments
+                ]
 
-    print("Instruments: ", instrument_results)
-    return render(request, 'partials/results_i.html', {'instruments': instrument_results})
+                return JsonResponse({
+                    'instrument': instrument_results
+                }, status=200)
+        
+            except SQLAlchemyError as e:
+                logging.error(f"Database error: {e}")
+                return JsonResponse({"error": "Database error occurred"}, status=500)
 
 
 def save_artist_selection(request):
@@ -207,11 +217,12 @@ class track(APIView):
         track_id = request.POST.get('trackId')
         session_id = request.session.session_key
 
-        confirm_authentication(session_id, request)
+        token = confirm_authentication(session_id, request)
         track = populate_track(track_id)
 
         return JsonResponse({
-            "track": track
+            "track": track,
+            "token": token.access_token
         })
 
 def transfer_playback(request, device_id):

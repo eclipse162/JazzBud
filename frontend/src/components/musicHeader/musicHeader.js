@@ -51,7 +51,7 @@ const MusicHeader = ({ music, artistImage, token }) => {
               &nbsp;&middot; {music.release_year}
             </p>
           </div>
-          {!artistImage && <SpotifyPlayer songID={music.id} token={token} />}
+          {/* {!artistImage && <SpotifyPlayer songID={music.id} token={token} />} */}
         </div>
       </div>
     </main>
