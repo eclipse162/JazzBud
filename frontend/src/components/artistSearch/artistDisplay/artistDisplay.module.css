@@ -1,10 +1,10 @@
-.artist-display {
+.artistDisplay {
   display: flex;
   align-items: center;
   padding-bottom: 20px;
 }
 
-.artist-display img {
+.artistDisplay img {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -12,19 +12,19 @@
   margin-right: 10px;
 }
 
-.artist-display .artist-name {
+.artistDisplay .artist-name {
   font-size: 32px;
   font-weight: 500;
   color: #ebded1;
 }
 
-.artist-info {
+.artistInfo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.instrument-search-container {
+.instrumentSearchContainer {
   margin-top: -8px;
   color: #9da3ae;
   cursor: text;
@@ -33,11 +33,11 @@
   border-bottom: 2px solid #c8cce4;
 }
 
-.instrument-search-container:hover {
+.instrumentSearchContainer:hover {
   color: #818691;
 }
 
-.dropdown-container {
+.dropdownContainer {
   border: 1px solid #ccc;
   background-color: #fff;
   max-height: 150px;
@@ -46,16 +46,16 @@
   z-index: 1000;
 }
 
-.dropdown-item {
+.dropdownItem {
   padding: 8px;
   cursor: pointer;
 }
 
-.dropdown-item:hover {
+.dropdownItem:hover {
   background-color: #f0f0f0;
 }
 
-.selected-instruments {
+.selectedInstruments {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -65,7 +65,7 @@
   color: #ebded1;
 }
 
-.instrument-chip {
+.instrumentChip {
   display: flex;
   align-items: center;
   background-color: #e0e0e0;
@@ -75,11 +75,11 @@
   color: #fff;
 }
 
-.instrument-chip span {
+.instrumentChip span {
   margin-right: 8px;
 }
 
-.remove-instrument {
+.removeInstrument {
   background: none;
   border: none;
   color: #fff;

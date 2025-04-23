@@ -5,11 +5,11 @@ const InstrumentDropdown = ({ instruments, onSelect }) => {
   if (!instruments || instruments.length === 0) return null;
 
   return (
-    <div className={styles.dropdownContainerI}>
+    <div className={styles.dropdownContainer}>
       {instruments.map((instrument) => (
         <div
           key={instrument.id}
-          className={styles.dropdownItemI}
+          className={styles.dropdownItem}
           onClick={() => onSelect(instrument)}>
           {instrument.name}
         </div>
