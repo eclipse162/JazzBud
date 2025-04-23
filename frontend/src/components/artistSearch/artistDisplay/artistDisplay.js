@@ -14,7 +14,7 @@ const ArtistDisplay = ({
   const [instruments, setInstruments] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [instrumentsVisible, setInstrumentsVisible] = useState(false);
-  const [selectedInstruments, setSelectedInstruments] = useState(null);
+  const [selectedInstruments, setSelectedInstruments] = useState([]);
 
   useEffect(() => {
     const fetchInstrumentData = async () => {

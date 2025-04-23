@@ -89,8 +89,11 @@
 .removeArtist {
   background: none;
   border: none;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 20px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+  margin-left: 10px;
 }
 
 .instrumentChip {
