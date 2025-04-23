@@ -4,7 +4,12 @@ import { fetchInstrumentSearch } from "../../../api";
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
 
-const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
+const ArtistDisplay = ({
+  artist,
+  onInstrument,
+  onInstrumentRemove,
+  onArtistRemove,
+}) => {
   const [query, setQuery] = useState("");
   const [instruments, setInstruments] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -44,13 +49,18 @@ const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
     }
     setQuery("");
     setDropdownVisible(false);
-    onInstrumentSelect(selectedInstruments);
+    onInstrument(selectedInstruments);
+  };
+
+  const handleRemoveArtist = (artistId) => {
+    onArtistRemove(artistId);
   };
 
   const handleRemoveInstrument = (instrumentId) => {
     setSelectedInstruments((prev) =>
       prev.filter((instrument) => instrument.id !== instrumentId)
     );
+    onInstrumentRemove(instrumentId);
   };
 
   return (
@@ -63,6 +73,13 @@ const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
       <div className={styles.artistInfo}>
         <span className={styles.artistName}>{artist.name}</span>
       </div>
+
+      <button
+        type="button"
+        className={styles.removeArtist}
+        onClick={() => handleRemoveArtist(artist.id)}>
+        &times;
+      </button>
 
       <div className={styles.instrumentSearchContainer}>
         <div className={styles.selectedInstruments}>

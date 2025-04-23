@@ -47,11 +47,14 @@
 
 .dropdownContainer {
   border: 1px solid #ccc;
-  background-color: #fff;
   max-height: 150px;
   overflow-y: auto;
   position: absolute;
   z-index: 1000;
+  width: 290px;
+  border-radius: 10px;
+  background-color: #030f1a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .dropdownItem {
@@ -67,7 +70,7 @@
 }
 
 .dropdownItem:hover {
-  background-color: #f0f0f0;
+  background-color: #020910;
 }
 
 .selectedInstruments {
