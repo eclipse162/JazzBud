@@ -131,7 +131,7 @@ class instrument_search(APIView):
                 ]
 
                 return JsonResponse({
-                    'instruments': instrument_results
+                    'instrument_data': instrument_results
                 }, status=200)
         
             except SQLAlchemyError as e:

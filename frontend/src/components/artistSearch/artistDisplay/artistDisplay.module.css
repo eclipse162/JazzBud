@@ -83,6 +83,13 @@
   color: #ebded1;
 }
 
+.removeArtist {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .instrumentChip {
   display: flex;
   align-items: center;
