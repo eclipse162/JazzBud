@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../artistSearch/artistSearch.module.css";
+import styles from "../artistDisplay/artistDisplay.module.css";
 
 const ArtistDropdown = ({ artists, onSelect }) => {
   if (!artists || artists.length === 0) return null;
@@ -9,9 +9,13 @@ const ArtistDropdown = ({ artists, onSelect }) => {
       {artists.map((artist) => (
         <div
           key={artist.artist_id}
-          className={styles.dropdownItem}
-          onClick={() => onSelect(artist)}>
-          <img src={artist.cover} alt={artist.name} className="artistImage" />
+          onClick={() => onSelect(artist)}
+          className={styles.dropdownItem}>
+          <img
+            src={artist.cover}
+            alt={artist.name}
+            className={styles.artistImage}
+          />
           <p>{artist.name}</p>
         </div>
       ))}
