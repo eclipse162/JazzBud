@@ -11,7 +11,7 @@ const ArtistDropdown = ({ artists, onSelect }) => {
           key={artist.artist_id}
           className={styles.dropdownItem}
           onClick={() => onSelect(artist)}>
-          <img src={artist.cover} alt={artist.name} className="artist-image" />
+          <img src={artist.cover} alt={artist.name} className="artistImage" />
           <p>{artist.name}</p>
         </div>
       ))}

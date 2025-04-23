@@ -55,7 +55,11 @@ const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
 
   return (
     <div className={styles.artistDisplay}>
-      <img src={artist.cover} alt={artist.name} className="artist-image" />
+      <img
+        src={artist.cover}
+        alt={artist.name}
+        className={styles.artistImage}
+      />
       <div className={styles.artistInfo}>
         <span className={styles.artistName}>{artist.name}</span>
       </div>
@@ -66,12 +70,12 @@ const ArtistDisplay = ({ artist, onInstrumentSelect }) => {
             selectedInstruments.map((instrument) => (
               <div
                 key={instrument.id}
-                className="instrument-chip"
+                className={styles.instrumentChip}
                 style={{ backgroundColor: instrument.color }}>
                 <span>{instrument.name}</span>
                 <button
                   type="button"
-                  className="remove-instrument"
+                  className={styles.removeInstrument}
                   onClick={() => handleRemoveInstrument(instrument.id)}>
                   &times;
                 </button>
