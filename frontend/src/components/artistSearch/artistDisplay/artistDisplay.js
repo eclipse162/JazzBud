@@ -21,6 +21,7 @@ const ArtistDisplay = ({
       if (query.length >= 3) {
         try {
           const data = await fetchInstrumentSearch(query);
+          console.log(data);
           setInstruments(data.instruments);
           setDropdownVisible(true);
         } catch (error) {
@@ -72,6 +73,41 @@ const ArtistDisplay = ({
       />
       <div className={styles.artistInfo}>
         <span className={styles.artistName}>{artist.name}</span>
+
+        <div className={styles.instrumentSearchContainer}>
+          <div className={styles.selectedInstruments}>
+            {instrumentsVisible &&
+              selectedInstruments.map((instrument) => (
+                <div
+                  key={instrument.id}
+                  className={styles.instrumentChip}
+                  style={{ backgroundColor: instrument.color }}>
+                  <span>{instrument.name}</span>
+                  <button
+                    type="button"
+                    className={styles.removeInstrument}
+                    onClick={() => handleRemoveInstrument(instrument.id)}>
+                    &times;
+                  </button>
+                </div>
+              ))}
+          </div>
+
+          <input
+            type="text"
+            placeholder="Search for instruments"
+            value={query}
+            onChange={handleInputChange}
+            className={styles.instrumentSearch}
+          />
+
+          {dropdownVisible && (
+            <InstrumentDropdown
+              instruments={instruments}
+              onSelect={handleInstrumentSelect}
+            />
+          )}
+        </div>
       </div>
 
       <button
@@ -80,41 +116,6 @@ const ArtistDisplay = ({
         onClick={() => handleRemoveArtist(artist.id)}>
         &times;
       </button>
-
-      <div className={styles.instrumentSearchContainer}>
-        <div className={styles.selectedInstruments}>
-          {instrumentsVisible &&
-            selectedInstruments.map((instrument) => (
-              <div
-                key={instrument.id}
-                className={styles.instrumentChip}
-                style={{ backgroundColor: instrument.color }}>
-                <span>{instrument.name}</span>
-                <button
-                  type="button"
-                  className={styles.removeInstrument}
-                  onClick={() => handleRemoveInstrument(instrument.id)}>
-                  &times;
-                </button>
-              </div>
-            ))}
-        </div>
-
-        <input
-          type="text"
-          placeholder="Search for instruments"
-          value={query}
-          onChange={handleInputChange}
-          className={styles.instrumentSearch}
-        />
-
-        {dropdownVisible && (
-          <InstrumentDropdown
-            instruments={instruments}
-            onSelect={handleInstrumentSelect}
-          />
-        )}
-      </div>
     </div>
   );
 };

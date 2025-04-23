@@ -121,6 +121,7 @@ class instrument_search(APIView):
                     Instrument.name.ilike(f"%{query}%")
                 ).all()
 
+
                 instrument_results = [ 
                     {
                         "id": instrument.instrument_id, 
@@ -130,7 +131,7 @@ class instrument_search(APIView):
                 ]
 
                 return JsonResponse({
-                    'instrument': instrument_results
+                    'instruments': instrument_results
                 }, status=200)
         
             except SQLAlchemyError as e:

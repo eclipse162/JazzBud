@@ -34,7 +34,7 @@
 
 .instrumentSearchContainer {
   margin-top: -8px;
-  color: #9da3ae;
+  background-color: transparent;
   cursor: text;
   font-weight: 500;
   background: transparent;
@@ -42,7 +42,7 @@
 }
 
 .instrumentSearchContainer:hover {
-  color: #818691;
+  color: #1d2029;
 }
 
 .dropdownContainer {
