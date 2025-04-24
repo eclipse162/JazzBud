@@ -5,7 +5,7 @@ const InstrumentDropdown = ({ instruments, onSelect }) => {
   if (!instruments || instruments.length === 0) return null;
 
   return (
-    <div className={styles.dropdownContainer}>
+    <div className={styles.dropdownContainer} style={{ width: "150px" }}>
       {instruments.map((instrument) => (
         <div
           key={instrument.id}

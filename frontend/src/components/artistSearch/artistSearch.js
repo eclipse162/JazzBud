@@ -12,6 +12,7 @@ const ArtistSearch = ({
   onRemoveInstrument,
 }) => {
   const [query, setQuery] = useState(""); // Search query
+  const [debouncedQuery, setDebouncedQuery] = useState(""); // Debounced search query
   const [artists, setArtists] = useState([]); // List of artists fetched from the API
   const [selectedInstruments, setSelectedInstruments] = useState(null); // List of instruments an artist plays
   const [dropdownVisible, setDropdownVisible] = useState(false); // Dropdown visibility
@@ -19,11 +20,20 @@ const ArtistSearch = ({
   const [selectedArtist, setSelectedArtist] = useState(null); // Selected artist
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [query]);
+
+  useEffect(() => {
     const fetchSearchData = async () => {
-      if (query.length >= 3) {
-        console.log(query);
+      if (debouncedQuery.length >= 3 && !selectedArtist) {
         try {
-          const data = await fetchArtistSearch(query);
+          const data = await fetchArtistSearch(debouncedQuery);
           setArtists(data.artists);
           setDropdownVisible(true);
         } catch (error) {
@@ -36,7 +46,7 @@ const ArtistSearch = ({
     };
 
     fetchSearchData();
-  }, [query]);
+  }, [debouncedQuery, selectedArtist]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
