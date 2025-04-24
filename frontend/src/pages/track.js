@@ -68,7 +68,7 @@ const Track = () => {
   };
 
   return (
-    <main className={styles.page} style={{ padding: "40px" }}>
+    <main className={styles.page}>
       <MusicHeader music={track} artistImage={null} token={token} />
 
       <div className={styles.editContainer}>

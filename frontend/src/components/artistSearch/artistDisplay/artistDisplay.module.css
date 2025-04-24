@@ -1,7 +1,6 @@
 .artistDisplay {
   display: flex;
-  align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 13px;
 }
 
 .artistDisplay img {
@@ -16,6 +15,26 @@
   font-size: 32px;
   font-weight: 550;
   color: #ebded1;
+}
+
+.artistName {
+  display: inline-block;
+}
+
+.artistName:hover .removeArtist {
+  opacity: 1;
+}
+
+.removeArtist {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #585a5f;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .artistInfo {
@@ -38,6 +57,11 @@
   font-weight: 500;
   margin-top: -8px;
   display: flex;
+  overflow-x: auto;
+}
+
+.instrumentSearchContainer::-webkit-scrollbar {
+  height: 2px;
 }
 
 .searchBox {
@@ -73,15 +97,10 @@
 
 .searchBox:hover .searchInput,
 .searchBox:focus-within .searchInput {
-  width: 150px;
+  width: 90px;
   padding: 0 6px;
   border-color: #e2dad4;
   border-width: 1px;
-}
-
-.searchBox:hover .searchButton,
-.searchBox:focus-within .searchButton {
-  color: #e2dad4;
 }
 
 .searchInput {
@@ -91,9 +110,8 @@
   float: left;
   padding-left: 0;
   color: rgb(172, 158, 158);
-  font-size: 10px;
+  font-size: 12px;
   transition: width 0.4s;
-  /* line-height: 40px; */
   width: 0px;
   overflow: hidden;
 }
@@ -142,17 +160,7 @@
   margin-right: 10px;
 }
 
-.removeArtist {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  color: #585a5f;
-  margin-bottom: 15px;
-  margin-left: 10px;
-}
-
-.instrumentChip {
+.remove .instrumentChip {
   border-style: solid;
   align-items: center;
   border-radius: 18px;
