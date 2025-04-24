@@ -4,14 +4,15 @@ import { useLocation } from "react-router-dom";
 import styles from "../styles/track.module.css";
 import MusicHeader from "../components/musicHeader/musicHeader.js";
 import ArtistSearch from "../components/artistSearch/artistSearch.js";
+import Waveform from "../components/waveform/waveform.js";
 
 const Track = () => {
   const location = useLocation();
-  const index = 0;
 
   const { results } = location.state || {};
   const { track, token } = results;
 
+  const [segments, setSegments] = useState({});
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [artistInstruments, setArtistInstruments] = useState({});
   const [artistSearchComponents, setArtistSearchComponents] = useState([
@@ -28,6 +29,25 @@ const Track = () => {
     setArtistInstruments((prev) => ({
       ...prev,
       [index]: [],
+    }));
+
+    setSegments((prev) => ({
+      ...prev,
+      [index]: [],
+    }));
+  };
+
+  const handleAddSegment = (artistIndex, newSegment) => {
+    setSegments((prev) => ({
+      ...prev,
+      [artistIndex]: [...(prev[artistIndex] || []), newSegment],
+    }));
+  };
+
+  const handleUpdateSegment = (artistIndex, updatedSegments) => {
+    setSegments((prev) => ({
+      ...prev,
+      [artistIndex]: updatedSegments,
     }));
   };
 
@@ -46,6 +66,12 @@ const Track = () => {
     });
 
     setArtistInstruments((prev) => {
+      const updated = { ...prev };
+      delete updated[index];
+      return updated;
+    });
+
+    setSegments((prev) => {
       const updated = { ...prev };
       delete updated[index];
       return updated;
@@ -75,16 +101,32 @@ const Track = () => {
         <div className={styles.artistSection}>
           <div className={styles.artistTable}>
             {artistSearchComponents.map((index) => (
-              <ArtistSearch
-                onArtistSelect={(artist) => handleArtistSelect(index, artist)}
-                onInstrumentSelect={(instrument) =>
-                  handleInstrumentSelect(index, instrument)
-                }
-                onRemoveInstrument={(instrumentId) =>
-                  handleRemoveInstrument(index, instrumentId)
-                }
-                onRemoveArtist={() => handleRemoveArtist(index)}
-              />
+              <div key={index} className={styles.artistRow}>
+                <ArtistSearch
+                  onArtistSelect={(artist) => handleArtistSelect(index, artist)}
+                  onInstrumentSelect={(instrument) =>
+                    handleInstrumentSelect(index, instrument)
+                  }
+                  onRemoveInstrument={(instrumentId) =>
+                    handleRemoveInstrument(index, instrumentId)
+                  }
+                  onRemoveArtist={() => handleRemoveArtist(index)}
+                />
+                {selectedArtists[index] && (
+                  <Waveform
+                    artistIndex={index}
+                    colour={artistInstruments[index][0].colour}
+                    segments={segments[index] || []}
+                    songDuration={track.track_length}
+                    onAddSegment={(newSegment) =>
+                      handleAddSegment(index, newSegment)
+                    }
+                    onUpdateSegments={(updatedSegments) =>
+                      handleUpdateSegment(index, updatedSegments)
+                    }
+                  />
+                )}
+              </div>
             ))}
 
             <button

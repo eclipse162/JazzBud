@@ -51,22 +51,6 @@
   object-fit: cover;
 }
 
-.instrumentSearchContainer {
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  max-width: 100%;
-  background: transparent;
-  cursor: text;
-  font-weight: 500;
-  margin-top: -8px;
-  display: flex;
-  overflow-x: auto;
-}
-
-.instrumentSearchContainer::-webkit-scrollbar {
-  height: 2px;
-}
-
 .searchBox {
   background: transparent;
   border-radius: 40px;
@@ -155,12 +139,26 @@
 .selectedInstruments {
   background: transparent;
   display: flex;
-  flex-wrap: wrap;
   font-size: 11px;
   font-weight: 500;
   gap: 8px;
   margin-bottom: 10px;
-  margin-right: 10px;
+}
+
+.instrumentSearchContainer {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  max-width: 100%;
+  background: transparent;
+  cursor: text;
+  font-weight: 500;
+  margin-top: -8px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.instrumentSearchContainer::-webkit-scrollbar {
+  height: 2px;
 }
 
 .instrumentChip {
@@ -173,6 +171,9 @@
   font-size: 11px;
   padding: 1px 5px;
   flex-shrink: 0;
+}
+
+.instrumentChip span {
   margin-right: 8px;
 }
 
