@@ -52,6 +52,9 @@
 }
 
 .instrumentSearchContainer {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  max-width: 100%;
   background: transparent;
   cursor: text;
   font-weight: 500;
@@ -71,6 +74,8 @@
   transition: width 0.4s ease-in-out;
   border-color: 1px solid #e2dad4;
   display: flex;
+  top: -4px;
+  position: relative;
 }
 
 .searchButton {
@@ -155,7 +160,6 @@
   font-weight: 500;
   gap: 8px;
   margin-bottom: 10px;
-  margin-top: 10px;
   margin-right: 10px;
 }
 
@@ -168,9 +172,7 @@
   display: flex;
   font-size: 11px;
   padding: 1px 5px;
-}
-
-.instrumentChip span {
+  flex-shrink: 0;
   margin-right: 8px;
 }
 
