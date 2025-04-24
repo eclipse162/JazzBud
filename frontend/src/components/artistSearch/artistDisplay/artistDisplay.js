@@ -81,7 +81,10 @@ const ArtistDisplay = ({
                 <div
                   key={instrument.id}
                   className={styles.instrumentChip}
-                  style={{ backgroundColor: instrument.color }}>
+                  style={{
+                    borderColor: instrument.colour,
+                    color: instrument.colour,
+                  }}>
                   <span>{instrument.name}</span>
                   <button
                     type="button"
@@ -93,13 +96,18 @@ const ArtistDisplay = ({
               ))}
           </div>
 
-          <input
-            type="text"
-            placeholder="Search for instruments"
-            value={query}
-            onChange={handleInputChange}
-            className={styles.instrumentSearch}
-          />
+          <div className={styles.searchBox}>
+            <input
+              type="text"
+              placeholder="Instrument Search"
+              value={query}
+              onChange={handleInputChange}
+              className={styles.instrumentSearch}
+            />
+            <button type="submit" className={styles.searchButton}>
+              <img src="/img/search.png" alt="Search" />
+            </button>
+          </div>
 
           {dropdownVisible && (
             <InstrumentDropdown

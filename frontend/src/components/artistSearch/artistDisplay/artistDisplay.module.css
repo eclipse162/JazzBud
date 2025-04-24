@@ -33,16 +33,71 @@
 }
 
 .instrumentSearchContainer {
-  margin-top: -8px;
-  background-color: transparent;
+  background: transparent;
   cursor: text;
   font-weight: 500;
-  background: transparent;
-  border-bottom: 2px solid #c8cce4;
+  margin-top: -8px;
+  display: flex;
 }
 
-.instrumentSearchContainer:hover {
-  color: #1d2029;
+.searchBox {
+  background: transparent;
+  border-radius: 40px;
+  padding: 3px;
+  transition: width 0.4s ease-in-out;
+  border-color: 1px solid #e2dad4;
+  display: flex;
+  overflow: hidden;
+}
+
+.searchBox img {
+  width: 50%;
+  height: 50%;
+}
+
+.searchBox:hover img {
+  cursor: pointer;
+  filter: brightness(0.8);
+}
+
+.searchBox:hover .searchInput,
+.searchBox:focus-within .searchInput {
+  width: 150px;
+  padding: 0 6px;
+  border-color: #e2dad4;
+  border-width: 1px;
+}
+
+.searchBox:hover .searchButton,
+.searchBox:focus-within .searchButton {
+  color: #e2dad4;
+}
+
+.searchButton {
+  float: right;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+  border: none;
+  background: none;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  outline: none;
+  float: left;
+  padding-left: 0;
+  color: rgb(172, 158, 158);
+  font-size: 10px;
+  transition: width 0.4s;
+  /* line-height: 40px; */
+  width: 0px;
+  overflow: hidden;
 }
 
 .dropdownContainer {
@@ -77,13 +132,15 @@
 }
 
 .selectedInstruments {
+  background: transparent;
   display: flex;
   flex-wrap: wrap;
+  font-size: 11px;
+  font-weight: 500;
   gap: 8px;
   margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ebded1;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 .removeArtist {
@@ -97,13 +154,12 @@
 }
 
 .instrumentChip {
-  display: flex;
+  border-style: solid;
   align-items: center;
-  background-color: #e0e0e0;
-  border-radius: 16px;
-  padding: 4px 8px;
-  font-size: 14px;
-  color: #fff;
+  border-radius: 18px;
+  display: flex;
+  font-size: 11px;
+  padding: 2px 6px;
 }
 
 .instrumentChip span {
@@ -113,7 +169,7 @@
 .removeInstrument {
   background: none;
   border: none;
-  color: #fff;
+  color: #9ca3af;
   font-size: 16px;
   cursor: pointer;
 }
