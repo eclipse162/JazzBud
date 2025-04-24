@@ -29,4 +29,6 @@
   background: transparent;
   color: #9ca3af;
   font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
 }

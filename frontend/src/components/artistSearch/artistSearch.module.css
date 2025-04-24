@@ -1,9 +1,10 @@
 .artistSearch {
   padding: 5px;
   margin-bottom: 15px;
-  width: 290px;
+  width: 285px;
   border: none;
   border-bottom: 2px solid #c8cce4;
   background: transparent;
   color: #ebded1;
+  outline: none;
 }

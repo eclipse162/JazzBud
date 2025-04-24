@@ -71,11 +71,10 @@
   transition: width 0.4s ease-in-out;
   border-color: 1px solid #e2dad4;
   display: flex;
-  overflow: hidden;
 }
 
 .searchButton {
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 800;
   color: #666971;
   border: none;
@@ -86,12 +85,13 @@
   background: none;
   border: none;
   float: right;
+  position: relative;
 }
 
 .searchButton:hover {
   cursor: pointer;
   filter: brightness(0.8);
-  font-size: 14px;
+  font-size: 18px;
   transition: 0.4s ease-in-out;
 }
 
@@ -113,7 +113,6 @@
   font-size: 12px;
   transition: width 0.4s;
   width: 0px;
-  overflow: hidden;
 }
 
 .dropdownContainer {
@@ -160,8 +159,10 @@
   margin-right: 10px;
 }
 
-.remove .instrumentChip {
+.instrumentChip {
   border-style: solid;
+  border-width: 1px;
+  bottom: 1px;
   align-items: center;
   border-radius: 18px;
   display: flex;
@@ -176,7 +177,6 @@
 .removeInstrument {
   background: none;
   border: none;
-  color: #9ca3af;
   font-size: 16px;
   cursor: pointer;
   margin-top: 2px;
