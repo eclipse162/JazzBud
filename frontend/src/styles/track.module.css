@@ -11,9 +11,22 @@
   margin-left: 8px;
 }
 
-.artist-section {
+.artistSection {
   margin-left: 40px;
   flex: 1;
   max-width: 350px;
   height: auto;
+}
+
+.addArtist {
+  border: #9ca3af;
+  align-items: center;
+  border-radius: 18px;
+  border-style: solid;
+  display: flex;
+  font-size: 11px;
+  padding: 3px 8px;
+  background: transparent;
+  color: #9ca3af;
+  font-weight: 700;
 }

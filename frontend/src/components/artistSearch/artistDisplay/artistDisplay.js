@@ -108,13 +108,13 @@ const ArtistDisplay = ({
           <div className={styles.searchBox}>
             <input
               type="text"
-              placeholder="Instrument Search"
+              placeholder="Add Instrument"
               value={query}
               onChange={handleInputChange}
               className={styles.searchInput}
             />
             <button type="submit" className={styles.searchButton}>
-              <img src="/img/search.png" alt="Search" />
+              +
             </button>
           </div>
 

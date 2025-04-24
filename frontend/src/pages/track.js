@@ -87,7 +87,11 @@ const Track = () => {
               />
             ))}
 
-            <button onClick={handleAddArtistSearch}>Add Artist</button>
+            <button
+              className={styles.addArtist}
+              onClick={handleAddArtistSearch}>
+              Add Artist
+            </button>
           </div>
         </div>
       </div>

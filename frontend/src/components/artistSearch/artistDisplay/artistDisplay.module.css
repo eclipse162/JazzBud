@@ -14,7 +14,7 @@
 
 .artistDisplay .artistName {
   font-size: 32px;
-  font-weight: 500;
+  font-weight: 550;
   color: #ebded1;
 }
 
@@ -50,14 +50,25 @@
   overflow: hidden;
 }
 
-.searchBox img {
-  width: 50%;
-  height: 50%;
+.searchButton {
+  font-size: 11px;
+  font-weight: 800;
+  color: #666971;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  float: right;
 }
 
-.searchBox:hover img {
+.searchButton:hover {
   cursor: pointer;
   filter: brightness(0.8);
+  font-size: 14px;
+  transition: 0.4s ease-in-out;
 }
 
 .searchBox:hover .searchInput,
@@ -71,19 +82,6 @@
 .searchBox:hover .searchButton,
 .searchBox:focus-within .searchButton {
   color: #e2dad4;
-}
-
-.searchButton {
-  float: right;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.4s;
-  border: none;
-  background: none;
 }
 
 .searchInput {
@@ -117,6 +115,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  color: #e2dad4;
 }
 
 .artistImage {
@@ -148,7 +147,7 @@
   border: none;
   cursor: pointer;
   font-size: 20px;
-  color: #9ca3af;
+  color: #585a5f;
   margin-bottom: 15px;
   margin-left: 10px;
 }
@@ -159,7 +158,7 @@
   border-radius: 18px;
   display: flex;
   font-size: 11px;
-  padding: 2px 6px;
+  padding: 1px 5px;
 }
 
 .instrumentChip span {
@@ -172,4 +171,5 @@
   color: #9ca3af;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 2px;
 }
