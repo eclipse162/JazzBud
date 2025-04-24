@@ -72,7 +72,15 @@ const ArtistDisplay = ({
         className={styles.artistImage}
       />
       <div className={styles.artistInfo}>
-        <span className={styles.artistName}>{artist.name}</span>
+        <div className={styles.artistName}>
+          {artist.name}
+          <button
+            type="button"
+            className={styles.removeArtist}
+            onClick={() => handleRemoveArtist(artist.id)}>
+            &times;
+          </button>
+        </div>
 
         <div className={styles.instrumentSearchContainer}>
           <div className={styles.selectedInstruments}>
@@ -89,6 +97,7 @@ const ArtistDisplay = ({
                   <button
                     type="button"
                     className={styles.removeInstrument}
+                    style={{ color: instrument.colour }}
                     onClick={() => handleRemoveInstrument(instrument.id)}>
                     &times;
                   </button>
@@ -102,7 +111,7 @@ const ArtistDisplay = ({
               placeholder="Instrument Search"
               value={query}
               onChange={handleInputChange}
-              className={styles.instrumentSearch}
+              className={styles.searchInput}
             />
             <button type="submit" className={styles.searchButton}>
               <img src="/img/search.png" alt="Search" />
@@ -117,13 +126,6 @@ const ArtistDisplay = ({
           )}
         </div>
       </div>
-
-      <button
-        type="button"
-        className={styles.removeArtist}
-        onClick={() => handleRemoveArtist(artist.id)}>
-        &times;
-      </button>
     </div>
   );
 };
