@@ -116,7 +116,7 @@ const Track = () => {
                   {selectedArtists[index] && (
                     <Waveform
                       artistIndex={index}
-                      colour={artistInstruments[index][0].colour || "#f7f7f7"}
+                      instruments={artistInstruments[index] || []}
                       segments={segments[index] || []}
                       songDuration={track.track_length}
                       onAddSegment={(newSegment) =>

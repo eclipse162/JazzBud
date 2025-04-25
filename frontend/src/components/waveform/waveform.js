@@ -1,14 +1,22 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
 const Waveform = ({
   artistIndex,
-  colour,
+  instruments,
   segments,
   songDuration,
   onAddSegment,
   onUpdateSegments,
 }) => {
+  const [colour, setColour] = useState("#f7f7f7");
+
+  useEffect(() => {
+    if (instruments[0]) {
+      setColour(instruments[0].color);
+    }
+  }, [instruments]);
+
   const svgRef = useRef();
   const ySpacing = 80;
 
