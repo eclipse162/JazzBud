@@ -80,10 +80,10 @@ const Track = () => {
     setArtistSearchComponents((prev) => prev.filter((i) => i !== index));
   };
 
-  const handleRemoveInstrument = (artistId, instrumentId) => {
+  const handleRemoveInstrument = (index, instrumentId) => {
     setArtistInstruments((prev) => ({
       ...prev,
-      [artistId]: prev[artistId].filter(
+      [index]: prev[index].filter(
         (instrument) => instrument.id !== instrumentId
       ),
     }));
@@ -112,20 +112,22 @@ const Track = () => {
                   }
                   onRemoveArtist={() => handleRemoveArtist(index)}
                 />
-                {selectedArtists[index] && (
-                  <Waveform
-                    artistIndex={index}
-                    colour={artistInstruments[index][0].colour}
-                    segments={segments[index] || []}
-                    songDuration={track.track_length}
-                    onAddSegment={(newSegment) =>
-                      handleAddSegment(index, newSegment)
-                    }
-                    onUpdateSegments={(updatedSegments) =>
-                      handleUpdateSegment(index, updatedSegments)
-                    }
-                  />
-                )}
+                <div className={styles.waveformContainer}>
+                  {selectedArtists[index] && (
+                    <Waveform
+                      artistIndex={index}
+                      colour={artistInstruments[index][0].colour || "#f7f7f7"}
+                      segments={segments[index] || []}
+                      songDuration={track.track_length}
+                      onAddSegment={(newSegment) =>
+                        handleAddSegment(index, newSegment)
+                      }
+                      onUpdateSegments={(updatedSegments) =>
+                        handleUpdateSegment(index, updatedSegments)
+                      }
+                    />
+                  )}
+                </div>
               </div>
             ))}
 
