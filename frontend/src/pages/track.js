@@ -52,12 +52,11 @@ const Track = () => {
   };
 
   const handleInstrumentSelect = (index, instrument) => {
-    console.log("Adding instrument for artist index:", index, instrument);
-
-    setArtistInstruments((prev) => ({
-      ...prev,
-      [index]: [...(prev[index] || []), instrument],
-    }));
+    setArtistInstruments((prev) => {
+      const updated = { ...prev };
+      updated[index] = [...(updated[index] || []), instrument];
+      return updated;
+    });
   };
 
   const handleRemoveArtist = (index) => {
@@ -94,10 +93,6 @@ const Track = () => {
   const handleAddArtistSearch = () => {
     setArtistSearchComponents((prev) => [...prev, prev.length]);
   };
-
-  if (artistInstruments[0] && artistInstruments[0][0]) {
-    console.log("Artist Instruments:", artistInstruments);
-  }
 
   return (
     <main className={styles.page}>

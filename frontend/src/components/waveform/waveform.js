@@ -25,7 +25,6 @@ const Waveform = ({
     if (instruments.length > 0) {
       console.log("Instruments:", instruments);
       setColour(instruments[0].colour);
-      console.log("Colour set to:", instruments[0].colour);
     }
 
     const renderWaveform = () => {
