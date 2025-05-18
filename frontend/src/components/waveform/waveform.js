@@ -42,7 +42,7 @@ const Waveform = ({
         .attr("height", lineHeight)
         .attr("rx", radius)
         .attr("ry", radius)
-        .attr("fill", "#4e4e4e"); // gray like your mockup
+        .attr("fill", "#6c6c6c"); // gray like your mockup
     };
 
     // Initial render

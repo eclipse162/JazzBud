@@ -1,7 +1,7 @@
 .artistDisplay {
   display: flex;
-  padding-bottom: 13px;
-  width: 300px;
+  padding-bottom: 10px;
+  width: 350px;
 }
 
 .artistDisplay img {
