@@ -1,20 +1,27 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
 
 const Waveform = ({
   artistIndex,
-  segments = [],
+  sogments = [],
   songDuration,
   instruments,
   onAddSegment,
   onUpdateSegments,
 }) => {
   const svgRef = useRef(null);
+  const [colour, setColour] = useState("#D9D9D9");
+  const [segments, setSegments] = useState([]);
+  const [dragStart, setDragStart] = useState(null);
+
   const containerRef = useRef(null);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
     const container = containerRef.current;
+    if (instruments.length > 0) {
+      setColour(instruments[0].colour);
+    }
 
     const renderWaveform = () => {
       const width = container.clientWidth;
@@ -42,7 +49,43 @@ const Waveform = ({
         .attr("height", lineHeight)
         .attr("rx", radius)
         .attr("ry", radius)
-        .attr("fill", "#6c6c6c"); // gray like your mockup
+        .attr("fill", "#6c6c6c");
+
+      segments.forEach((segment) => {
+        svg
+          .append("rect")
+          .attr("x", xScale(segment.start))
+          .attr("y", y - radius)
+          .attr("width", xScale(segment.end) - xScale(segment.start))
+          .attr("height", lineHeight)
+          .attr("rx", radius)
+          .attr("ry", radius)
+          .attr("fill", colour);
+      });
+
+      const handleMouseDown = (event) => {
+        const mouseX = d3.pointer(event, svgRef.current)[0];
+        const startTime = xScale.invert(mouseX);
+        setDragStart(startTime);
+      };
+
+      const handleMouseUp = (event) => {
+        if (dragStart === null) return;
+        const mouseX = d3.pointer(event)[0];
+        const endTime = xScale.invert(mouseX);
+        const start = Math.min(dragStart, endTime);
+        const end = Math.max(dragStart, endTime);
+        if (end - start > 0.5) {
+          setSegments((prev) => [...prev, { start, end }]);
+        }
+        setDragStart(null);
+      };
+
+      svg.on("mousedown", handleMouseDown).on("mouseup", handleMouseUp);
+
+      return () => {
+        svg.on("mousedown", null).on("mouseup", null);
+      };
     };
 
     // Initial render
@@ -59,7 +102,7 @@ const Waveform = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [songDuration, segments]);
+  }, [songDuration, segments, colour, instruments, dragStart]);
 
   return (
     <div ref={containerRef} style={{ width: "100%" }}>
