@@ -93,6 +93,10 @@ const Track = () => {
     setArtistSearchComponents((prev) => [...prev, prev.length]);
   };
 
+  if (artistInstruments[0] && artistInstruments[0][0]) {
+    const colour = artistInstruments[0][0].colour;
+  }
+
   return (
     <main className={styles.page}>
       <MusicHeader music={track} artistImage={null} token={token} />

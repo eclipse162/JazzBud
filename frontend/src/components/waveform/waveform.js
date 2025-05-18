@@ -13,6 +13,8 @@ const Waveform = ({
   const [colour, setColour] = useState("#D9D9D9");
   const [segments, setSegments] = useState([]);
   const [dragStart, setDragStart] = useState(null);
+  const [midDrag, setMidDrag] = useState(null);
+  const [toolTip, setToolTip] = useState(null);
 
   const containerRef = useRef(null);
 
@@ -20,7 +22,9 @@ const Waveform = ({
     const svg = d3.select(svgRef.current);
     const container = containerRef.current;
     if (instruments.length > 0) {
+      console.log("Instruments:", instruments);
       setColour(instruments[0].colour);
+      console.log("Colour set to:", instruments[0].colour);
     }
 
     const renderWaveform = () => {
@@ -63,28 +67,83 @@ const Waveform = ({
           .attr("fill", colour);
       });
 
+      if (dragStart !== null && midDrag !== null) {
+        const start = Math.max(0, Math.min(dragStart, midDrag));
+        const end = Math.min(songDuration, Math.max(dragStart, midDrag));
+        const previewWidth = xScale(end) - xScale(start);
+
+        if (end - start > 0.1) {
+          svg
+            .append("rect")
+            .attr("x", xScale(start))
+            .attr("y", y - radius)
+            .attr("width", previewWidth)
+            .attr("height", lineHeight)
+            .attr("rx", radius)
+            .attr("ry", radius)
+            .attr("fill", colour)
+            .attr("opacity", 0.8);
+        }
+
+        if (toolTip) {
+          svg
+            .append("text")
+            .attr("x", xScale(end) - 5)
+            .attr("y", y - 10)
+            .attr("text-anchor", "end")
+            .attr("fill", "#e5c07b")
+            .attr("font-size", "11px")
+            .attr("font-family", "sans-serif")
+            .text(
+              `Start: ${start.toFixed(1)}s | End: ${end.toFixed(1)}s | Δ ${(
+                end - start
+              ).toFixed(1)}s`
+            );
+        }
+      }
+
       const handleMouseDown = (event) => {
         const mouseX = d3.pointer(event, svgRef.current)[0];
-        const startTime = xScale.invert(mouseX);
+        const startTime = Math.max(
+          0,
+          Math.min(songDuration, xScale.invert(mouseX))
+        );
         setDragStart(startTime);
+        setMidDrag(startTime);
+        setToolTip(true);
       };
 
-      const handleMouseUp = (event) => {
-        if (dragStart === null) return;
-        const mouseX = d3.pointer(event)[0];
-        const endTime = xScale.invert(mouseX);
-        const start = Math.min(dragStart, endTime);
-        const end = Math.max(dragStart, endTime);
-        if (end - start > 0.5) {
-          setSegments((prev) => [...prev, { start, end }]);
+      const handleMouseMove = (event) => {
+        if (dragStart !== null) {
+          const mouseX = d3.pointer(event, svgRef.current)[0];
+          const time = Math.max(
+            0,
+            Math.min(songDuration, xScale.invert(mouseX))
+          );
+          setMidDrag(time);
         }
-        setDragStart(null);
       };
 
-      svg.on("mousedown", handleMouseDown).on("mouseup", handleMouseUp);
+      const handleMouseUp = () => {
+        if (dragStart !== null && midDrag !== null) {
+          const start = Math.max(0, Math.min(dragStart, midDrag));
+          const end = Math.min(songDuration, Math.max(dragStart, midDrag));
+          if (end - start > 0.5) {
+            setSegments((prev) => [...prev, { start, end }]);
+          }
+          setDragStart(null);
+          setMidDrag(null);
+          setToolTip(false);
+        }
+      };
+
+      svg
+        .on("mousedown", handleMouseDown)
+        .on("mousemove", handleMouseMove)
+        .on("mouseup", handleMouseUp);
 
       return () => {
-        svg.on("mousedown", null).on("mouseup", null);
+        svg.on("mousedown", null).on("mousemove", null).on("mouseup", null);
       };
     };
 
@@ -102,7 +161,15 @@ const Waveform = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [songDuration, segments, colour, instruments, dragStart]);
+  }, [
+    songDuration,
+    segments,
+    colour,
+    instruments,
+    dragStart,
+    midDrag,
+    toolTip,
+  ]);
 
   return (
     <div ref={containerRef} style={{ width: "100%" }}>
@@ -113,6 +180,7 @@ const Waveform = ({
           height: 30,
           display: "block",
           marginBottom: "16px",
+          cursor: "crosshair",
         }}
       />
     </div>

@@ -21,7 +21,6 @@ const ArtistDisplay = ({
       if (query.length >= 3) {
         try {
           const data = await fetchInstrumentSearch(query);
-          console.log(data.instrument_data);
           setInstruments(data.instrument_data);
           setDropdownVisible(true);
         } catch (error) {
