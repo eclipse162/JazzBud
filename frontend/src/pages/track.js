@@ -94,7 +94,7 @@ const Track = () => {
   };
 
   if (artistInstruments[0] && artistInstruments[0][0]) {
-    const colour = artistInstruments[0][0].colour;
+    console.log("Artist Instruments:", artistInstruments[0][0].colour);
   }
 
   return (

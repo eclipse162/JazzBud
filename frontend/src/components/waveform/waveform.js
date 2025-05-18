@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { formatTime } from "../../utils.js";
 import * as d3 from "d3";
 
 const Waveform = ({
@@ -86,19 +87,18 @@ const Waveform = ({
         }
 
         if (toolTip) {
+          const currentTime = formatTime(midDrag);
           svg
             .append("text")
             .attr("x", xScale(end) - 5)
             .attr("y", y - 10)
             .attr("text-anchor", "end")
             .attr("fill", "#e5c07b")
-            .attr("font-size", "11px")
+            .attr("font-size", "13px")
+            .attr("font-weight", "bold")
+            .attr("z-index", 100)
             .attr("font-family", "sans-serif")
-            .text(
-              `Start: ${start.toFixed(1)}s | End: ${end.toFixed(1)}s | Δ ${(
-                end - start
-              ).toFixed(1)}s`
-            );
+            .text(`${currentTime}s`);
         }
       }
 
