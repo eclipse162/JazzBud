@@ -52,9 +52,11 @@ const Track = () => {
   };
 
   const handleInstrumentSelect = (index, instrument) => {
+    console.log("Instrument selected for index:", index, instrument);
     setArtistInstruments((prev) => {
       const updated = { ...prev };
       updated[index] = [...(updated[index] || []), instrument];
+      console.log("Updated artistInstruments:", updated);
       return updated;
     });
   };
@@ -103,6 +105,7 @@ const Track = () => {
           <div className={styles.artistTable}>
             {artistSearchComponents.map((index) => (
               <div key={index} className={styles.artistRow}>
+                {console.log("Rendering ArtistSearch for index:", index)}
                 <ArtistSearch
                   onArtistSelect={(artist) => handleArtistSelect(index, artist)}
                   onInstrumentSelect={(instrument) =>
