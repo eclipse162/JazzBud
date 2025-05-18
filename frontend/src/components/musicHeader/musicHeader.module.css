@@ -1,7 +1,8 @@
 .header {
   display: flex;
   align-items: flex-start;
-  margin: 40px;
+  margin-bottom: 40px;
+  margin-top: 20px;
 }
 
 .content {

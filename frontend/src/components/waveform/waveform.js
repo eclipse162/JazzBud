@@ -1,123 +1,144 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 
-const Waveform = ({
-  artistIndex,
-  instruments,
-  segments,
-  songDuration,
-  onAddSegment,
-  onUpdateSegments,
-}) => {
-  const [colour, setColour] = useState("#f7f7f7");
+function Waveform({ artistId, duration, segments, onSegmentChange }) {
+  const svgRef = useRef(null);
+  const [localSegments, setLocalSegments] = useState(segments || []);
+
+  // Scale for mapping time to pixel
+  const [width, setWidth] = useState(1000);
+  const timeScale = d3.scaleLinear().domain([0, duration]).range([0, width]);
 
   useEffect(() => {
-    if (instruments[0]) {
-      setColour(instruments[0].color);
-    }
-  }, [instruments]);
-
-  const svgRef = useRef();
-  const ySpacing = 80;
+    const handleResize = () => {
+      const newWidth = svgRef.current?.getBoundingClientRect().width || 1000;
+      setWidth(newWidth);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-    const timelineWidth = getTimelineWidth();
+    svg.selectAll("*").remove(); // Clear previous render
 
-    const timeScale = d3
-      .scaleLinear()
-      .domain([0, songDuration])
-      .range([0, timelineWidth]);
-
-    // Render baseline
+    // Draw baseline
     svg
       .append("line")
-      .attr("class", "baseline")
-      .attr("x1", 5)
-      .attr("x2", timelineWidth - 5)
-      .attr("y1", artistIndex * ySpacing + 30)
-      .attr("y2", artistIndex * ySpacing + 30)
+      .attr("x1", 0)
+      .attr("x2", width)
+      .attr("y1", 30)
+      .attr("y2", 30)
       .attr("stroke", "#ccc")
-      .attr("stroke-width", 12)
-      .attr("stroke-linecap", "round");
+      .attr("stroke-width", 4);
 
-    // Handle dragging to create segments
-    let pendingStart = null;
+    // Draw timestamp labels every 10 seconds
+    const labelInterval = 10; // seconds
+    const times = d3.range(0, duration + 1, labelInterval);
+    times.forEach((t) => {
+      svg
+        .append("text")
+        .attr("x", timeScale(t))
+        .attr("y", 55)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .text(formatTime(t));
 
-    svg.on("mousedown", function (event) {
-      const [mouseX] = d3.pointer(event);
-      pendingStart = timeScale.invert(mouseX);
-
-      svg.on("mousemove", function (event) {
-        const [currentX] = d3.pointer(event);
-        const currentEnd = timeScale.invert(currentX);
-
-        svg.selectAll(".temp-segment").remove();
-        svg
-          .append("line")
-          .attr("class", "temp-segment")
-          .attr("x1", timeScale(pendingStart))
-          .attr("x2", timeScale(currentEnd))
-          .attr("y1", artistIndex * ySpacing + 30)
-          .attr("y2", artistIndex * ySpacing + 30)
-          .attr("stroke", "#212121")
-          .attr("stroke-width", 10)
-          .attr("stroke-linecap", "round");
-      });
-
-      svg.on("mouseup", function (event) {
-        const [mouseX] = d3.pointer(event);
-        const endTime = timeScale.invert(mouseX);
-
-        if (pendingStart !== null && Math.abs(endTime - pendingStart) > 0.5) {
-          onAddSegment({
-            start: Math.max(0, pendingStart),
-            end: Math.min(songDuration, endTime),
-            artistIndex,
-          });
-        }
-
-        svg.selectAll(".temp-segment").remove();
-        pendingStart = null;
-        svg.on("mousemove", null).on("mouseup", null);
-      });
+      svg
+        .append("line")
+        .attr("x1", timeScale(t))
+        .attr("x2", timeScale(t))
+        .attr("y1", 25)
+        .attr("y2", 35)
+        .attr("stroke", "#888")
+        .attr("stroke-width", 1);
     });
 
-    // Render segments
-    const updateWaveforms = () => {
-      const waveforms = svg
-        .selectAll(`.waveform-group-${artistIndex}`)
-        .data(segments, (d, i) => i);
+    // Draw segments
+    const segmentGroup = svg
+      .selectAll(".segment")
+      .data(localSegments)
+      .enter()
+      .append("g")
+      .attr("class", "segment");
 
-      // Enter: Add new segments
-      const newWaveforms = waveforms
-        .enter()
-        .append("g")
-        .attr("class", `waveform-group-${artistIndex}`);
+    segmentGroup
+      .append("rect")
+      .attr("x", (d) => timeScale(d.start))
+      .attr("y", 15)
+      .attr("width", (d) => timeScale(d.end) - timeScale(d.start))
+      .attr("height", 30)
+      .attr("fill", "rgba(255, 0, 0, 0.5)");
 
-      newWaveforms
-        .append("line")
-        .attr("class", "segment-line")
-        .attr("x1", (d) => timeScale(d.start))
-        .attr("x2", (d) => timeScale(d.end))
-        .attr("y1", artistIndex * ySpacing + 30)
-        .attr("y2", artistIndex * ySpacing + 30)
-        .attr("stroke", colour)
-        .attr("stroke-width", 10)
-        .attr("stroke-linecap", "round");
+    // Add drag handles
+    const dragHandleWidth = 6;
 
-      // Exit: Remove old segments
-      waveforms.exit().remove();
-    };
+    segmentGroup
+      .append("rect") // Start handle
+      .attr("x", (d) => timeScale(d.start) - dragHandleWidth / 2)
+      .attr("y", 15)
+      .attr("width", dragHandleWidth)
+      .attr("height", 30)
+      .attr("fill", "darkred")
+      .style("cursor", "ew-resize")
+      .call(
+        d3.drag().on("drag", function (event, d) {
+          const newStart = Math.min(timeScale.invert(event.x), d.end - 0.1);
+          d.start = Math.max(0, newStart);
+          updateSegments();
+        })
+      );
 
-    updateWaveforms();
-  }, [artistIndex, colour, segments, songDuration, onAddSegment]);
+    segmentGroup
+      .append("rect") // End handle
+      .attr("x", (d) => timeScale(d.end) - dragHandleWidth / 2)
+      .attr("y", 15)
+      .attr("width", dragHandleWidth)
+      .attr("height", 30)
+      .attr("fill", "darkred")
+      .style("cursor", "ew-resize")
+      .call(
+        d3.drag().on("drag", function (event, d) {
+          const newEnd = Math.max(timeScale.invert(event.x), d.start + 0.1);
+          d.end = Math.min(duration, newEnd);
+          updateSegments();
+        })
+      );
 
-  const getTimelineWidth = () => {
-    return svgRef.current.getBoundingClientRect().width;
+    // Click to create new segments
+    let pendingStart = null;
+    svg.on("click", function (event) {
+      const [mouseX] = d3.pointer(event);
+      const time = timeScale.invert(mouseX);
+
+      if (pendingStart === null) {
+        pendingStart = time;
+      } else {
+        const newSegment = {
+          start: Math.min(pendingStart, time),
+          end: Math.max(pendingStart, time),
+        };
+        const updated = [...localSegments, newSegment];
+        setLocalSegments(updated);
+        onSegmentChange(artistId, updated);
+        pendingStart = null;
+      }
+    });
+
+    function updateSegments() {
+      const updated = [...localSegments];
+      setLocalSegments(updated);
+      onSegmentChange(artistId, updated);
+    }
+  }, [localSegments, duration, width]);
+
+  // Format time as mm:ss
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  return <svg ref={svgRef} style={{ width: "100%", height: "80px" }} />;
-};
-
-export default Waveform;
+  return <svg ref={svgRef} width="100%" height={70}></svg>;
+}
