@@ -32,3 +32,11 @@
   cursor: pointer;
   margin-top: 10px;
 }
+
+.artistRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
