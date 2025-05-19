@@ -7,13 +7,21 @@ export const InstrumentProvider = ({ children }) => {
 
   const handleInstrumentSelect = (index, instrument) => {
     setSelectedInstruments((prev) => {
-      const currentInstruments = prev[index] || [];
+      // Ensure the current instruments for the artist index are isolated
+      const currentInstruments = prev[index] ? [...prev[index]] : [];
       const newInstruments = Array.isArray(instrument)
         ? instrument
         : [instrument];
-      const updatedInstruments = [...currentInstruments, ...newInstruments];
 
-      // Use the updated state immediately
+      // Avoid adding duplicate instruments
+      const updatedInstruments = [
+        ...currentInstruments,
+        ...newInstruments.filter(
+          (newInst) =>
+            !currentInstruments.some((inst) => inst.id === newInst.id)
+        ),
+      ];
+
       console.log(
         `Updated instruments for artist ${index}:`,
         updatedInstruments
@@ -27,10 +35,22 @@ export const InstrumentProvider = ({ children }) => {
   };
 
   const removeInstrument = (index, instrumentId) => {
-    setSelectedInstruments((prev) => ({
-      ...prev,
-      [index]: prev[index].filter((inst) => inst.id !== instrumentId),
-    }));
+    setSelectedInstruments((prev) => {
+      const currentInstruments = prev[index] || [];
+      const updatedInstruments = currentInstruments.filter(
+        (inst) => inst.id !== instrumentId
+      );
+
+      console.log(
+        `Removed instrument ${instrumentId} for artist ${index}:`,
+        updatedInstruments
+      );
+
+      return {
+        ...prev,
+        [index]: updatedInstruments,
+      };
+    });
   };
 
   const contextValue = React.useMemo(

@@ -31,7 +31,7 @@ const Waveform = ({
 
     const renderWaveform = () => {
       const width = container.clientWidth;
-      const height = 30;
+      const height = 60;
 
       // Clear previous render
       svg.selectAll("*").remove();
@@ -87,18 +87,30 @@ const Waveform = ({
             .attr("opacity", 0.8);
         }
 
-        if (toolTip) {
+        if (toolTip && midDrag > start) {
           svg
             .append("text")
             .attr("x", xScale(end) - 5)
             .attr("y", y - 10)
             .attr("text-anchor", "end")
-            .attr("fill", "#e5c07b")
+            .attr("fill", "#D9D9D9")
             .attr("font-size", "13px")
             .attr("font-weight", "bold")
             .attr("z-index", 100)
             .attr("font-family", "sans-serif")
             .text(`${formatTime(midDrag)} - ${formatTime(end)}`);
+        } else if (toolTip && midDrag < start) {
+          svg
+            .append("text")
+            .attr("x", xScale(start) + 5)
+            .attr("y", y - 10)
+            .attr("text-anchor", "start")
+            .attr("fill", "#D9D9D9")
+            .attr("font-size", "13px")
+            .attr("font-weight", "bold")
+            .attr("z-index", 100)
+            .attr("font-family", "sans-serif")
+            .text(`${formatTime(start)} - ${formatTime(midDrag)}`);
         }
       }
 
@@ -177,10 +189,10 @@ const Waveform = ({
         ref={svgRef}
         style={{
           width: "100%",
-          height: 30,
+          height: 60,
           display: "block",
           marginBottom: "16px",
-          cursor: "crosshair",
+          cursor: "pointer",
         }}
       />
     </div>
