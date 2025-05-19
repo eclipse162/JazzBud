@@ -33,9 +33,14 @@ const AppContent = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/artist/:slug/:id" element={<Artist />} />
         <Route path="/album/:artistslug/:titleslug/:id" element={<Album />} />
-        <InstrumentProvider>
-          <Route path="/track/:artistslug/:titleslug/:id" element={<Track />} />
-        </InstrumentProvider>
+        <Route
+          path="/track/:artistslug/:titleslug/:id"
+          element={
+            <InstrumentProvider>
+              <Track />
+            </InstrumentProvider>
+          }
+        />
       </Routes>
     </>
   );
