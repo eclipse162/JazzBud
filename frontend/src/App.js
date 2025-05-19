@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Navigation from "./components/navigation";
 import { InstrumentProvider } from "./components/InstrumentContext";
+import { SegmentProvider } from "./components/SegmentContext";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import About from "./pages/about";
@@ -36,9 +37,11 @@ const AppContent = () => {
         <Route
           path="/track/:artistslug/:titleslug/:id"
           element={
-            <InstrumentProvider>
-              <Track />
-            </InstrumentProvider>
+            <SegmentProvider>
+              <InstrumentProvider>
+                <Track />
+              </InstrumentProvider>
+            </SegmentProvider>
           }
         />
       </Routes>

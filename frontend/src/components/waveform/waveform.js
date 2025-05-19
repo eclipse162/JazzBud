@@ -1,26 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
+import styles from "./waveform.module.css";
 import { formatTime } from "../../utils.js";
 import * as d3 from "d3";
+import { v4 as uuidv4 } from "uuid";
 
 const Waveform = ({
-  sogments = [],
   songDuration,
   instruments,
-  onAddSegment,
-  onUpdateSegments,
+  artistSegments,
+  addSegment,
+  removeSegment,
 }) => {
   const svgRef = useRef(null);
-  const [colour, setColour] = useState("#D9D9D9");
-  const [segments, setSegments] = useState([]);
-  const [dragStart, setDragStart] = useState(null);
-  const [midDrag, setMidDrag] = useState(null);
-  const [toolTip, setToolTip] = useState(null);
-
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    console.log("Instruments passed to Waveform:", instruments);
-  }, [instruments]);
+  const [midDrag, setMidDrag] = useState(null);
+  const [toolTip, setToolTip] = useState(null);
+  const [dragStart, setDragStart] = useState(null);
+  const [colour, setColour] = useState("#D9D9D9");
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -57,8 +54,10 @@ const Waveform = ({
         .attr("ry", radius)
         .attr("fill", "#6c6c6c");
 
-      segments.forEach((segment) => {
-        svg
+      artistSegments.forEach((segment) => {
+        const group = svg.append("g");
+
+        group
           .append("rect")
           .attr("x", xScale(segment.start))
           .attr("y", y - radius)
@@ -66,7 +65,56 @@ const Waveform = ({
           .attr("height", lineHeight)
           .attr("rx", radius)
           .attr("ry", radius)
-          .attr("fill", colour);
+          .attr("fill", colour)
+          .on("dblclick", () => {
+            removeSegment(segment);
+          });
+
+        // Left Handle
+        group
+          .append("rect")
+          .attr("x", xScale(segment.start) - 5)
+          .attr("y", y - radius)
+          .attr("width", 10)
+          .attr("height", lineHeight + 5)
+          .attr("fill", "transparent")
+          .attr("cursor", "ew-resize")
+          .call(
+            d3.drag().on("drag", (event) => {
+              const newStart = Math.max(
+                0,
+                Math.min(xScale.invert(event.x), segment.end - 0.1)
+              );
+              const newSegment = {
+                ...segment,
+                start: newStart,
+              };
+              addSegment(newSegment);
+            })
+          );
+
+        // Right Handle
+        group
+          .append("rect")
+          .attr("x", xScale(segment.end) - 4)
+          .attr("y", y - radius - 2)
+          .attr("width", 8)
+          .attr("height", lineHeight + 4)
+          .attr("fill", "transparent")
+          .attr("cursor", "ew-resize")
+          .call(
+            d3.drag().on("drag", (event) => {
+              const newEnd = Math.max(
+                songDuration,
+                Math.max(xScale.invert(event.x), segment.start + 0.1)
+              );
+              const newSegment = {
+                ...segment,
+                end: newEnd,
+              };
+              addSegment(newSegment);
+            })
+          );
       });
 
       if (dragStart !== null && midDrag !== null) {
@@ -98,7 +146,7 @@ const Waveform = ({
             .attr("font-weight", "bold")
             .attr("z-index", 100)
             .attr("font-family", "sans-serif")
-            .text(`${formatTime(start)} - ${formatTime(midDrag)}`);
+            .text(`${formatTime(dragStart)} - ${formatTime(midDrag)}`);
         } else if (toolTip && midDrag < dragStart) {
           svg
             .append("text")
@@ -138,10 +186,12 @@ const Waveform = ({
 
       const handleMouseUp = () => {
         if (dragStart !== null && midDrag !== null) {
+          let id = uuidv4();
           const start = Math.max(0, Math.min(dragStart, midDrag));
           const end = Math.min(songDuration, Math.max(dragStart, midDrag));
+          const segment = { id: id, start: start, end: end };
           if (end - start > 0.5) {
-            setSegments((prev) => [...prev, { start, end }]);
+            addSegment(segment);
           }
           setDragStart(null);
           setMidDrag(null);
@@ -175,26 +225,22 @@ const Waveform = ({
     };
   }, [
     songDuration,
-    segments,
-    colour,
     instruments,
+    artistSegments,
+    addSegment,
+    removeSegment,
+    colour,
     dragStart,
     midDrag,
     toolTip,
   ]);
 
   return (
-    <div ref={containerRef} style={{ width: "100%" }}>
-      <svg
-        ref={svgRef}
-        style={{
-          width: "100%",
-          height: 60,
-          display: "block",
-          marginBottom: "16px",
-          cursor: "pointer",
-        }}
-      />
+    <div
+      ref={containerRef}
+      className={styles.noSelect}
+      style={{ width: "100%" }}>
+      <svg className={styles.waveform} ref={svgRef} />
     </div>
   );
 };

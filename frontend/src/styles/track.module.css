@@ -4,7 +4,7 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: start;
-  width: 93%;
+  width: 96%;
   max-height: 400px;
   margin-bottom: 40px;
   overflow-y: auto;
@@ -37,7 +37,7 @@
   flex-direction: row;
   align-items: center;
   gap: 40px;
-  width: 95%;
+  width: 100%;
   margin-bottom: 10px;
 }
 

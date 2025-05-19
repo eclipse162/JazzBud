@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import styles from "../styles/track.module.css";
-import { useInstrumentContext } from "../components/InstrumentContext.js";
+import { useInstrumentContext } from "../components/contexts/InstrumentContext.js";
 import MusicHeader from "../components/musicHeader/musicHeader.js";
 import ArtistSearch from "../components/artistSearch/artistSearch.js";
 import Waveform from "../components/waveform/waveform.js";
+import { useSegmentContext } from "../components/contexts/SegmentContext.js";
 
 const Track = () => {
   const location = useLocation();
@@ -13,13 +14,13 @@ const Track = () => {
   const { results } = location.state || {};
   const { track, token } = results;
 
-  const [segments, setSegments] = useState({});
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [artistSearchComponents, setArtistSearchComponents] = useState([
     0, 1, 2, 3,
   ]);
 
   const { selectedInstruments } = useInstrumentContext();
+  const { artistSegments, addSegment, removeSegment } = useSegmentContext();
 
   const handleArtistSelect = (index, artist) => {
     setSelectedArtists((prev) => {
@@ -28,23 +29,9 @@ const Track = () => {
       return updated;
     });
 
-    setSegments((prev) => ({
+    addSegment((prev) => ({
       ...prev,
       [index]: [],
-    }));
-  };
-
-  const handleAddSegment = (index, newSegment) => {
-    setSegments((prev) => ({
-      ...prev,
-      [index]: [...(prev[index] || []), newSegment],
-    }));
-  };
-
-  const handleUpdateSegment = (index, updatedSegments) => {
-    setSegments((prev) => ({
-      ...prev,
-      [index]: updatedSegments,
     }));
   };
 
@@ -55,22 +42,24 @@ const Track = () => {
       return updated;
     });
 
-    setSegments((prev) => {
-      const updated = { ...prev };
-      delete updated[index];
-      return updated;
+    artistSegments[index]?.forEach((segment) => {
+      removeSegment(index, segment.id);
     });
 
     setArtistSearchComponents((prev) => prev.filter((i) => i !== index));
   };
 
+  const handleAddSegment = (index, segment) => {
+    addSegment(index, segment);
+  };
+
+  const handleRemoveSegment = (index, segmentId) => {
+    removeSegment(index, segmentId);
+  };
+
   const handleAddArtistSearch = () => {
     setArtistSearchComponents((prev) => [...prev, prev.length]);
   };
-
-  useEffect(() => {
-    console.log("Selected Instruments in Track.js:", selectedInstruments);
-  }, [selectedInstruments]);
 
   return (
     <main className={styles.page}>
@@ -89,14 +78,12 @@ const Track = () => {
                 <div className={styles.waveformContainer}>
                   {selectedArtists[index] && (
                     <Waveform
-                      instruments={selectedInstruments[index] || []}
-                      segments={segments[index] || []}
                       songDuration={track.track_length}
-                      onAddSegment={(newSegment) =>
-                        handleAddSegment(index, newSegment)
-                      }
-                      onUpdateSegments={(updatedSegments) =>
-                        handleUpdateSegment(index, updatedSegments)
+                      instruments={selectedInstruments[index] || []}
+                      artistSegments={artistSegments[index] || []}
+                      addSegment={(segment) => handleAddSegment(index, segment)}
+                      removeSegment={(segmentId) =>
+                        handleRemoveSegment(index, segmentId)
                       }
                     />
                   )}

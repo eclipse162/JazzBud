@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchInstrumentSearch } from "../../../api";
-import { useInstrumentContext } from "../../../components/InstrumentContext";
+import { useInstrumentContext } from "../../contexts/InstrumentContext";
 
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
@@ -43,8 +43,6 @@ const ArtistDisplay = ({ index, artist, onArtistRemove }) => {
       (inst) => inst.id === instrument.id
     );
     if (!existingInstrument) {
-      console.log("Adding to index:", index);
-      console.log("Adding instrument:", instrument);
       addInstrument(index, instrument);
       setInstrumentsVisible(true);
     }
