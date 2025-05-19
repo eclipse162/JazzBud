@@ -6,8 +6,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navigation from "./components/navigation";
-import { InstrumentProvider } from "./components/InstrumentContext";
-import { SegmentProvider } from "./components/SegmentContext";
+import { InstrumentProvider } from "./components/contexts/InstrumentContext";
+import { SegmentProvider } from "./components/contexts/SegmentContext";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import About from "./pages/about";
