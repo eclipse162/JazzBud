@@ -5,14 +5,14 @@ import { useInstrumentContext } from "../../../components/InstrumentContext";
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
 
-const ArtistDisplay = ({ artist, onArtistRemove }) => {
+const ArtistDisplay = ({ index, artist, onArtistRemove }) => {
   const [query, setQuery] = useState("");
   const [instruments, setInstruments] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [instrumentsVisible, setInstrumentsVisible] = useState(false);
   const { selectedInstruments, addInstrument, removeInstrument } =
     useInstrumentContext();
-  const artistInstruments = selectedInstruments[artist.id] || [];
+  const artistInstruments = selectedInstruments[index] || [];
 
   useEffect(() => {
     const fetchInstrumentData = async () => {
@@ -43,7 +43,7 @@ const ArtistDisplay = ({ artist, onArtistRemove }) => {
       (inst) => inst.id === instrument.id
     );
     if (!existingInstrument) {
-      addInstrument(artist.id, instrument);
+      addInstrument(index, instrument);
       setInstrumentsVisible(true);
     }
     setQuery("");
@@ -56,7 +56,7 @@ const ArtistDisplay = ({ artist, onArtistRemove }) => {
   };
 
   const handleRemoveInstrument = (instrumentId) => {
-    removeInstrument(artist.id, instrumentId); // Use context to remove instrument
+    removeInstrument(index, instrumentId); // Use context to remove instrument
   };
 
   return (
@@ -116,7 +116,7 @@ const ArtistDisplay = ({ artist, onArtistRemove }) => {
           {dropdownVisible && (
             <InstrumentDropdown
               instruments={instruments}
-              artistId={artist.id}
+              onSelect={handleInstrumentSelect}
             />
           )}
         </div>

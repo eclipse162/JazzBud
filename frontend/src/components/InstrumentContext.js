@@ -5,9 +5,9 @@ const InstrumentContext = createContext();
 export const InstrumentProvider = ({ children }) => {
   const [selectedInstruments, setSelectedInstruments] = useState({});
 
-  const handleInstrumentSelect = (artistId, instrument) => {
+  const handleInstrumentSelect = (index, instrument) => {
     setSelectedInstruments((prev) => {
-      const currentInstruments = prev[artistId] || [];
+      const currentInstruments = prev[index] || [];
       const newInstruments = Array.isArray(instrument)
         ? instrument
         : [instrument];
@@ -15,21 +15,21 @@ export const InstrumentProvider = ({ children }) => {
 
       // Use the updated state immediately
       console.log(
-        `Updated instruments for artist ${artistId}:`,
+        `Updated instruments for artist ${index}:`,
         updatedInstruments
       );
 
       return {
         ...prev,
-        [artistId]: updatedInstruments,
+        [index]: updatedInstruments,
       };
     });
   };
 
-  const removeInstrument = (artistId, instrumentId) => {
+  const removeInstrument = (index, instrumentId) => {
     setSelectedInstruments((prev) => ({
       ...prev,
-      [artistId]: prev[artistId].filter((inst) => inst.id !== instrumentId),
+      [index]: prev[index].filter((inst) => inst.id !== instrumentId),
     }));
   };
 

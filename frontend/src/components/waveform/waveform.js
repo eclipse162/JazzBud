@@ -3,7 +3,6 @@ import { formatTime } from "../../utils.js";
 import * as d3 from "d3";
 
 const Waveform = ({
-  artistIndex,
   sogments = [],
   songDuration,
   instruments,

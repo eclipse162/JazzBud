@@ -34,17 +34,17 @@ const Track = () => {
     }));
   };
 
-  const handleAddSegment = (artistIndex, newSegment) => {
+  const handleAddSegment = (index, newSegment) => {
     setSegments((prev) => ({
       ...prev,
-      [artistIndex]: [...(prev[artistIndex] || []), newSegment],
+      [index]: [...(prev[index] || []), newSegment],
     }));
   };
 
-  const handleUpdateSegment = (artistIndex, updatedSegments) => {
+  const handleUpdateSegment = (index, updatedSegments) => {
     setSegments((prev) => ({
       ...prev,
-      [artistIndex]: updatedSegments,
+      [index]: updatedSegments,
     }));
   };
 
@@ -88,10 +88,7 @@ const Track = () => {
                 <div className={styles.waveformContainer}>
                   {selectedArtists[index] && (
                     <Waveform
-                      artistIndex={index}
-                      instruments={
-                        selectedInstruments[selectedArtists[index]?.id] || []
-                      }
+                      instruments={selectedInstruments[index] || []}
                       segments={segments[index] || []}
                       songDuration={track.track_length}
                       onAddSegment={(newSegment) =>

@@ -5,7 +5,7 @@ import styles from "./artistSearch.module.css";
 import ArtistDisplay from "./artistDisplay/artistDisplay";
 import ArtistDropdown from "./artistDropdown/artistDropdown";
 
-const ArtistSearch = ({ onArtistSelect, onRemoveArtist }) => {
+const ArtistSearch = ({ index, onArtistSelect, onRemoveArtist }) => {
   const [query, setQuery] = useState(""); // Search query
   const [debouncedQuery, setDebouncedQuery] = useState(""); // Debounced search query
   const [artists, setArtists] = useState([]); // List of artists fetched from the API
@@ -78,6 +78,7 @@ const ArtistSearch = ({ onArtistSelect, onRemoveArtist }) => {
 
       {selectedArtist && (
         <ArtistDisplay
+          index={index}
           artist={selectedArtist}
           onArtistRemove={handleArtistRemove}
         />
