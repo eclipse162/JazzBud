@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import styles from "../styles/track.module.css";
@@ -71,6 +71,10 @@ const Track = () => {
     setArtistSearchComponents((prev) => [...prev, prev.length]);
   };
 
+  useEffect(() => {
+    console.log("Selected Instruments in Track.js:", selectedInstruments);
+  }, [selectedInstruments]);
+
   return (
     <InstrumentProvider>
       <main className={styles.page}>
@@ -81,7 +85,6 @@ const Track = () => {
             <div className={styles.artistTable}>
               {artistSearchComponents.map((index) => (
                 <div key={index} className={styles.artistRow}>
-                  {console.log("Rendering ArtistSearch for index:", index)}
                   <ArtistSearch
                     onArtistSelect={(artist) =>
                       handleArtistSelect(index, artist)

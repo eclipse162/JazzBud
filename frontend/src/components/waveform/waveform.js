@@ -20,10 +20,13 @@ const Waveform = ({
   const containerRef = useRef(null);
 
   useEffect(() => {
+    console.log("Instruments passed to Waveform:", instruments);
+  }, [instruments]);
+
+  useEffect(() => {
     const svg = d3.select(svgRef.current);
     const container = containerRef.current;
     if (instruments.length > 0) {
-      console.log("Waveform Instruments:", instruments);
       setColour(instruments[0].colour);
     }
 
