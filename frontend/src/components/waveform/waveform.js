@@ -89,7 +89,6 @@ const Waveform = ({
         }
 
         if (toolTip) {
-          const currentTime = formatTime(midDrag);
           svg
             .append("text")
             .attr("x", xScale(end) - 5)
@@ -100,7 +99,7 @@ const Waveform = ({
             .attr("font-weight", "bold")
             .attr("z-index", 100)
             .attr("font-family", "sans-serif")
-            .text(`${currentTime}s`);
+            .text(`${formatTime(midDrag)} - ${formatTime(end)}`);
         }
       }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchInstrumentSearch } from "../../../api";
-import { useInstrumentContext } from "../../../InstrumentContext";
+import { useInstrumentContext } from "../../../components/InstrumentContext";
 
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
