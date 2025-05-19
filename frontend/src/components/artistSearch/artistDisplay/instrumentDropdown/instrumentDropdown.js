@@ -1,16 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useInstrumentContext } from "../../../../components/InstrumentContext";
 import styles from "../../artistDisplay/artistDisplay.module.css";
 
-const InstrumentDropdown = ({ instruments, artistId }) => {
-  const { addInstrument } = useInstrumentContext();
-
+const InstrumentDropdown = ({ instruments, onSelect }) => {
   if (!instruments || instruments.length === 0) return null;
-
-  const handleSelect = (instrument) => {
-    addInstrument(artistId, instrument); // Add the instrument to the context
-  };
 
   return (
     <div className={styles.dropdownContainer} style={{ width: "150px" }}>
@@ -18,7 +11,7 @@ const InstrumentDropdown = ({ instruments, artistId }) => {
         <div
           key={instrument.id}
           className={styles.dropdownItem}
-          onClick={() => handleSelect(instrument)}
+          onClick={() => onSelect(instrument)}
           role="option"
           tabIndex={0}>
           {instrument.name}

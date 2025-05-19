@@ -80,7 +80,7 @@ const ArtistDisplay = ({ index, artist, onArtistRemove }) => {
         <div className={styles.instrumentSearchContainer}>
           <div className={styles.selectedInstruments}>
             {instrumentsVisible &&
-              selectedInstruments.map((instrument) => (
+              artistInstruments.map((instrument) => (
                 <div
                   key={instrument.id}
                   className={styles.instrumentChip}
