@@ -11,6 +11,10 @@ const Waveform = ({
   addSegment,
   removeSegment,
 }) => {
+  const SOLO_HEIGHT = 20;
+  const REGULAR_HEIGHT = 60;
+  const SNAP_ANIMATION_DURATION = 300;
+
   const svgRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -18,6 +22,32 @@ const Waveform = ({
   const [toolTip, setToolTip] = useState(null);
   const [dragStart, setDragStart] = useState(null);
   const [colour, setColour] = useState("#D9D9D9");
+
+  function animateSolo(selection, height) {
+    selection
+      .transition()
+      .duration(SNAP_ANIMATION_DURATION)
+      .attr("transform", `translate(0, ${height})`);
+  }
+
+  function getSoloPath(xStart, xEnd, yBase, height) {
+    const width = xEnd - xStart;
+    const mid = xStart + width / 2;
+
+    const points = [
+      [xStart, yBase],
+      [mid, yBase + height],
+      [xEnd, yBase],
+    ];
+
+    const lineGenerator = d3
+      .line()
+      .x((d) => d[0])
+      .y((d) => d[1])
+      .curve(d3.curveBasis); // smooth curve
+
+    return lineGenerator(points);
+  }
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -55,20 +85,51 @@ const Waveform = ({
         .attr("fill", "#6c6c6c");
 
       artistSegments.forEach((segment) => {
-        const group = svg.append("g");
+        const group = svg
+          .append("g")
+          .attr("class", "segment")
+          .call(
+            d3.drag().on("drag", function (event) {
+              const threshold = 5;
 
-        group
-          .append("rect")
-          .attr("x", xScale(segment.start))
-          .attr("y", y - radius)
-          .attr("width", xScale(segment.end) - xScale(segment.start))
-          .attr("height", lineHeight)
-          .attr("rx", radius)
-          .attr("ry", radius)
-          .attr("fill", colour)
-          .on("dblclick", () => {
-            removeSegment(segment);
-          });
+              if (!segment.isSolo && event.dy < -threshold) {
+                segment.isSolo = true;
+                animateSolo(d3.select(this), SOLO_HEIGHT);
+                addSegment(segment);
+              } else if (segment.isSolo && event.dy > threshold) {
+                segment.isSolo = false;
+                animateSolo(d3.select(this), 0);
+                addSegment(segment);
+              }
+            })
+          );
+        if (segment.isSolo) {
+          group
+            .append("path")
+            .attr(
+              "d",
+              getSoloPath(
+                xScale(segment.start),
+                xScale(segment.end),
+                y,
+                SOLO_HEIGHT
+              )
+            )
+            .attr("fill", colour);
+        } else {
+          group
+            .append("rect")
+            .attr("x", xScale(segment.start))
+            .attr("y", y - radius)
+            .attr("width", xScale(segment.end) - xScale(segment.start))
+            .attr("height", lineHeight)
+            .attr("rx", radius)
+            .attr("ry", radius)
+            .attr("fill", colour)
+            .on("dblclick", () => {
+              removeSegment(segment);
+            });
+        }
 
         // Left Handle
         group
@@ -189,7 +250,7 @@ const Waveform = ({
           let id = uuidv4();
           const start = Math.max(0, Math.min(dragStart, midDrag));
           const end = Math.min(songDuration, Math.max(dragStart, midDrag));
-          const segment = { id: id, start: start, end: end };
+          const segment = { id: id, start: start, end: end, isSolo: false };
           if (end - start > 0.5) {
             addSegment(segment);
           }
