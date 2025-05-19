@@ -49,4 +49,12 @@ export const InstrumentProvider = ({ children }) => {
   );
 };
 
-export const useInstrumentContext = () => useContext(InstrumentContext);
+export const useInstrumentContext = () => {
+  const context = useContext(InstrumentContext);
+  if (!context) {
+    throw new Error(
+      "useInstrumentContext must be used within an InstrumentProvider"
+    );
+  }
+  return context;
+};
