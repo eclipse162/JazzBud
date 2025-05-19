@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navigation from "./components/navigation";
+import { InstrumentProvider } from "./components/InstrumentContext";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import About from "./pages/about";
@@ -32,7 +33,9 @@ const AppContent = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/artist/:slug/:id" element={<Artist />} />
         <Route path="/album/:artistslug/:titleslug/:id" element={<Album />} />
-        <Route path="/track/:artistslug/:titleslug/:id" element={<Track />} />
+        <InstrumentProvider>
+          <Route path="/track/:artistslug/:titleslug/:id" element={<Track />} />
+        </InstrumentProvider>
       </Routes>
     </>
   );

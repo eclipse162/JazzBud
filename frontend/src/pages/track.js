@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import styles from "../styles/track.module.css";
-import {
-  useInstrumentContext,
-  InstrumentProvider,
-} from "../components/InstrumentContext.js";
+import { useInstrumentContext } from "../components/InstrumentContext.js";
 import MusicHeader from "../components/musicHeader/musicHeader.js";
 import ArtistSearch from "../components/artistSearch/artistSearch.js";
 import Waveform from "../components/waveform/waveform.js";
@@ -76,52 +73,48 @@ const Track = () => {
   }, [selectedInstruments]);
 
   return (
-    <InstrumentProvider>
-      <main className={styles.page}>
-        <MusicHeader music={track} artistImage={null} token={token} />
+    <main className={styles.page}>
+      <MusicHeader music={track} artistImage={null} token={token} />
 
-        <div className={styles.editContainer}>
-          <div className={styles.artistSection}>
-            <div className={styles.artistTable}>
-              {artistSearchComponents.map((index) => (
-                <div key={index} className={styles.artistRow}>
-                  <ArtistSearch
-                    onArtistSelect={(artist) =>
-                      handleArtistSelect(index, artist)
-                    }
-                    onRemoveArtist={() => handleRemoveArtist(index)}
-                  />
-                  <div className={styles.waveformContainer}>
-                    {selectedArtists[index] && (
-                      <Waveform
-                        artistIndex={index}
-                        instruments={
-                          selectedInstruments[selectedArtists[index]?.id] || []
-                        }
-                        segments={segments[index] || []}
-                        songDuration={track.track_length}
-                        onAddSegment={(newSegment) =>
-                          handleAddSegment(index, newSegment)
-                        }
-                        onUpdateSegments={(updatedSegments) =>
-                          handleUpdateSegment(index, updatedSegments)
-                        }
-                      />
-                    )}
-                  </div>
+      <div className={styles.editContainer}>
+        <div className={styles.artistSection}>
+          <div className={styles.artistTable}>
+            {artistSearchComponents.map((index) => (
+              <div key={index} className={styles.artistRow}>
+                <ArtistSearch
+                  onArtistSelect={(artist) => handleArtistSelect(index, artist)}
+                  onRemoveArtist={() => handleRemoveArtist(index)}
+                />
+                <div className={styles.waveformContainer}>
+                  {selectedArtists[index] && (
+                    <Waveform
+                      artistIndex={index}
+                      instruments={
+                        selectedInstruments[selectedArtists[index]?.id] || []
+                      }
+                      segments={segments[index] || []}
+                      songDuration={track.track_length}
+                      onAddSegment={(newSegment) =>
+                        handleAddSegment(index, newSegment)
+                      }
+                      onUpdateSegments={(updatedSegments) =>
+                        handleUpdateSegment(index, updatedSegments)
+                      }
+                    />
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
 
-              <button
-                className={styles.addArtist}
-                onClick={handleAddArtistSearch}>
-                Add Artist
-              </button>
-            </div>
+            <button
+              className={styles.addArtist}
+              onClick={handleAddArtistSearch}>
+              Add Artist
+            </button>
           </div>
         </div>
-      </main>
-    </InstrumentProvider>
+      </div>
+    </main>
   );
 };
 
