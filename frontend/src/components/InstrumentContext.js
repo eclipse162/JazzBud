@@ -6,10 +6,16 @@ export const InstrumentProvider = ({ children }) => {
   const [selectedInstruments, setSelectedInstruments] = useState({});
 
   const addInstrument = (artistId, instrument) => {
-    setSelectedInstruments((prev) => ({
-      ...prev,
-      [artistId]: [...(prev[artistId] || []), instrument],
-    }));
+    setSelectedInstruments((prev) => {
+      const currentInstruments = prev[artistId] || [];
+      const newInstruments = Array.isArray(instrument)
+        ? instrument
+        : [instrument];
+      return {
+        ...prev,
+        [artistId]: [...currentInstruments, ...newInstruments], // Flatten the array
+      };
+    });
   };
 
   const removeInstrument = (artistId, instrumentId) => {

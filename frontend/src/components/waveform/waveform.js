@@ -23,7 +23,7 @@ const Waveform = ({
     const svg = d3.select(svgRef.current);
     const container = containerRef.current;
     if (instruments.length > 0) {
-      console.log("Instruments:", instruments);
+      console.log("Waveform Instruments:", instruments);
       setColour(instruments[0].colour);
     }
 
