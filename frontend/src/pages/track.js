@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import styles from "../styles/track.module.css";
+import {
+  useInstrumentContext,
+  InstrumentProvider,
+} from "../components/InstrumentContext.js";
 import MusicHeader from "../components/musicHeader/musicHeader.js";
 import ArtistSearch from "../components/artistSearch/artistSearch.js";
 import Waveform from "../components/waveform/waveform.js";
@@ -14,10 +18,11 @@ const Track = () => {
 
   const [segments, setSegments] = useState({});
   const [selectedArtists, setSelectedArtists] = useState([]);
-  const [artistInstruments, setArtistInstruments] = useState({});
   const [artistSearchComponents, setArtistSearchComponents] = useState([
     0, 1, 2, 3,
   ]);
+
+  const { selectedInstruments } = useInstrumentContext();
 
   const handleArtistSelect = (index, artist) => {
     setSelectedArtists((prev) => {
@@ -25,11 +30,6 @@ const Track = () => {
       updated[index] = artist;
       return updated;
     });
-
-    setArtistInstruments((prev) => ({
-      ...prev,
-      [index]: [],
-    }));
 
     setSegments((prev) => ({
       ...prev,
@@ -51,26 +51,10 @@ const Track = () => {
     }));
   };
 
-  const handleInstrumentSelect = (index, instrument) => {
-    console.log("Instrument selected for index:", index, instrument);
-    setArtistInstruments((prev) => {
-      const updated = { ...prev };
-      updated[index] = [...(updated[index] || []), instrument];
-      console.log("Updated artistInstruments:", updated);
-      return updated;
-    });
-  };
-
   const handleRemoveArtist = (index) => {
     setSelectedArtists((prev) => {
       const updated = [...prev];
       updated.splice(index, 1);
-      return updated;
-    });
-
-    setArtistInstruments((prev) => {
-      const updated = { ...prev };
-      delete updated[index];
       return updated;
     });
 
@@ -83,67 +67,58 @@ const Track = () => {
     setArtistSearchComponents((prev) => prev.filter((i) => i !== index));
   };
 
-  const handleRemoveInstrument = (index, instrumentId) => {
-    setArtistInstruments((prev) => ({
-      ...prev,
-      [index]: prev[index].filter(
-        (instrument) => instrument.id !== instrumentId
-      ),
-    }));
-  };
-
   const handleAddArtistSearch = () => {
     setArtistSearchComponents((prev) => [...prev, prev.length]);
   };
 
   return (
-    <main className={styles.page}>
-      <MusicHeader music={track} artistImage={null} token={token} />
+    <InstrumentProvider>
+      <main className={styles.page}>
+        <MusicHeader music={track} artistImage={null} token={token} />
 
-      <div className={styles.editContainer}>
-        <div className={styles.artistSection}>
-          <div className={styles.artistTable}>
-            {artistSearchComponents.map((index) => (
-              <div key={index} className={styles.artistRow}>
-                {console.log("Rendering ArtistSearch for index:", index)}
-                <ArtistSearch
-                  onArtistSelect={(artist) => handleArtistSelect(index, artist)}
-                  onInstrumentSelect={(instrument) =>
-                    handleInstrumentSelect(index, instrument)
-                  }
-                  onRemoveInstrument={(instrumentId) =>
-                    handleRemoveInstrument(index, instrumentId)
-                  }
-                  onRemoveArtist={() => handleRemoveArtist(index)}
-                />
-                <div className={styles.waveformContainer}>
-                  {selectedArtists[index] && (
-                    <Waveform
-                      artistIndex={index}
-                      instruments={artistInstruments[index] || []}
-                      segments={segments[index] || []}
-                      songDuration={track.track_length}
-                      onAddSegment={(newSegment) =>
-                        handleAddSegment(index, newSegment)
-                      }
-                      onUpdateSegments={(updatedSegments) =>
-                        handleUpdateSegment(index, updatedSegments)
-                      }
-                    />
-                  )}
+        <div className={styles.editContainer}>
+          <div className={styles.artistSection}>
+            <div className={styles.artistTable}>
+              {artistSearchComponents.map((index) => (
+                <div key={index} className={styles.artistRow}>
+                  {console.log("Rendering ArtistSearch for index:", index)}
+                  <ArtistSearch
+                    onArtistSelect={(artist) =>
+                      handleArtistSelect(index, artist)
+                    }
+                    onRemoveArtist={() => handleRemoveArtist(index)}
+                  />
+                  <div className={styles.waveformContainer}>
+                    {selectedArtists[index] && (
+                      <Waveform
+                        artistIndex={index}
+                        instruments={
+                          selectedInstruments[selectedArtists[index]?.id] || []
+                        }
+                        segments={segments[index] || []}
+                        songDuration={track.track_length}
+                        onAddSegment={(newSegment) =>
+                          handleAddSegment(index, newSegment)
+                        }
+                        onUpdateSegments={(updatedSegments) =>
+                          handleUpdateSegment(index, updatedSegments)
+                        }
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
-            <button
-              className={styles.addArtist}
-              onClick={handleAddArtistSearch}>
-              Add Artist
-            </button>
+              <button
+                className={styles.addArtist}
+                onClick={handleAddArtistSearch}>
+                Add Artist
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </InstrumentProvider>
   );
 };
 

@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { fetchInstrumentSearch } from "../../../api";
+import { useInstrumentContext } from "../../../InstrumentContext";
 
 import InstrumentDropdown from "./instrumentDropdown/instrumentDropdown";
 import styles from "./artistDisplay.module.css";
 
-const ArtistDisplay = ({
-  artist,
-  onInstrument,
-  onInstrumentRemove,
-  onArtistRemove,
-}) => {
+const ArtistDisplay = ({ artist, onArtistRemove }) => {
   const [query, setQuery] = useState("");
   const [instruments, setInstruments] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [instrumentsVisible, setInstrumentsVisible] = useState(false);
-  const [selectedInstruments, setSelectedInstruments] = useState([]);
+  const { selectedInstruments, addInstrument, removeInstrument } =
+    useInstrumentContext();
+  const artistInstruments = selectedInstruments[artist.id] || [];
 
   useEffect(() => {
     const fetchInstrumentData = async () => {
@@ -40,16 +38,17 @@ const ArtistDisplay = ({
   };
 
   const handleInstrumentSelect = (instrument) => {
-    const existingInstrument = selectedInstruments.find(
+    if (!instrument || !instrument.id) return; // Prevent invalid instruments
+    const existingInstrument = artistInstruments.find(
       (inst) => inst.id === instrument.id
     );
     if (!existingInstrument) {
-      setSelectedInstruments((prev) => [...prev, instrument]);
+      addInstrument(artist.id, instrument);
       setInstrumentsVisible(true);
     }
     setQuery("");
     setDropdownVisible(false);
-    onInstrument(selectedInstruments);
+    setInstruments([]);
   };
 
   const handleRemoveArtist = (artistId) => {
@@ -57,10 +56,7 @@ const ArtistDisplay = ({
   };
 
   const handleRemoveInstrument = (instrumentId) => {
-    setSelectedInstruments((prev) =>
-      prev.filter((instrument) => instrument.id !== instrumentId)
-    );
-    onInstrumentRemove(instrumentId);
+    removeInstrument(artist.id, instrumentId); // Use context to remove instrument
   };
 
   return (
@@ -120,7 +116,7 @@ const ArtistDisplay = ({
           {dropdownVisible && (
             <InstrumentDropdown
               instruments={instruments}
-              onSelect={handleInstrumentSelect}
+              artistId={artist.id}
             />
           )}
         </div>
