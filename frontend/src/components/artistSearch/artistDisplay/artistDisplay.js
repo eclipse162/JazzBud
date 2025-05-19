@@ -43,6 +43,8 @@ const ArtistDisplay = ({ index, artist, onArtistRemove }) => {
       (inst) => inst.id === instrument.id
     );
     if (!existingInstrument) {
+      console.log("Adding to index:", index);
+      console.log("Adding instrument:", instrument);
       addInstrument(index, instrument);
       setInstrumentsVisible(true);
     }

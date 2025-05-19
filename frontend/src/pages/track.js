@@ -82,6 +82,7 @@ const Track = () => {
             {artistSearchComponents.map((index) => (
               <div key={index} className={styles.artistRow}>
                 <ArtistSearch
+                  index={index}
                   onArtistSelect={(artist) => handleArtistSelect(index, artist)}
                   onRemoveArtist={() => handleRemoveArtist(index)}
                 />

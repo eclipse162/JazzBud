@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "../../artistDisplay/artistDisplay.module.css";
 
 const InstrumentDropdown = ({ instruments, onSelect }) => {
@@ -19,16 +18,6 @@ const InstrumentDropdown = ({ instruments, onSelect }) => {
       ))}
     </div>
   );
-};
-
-InstrumentDropdown.propTypes = {
-  instruments: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  artistId: PropTypes.number.isRequired, // Artist ID is required to associate instruments
 };
 
 export default InstrumentDropdown;
