@@ -27,7 +27,7 @@ const Waveform = ({
     selection
       .transition()
       .duration(SNAP_ANIMATION_DURATION)
-      .attr("transform", `translate(0, ${height})`);
+      .attr("transform", `translate(0, ${-height})`);
   }
 
   function getSoloPath(xStart, xEnd, yBase, height) {
@@ -36,7 +36,7 @@ const Waveform = ({
 
     const points = [
       [xStart, yBase],
-      [mid, yBase + height],
+      [mid, yBase - height],
       [xEnd, yBase],
     ];
 
@@ -44,7 +44,7 @@ const Waveform = ({
       .line()
       .x((d) => d[0])
       .y((d) => d[1])
-      .curve(d3.curveBasis); // smooth curve
+      .curve(d3.curveBasis);
 
     return lineGenerator(points);
   }
@@ -60,20 +60,18 @@ const Waveform = ({
       const width = container.clientWidth;
       const height = 60;
 
-      // Clear previous render
       svg.selectAll("*").remove();
 
-      // Time scale
       const xScale = d3
         .scaleLinear()
         .domain([0, songDuration])
         .range([0, width]);
 
-      // --- Draw GRAY BASELINE (represents full duration) ---
       const y = height / 2;
       const lineHeight = 8;
       const radius = lineHeight / 2;
 
+      // BASELINE
       svg
         .append("rect")
         .attr("x", 0)
@@ -88,6 +86,7 @@ const Waveform = ({
         const group = svg
           .append("g")
           .attr("class", "segment")
+          .attr("cursor", "ns-resize")
           .call(
             d3.drag().on("drag", function (event) {
               const threshold = 5;
@@ -141,40 +140,52 @@ const Waveform = ({
           .attr("fill", "transparent")
           .attr("cursor", "ew-resize")
           .call(
-            d3.drag().on("drag", (event) => {
-              const newStart = Math.max(
-                0,
-                Math.min(xScale.invert(event.x), segment.end - 0.1)
-              );
-              const newSegment = {
-                ...segment,
-                start: newStart,
-              };
-              addSegment(newSegment);
-            })
+            d3
+              .drag()
+              .on("start", (event) => {
+                event.subject = xScale(segment.start) - event.x;
+              })
+              .on("drag", (event) => {
+                const adjustedX = event.x + event.subject;
+                const newStart = Math.max(
+                  songDuration,
+                  Math.min(xScale.invert(adjustedX), segment.end - 0.1)
+                );
+                const newSegment = {
+                  ...segment,
+                  start: newStart,
+                };
+                addSegment(newSegment);
+              })
           );
 
         // Right Handle
         group
           .append("rect")
-          .attr("x", xScale(segment.end) - 4)
+          .attr("x", xScale(segment.end) - 5)
           .attr("y", y - radius - 2)
-          .attr("width", 8)
-          .attr("height", lineHeight + 4)
+          .attr("width", 10)
+          .attr("height", lineHeight + 5)
           .attr("fill", "transparent")
           .attr("cursor", "ew-resize")
           .call(
-            d3.drag().on("drag", (event) => {
-              const newEnd = Math.max(
-                songDuration,
-                Math.max(xScale.invert(event.x), segment.start + 0.1)
-              );
-              const newSegment = {
-                ...segment,
-                end: newEnd,
-              };
-              addSegment(newSegment);
-            })
+            d3
+              .drag()
+              .on("start", (event) => {
+                event.subject = xScale(segment.end) - event.x;
+              })
+              .on("drag", (event) => {
+                const adjustedX = event.x + event.subject;
+                const newEnd = Math.min(
+                  songDuration,
+                  Math.max(xScale.invert(adjustedX), segment.start + 0.1)
+                );
+                const newSegment = {
+                  ...segment,
+                  end: newEnd,
+                };
+                addSegment(newSegment);
+              })
           );
       });
 
@@ -270,17 +281,14 @@ const Waveform = ({
       };
     };
 
-    // Initial render
     renderWaveform();
 
-    // Use ResizeObserver to re-render on container resize
     const resizeObserver = new ResizeObserver(() => {
       renderWaveform();
     });
 
     resizeObserver.observe(container);
 
-    // Cleanup observer on unmount
     return () => {
       resizeObserver.disconnect();
     };

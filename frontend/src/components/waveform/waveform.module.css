@@ -8,7 +8,7 @@
 
 .waveform {
   width: 100%;
-  height: 60;
+  height: 60px;
   display: block;
   margin-bottom: 16px;
   cursor: pointer;
