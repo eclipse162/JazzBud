@@ -11,9 +11,8 @@ const Waveform = ({
   addSegment,
   removeSegment,
 }) => {
-  const SOLO_HEIGHT = 20;
-  const REGULAR_HEIGHT = 60;
-  const SNAP_ANIMATION_DURATION = 300;
+  const SOLO_HEIGHT = 50;
+  const SNAP_ANIMATION_DURATION = 500;
 
   const svgRef = useRef(null);
   const containerRef = useRef(null);
@@ -114,7 +113,17 @@ const Waveform = ({
                 SOLO_HEIGHT
               )
             )
-            .attr("fill", colour);
+            .append("rect")
+            .attr("x", xScale(segment.start))
+            .attr("y", y - radius)
+            .attr("width", xScale(segment.end) - xScale(segment.start))
+            .attr("height", lineHeight)
+            .attr("rx", radius)
+            .attr("ry", radius)
+            .attr("fill", colour)
+            .on("dblclick", () => {
+              removeSegment(segment);
+            });
         } else {
           group
             .append("rect")
@@ -142,11 +151,11 @@ const Waveform = ({
           .call(
             d3
               .drag()
-              .on("start", (event) => {
-                event.subject = xScale(segment.start) - event.x;
+              .on("start", function (event) {
+                this.offset = xScale(segment.start) - event.x;
               })
-              .on("drag", (event) => {
-                const adjustedX = event.x + event.subject;
+              .on("drag", function (event) {
+                const adjustedX = event.x + this.offset;
                 const newStart = Math.max(
                   songDuration,
                   Math.min(xScale.invert(adjustedX), segment.end - 0.1)
@@ -171,14 +180,14 @@ const Waveform = ({
           .call(
             d3
               .drag()
-              .on("start", (event) => {
-                event.subject = xScale(segment.end) - event.x;
+              .on("start", function (event) {
+                this.offset = xScale(segment.end) - event.x;
               })
-              .on("drag", (event) => {
-                const adjustedX = event.x + event.subject;
+              .on("drag", function (event) {
+                const adjustedX = event.x + this.offset;
                 const newEnd = Math.min(
                   songDuration,
-                  Math.max(xScale.invert(adjustedX), segment.start + 0.1)
+                  Math.max(xScale.invert(adjustedX), segment.end + 0.1)
                 );
                 const newSegment = {
                   ...segment,

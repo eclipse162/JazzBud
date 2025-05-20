@@ -6,6 +6,7 @@ export const SegmentProvider = ({ children }) => {
   const [artistSegments, setArtistSegments] = useState({});
 
   const addSegment = (index, segment) => {
+    if (!segment || !segment.id) return;
     setArtistSegments((prev) => {
       const existingSegments = prev[index] || [];
       const segmentExists = existingSegments.some(
