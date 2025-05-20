@@ -11,7 +11,7 @@ const Waveform = ({
   addSegment,
   removeSegment,
 }) => {
-  const SOLO_HEIGHT = 50;
+  const SOLO_HEIGHT = 40;
   const SNAP_ANIMATION_DURATION = 500;
 
   const svgRef = useRef(null);
@@ -113,6 +113,8 @@ const Waveform = ({
                 SOLO_HEIGHT
               )
             )
+            .attr("fill", colour);
+          group
             .append("rect")
             .attr("x", xScale(segment.start))
             .attr("y", y - radius)
@@ -149,23 +151,21 @@ const Waveform = ({
           .attr("fill", "transparent")
           .attr("cursor", "ew-resize")
           .call(
-            d3
-              .drag()
-              .on("start", function (event) {
-                this.offset = xScale(segment.start) - event.x;
-              })
-              .on("drag", function (event) {
-                const adjustedX = event.x + this.offset;
-                const newStart = Math.max(
-                  songDuration,
-                  Math.min(xScale.invert(adjustedX), segment.end - 0.1)
-                );
+            d3.drag().on("drag", function (event) {
+              const [mouseX] = d3.pointer(event, svgRef.current);
+              const newStart = Math.max(
+                0,
+                Math.min(xScale.invert(mouseX), segment.end - 0.1)
+              );
+
+              if (newStart < segment.end) {
                 const newSegment = {
                   ...segment,
                   start: newStart,
                 };
                 addSegment(newSegment);
-              })
+              }
+            })
           );
 
         // Right Handle
@@ -178,23 +178,21 @@ const Waveform = ({
           .attr("fill", "transparent")
           .attr("cursor", "ew-resize")
           .call(
-            d3
-              .drag()
-              .on("start", function (event) {
-                this.offset = xScale(segment.end) - event.x;
-              })
-              .on("drag", function (event) {
-                const adjustedX = event.x + this.offset;
-                const newEnd = Math.min(
-                  songDuration,
-                  Math.max(xScale.invert(adjustedX), segment.end + 0.1)
-                );
+            d3.drag().on("drag", function (event) {
+              const [mouseX] = d3.pointer(event, svgRef.current);
+              const newEnd = Math.min(
+                songDuration,
+                Math.max(xScale.invert(mouseX), segment.start + 0.1)
+              );
+
+              if (newEnd > segment.start) {
                 const newSegment = {
                   ...segment,
                   end: newEnd,
                 };
                 addSegment(newSegment);
-              })
+              }
+            })
           );
       });
 
